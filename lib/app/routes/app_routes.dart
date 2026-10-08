@@ -4,4 +4,5 @@
 /// `AppPages` only once that screen exists.
 abstract final class AppRoutes {
   static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
 }
