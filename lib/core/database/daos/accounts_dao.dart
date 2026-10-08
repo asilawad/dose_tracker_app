@@ -1,5 +1,4 @@
 import 'package:dose_tracker/core/database/app_database.dart';
-import 'package:dose_tracker/core/database/tables/accounts_table.dart';
 import 'package:drift/drift.dart';
 
 /// Database access for accounts: the root that every other table belongs to.
@@ -17,13 +16,13 @@ class AccountsDao {
   Future<AccountRow?> findById(int id) {
     return (_db.select(
       _db.accounts,
-    )..where((Accounts t) => t.id.equals(id))).getSingleOrNull();
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   Future<AccountRow?> findByEmail(String email) {
     return (_db.select(
       _db.accounts,
-    )..where((Accounts t) => t.email.equals(email))).getSingleOrNull();
+    )..where((t) => t.email.equals(email))).getSingleOrNull();
   }
 
   /// Returns the new account id.
@@ -58,7 +57,7 @@ class AccountsDao {
   }) {
     return (_db.update(
       _db.accounts,
-    )..where((Accounts t) => t.id.equals(accountId))).write(
+    )..where((t) => t.id.equals(accountId))).write(
       AccountsCompanion(
         passwordHash: Value<String>(passwordHash),
         passwordSalt: Value<String>(passwordSalt),
