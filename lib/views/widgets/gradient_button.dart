@@ -80,7 +80,6 @@ class GradientButton extends StatelessWidget {
                             icon,
                             size: AppSizes.iconMd,
                             color: contentColor,
-                            matchTextDirection: true,
                           ),
                         ],
                       ],
