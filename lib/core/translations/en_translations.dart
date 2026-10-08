@@ -21,6 +21,7 @@ abstract final class EnTranslations {
     AppStrings.actionDone: 'Done',
     AppStrings.actionClose: 'Close',
     AppStrings.actionApply: 'Apply',
+    AppStrings.actionGetStarted: 'Get Started',
 
     // ---- Common states ----
     AppStrings.stateLoading: 'Loading...',
@@ -38,5 +39,26 @@ abstract final class EnTranslations {
     AppStrings.a11yLogo: 'Dose Tracker logo',
     AppStrings.a11yShowPassword: 'Show password',
     AppStrings.a11yHidePassword: 'Hide password',
+
+    // ---- Auth (shared) ----
+    AppStrings.authLogIn: 'Log In',
+
+    // ---- Onboarding ----
+    AppStrings.onboardingFamilyTitle:
+        "Manage your whole family's medications in one place",
+    AppStrings.onboardingFamilyBody:
+        'Organize and track schedules, dosages, and daily adherence for '
+        'everyone under one simple roof.',
+    AppStrings.onboardingRemindersTitle: 'Never miss a dose',
+    AppStrings.onboardingRemindersBody:
+        'Get escalating reminders at dose time, plus follow-ups if a dose '
+        "isn't marked taken, and see your family's monthly adherence at a "
+        'glance.',
+    AppStrings.onboardingStockTitle: 'Track stock & share doctor-ready reports',
+    AppStrings.onboardingStockBody:
+        'Get refill alerts before you run out, and generate a clean PDF '
+        'report for any family member to bring to their doctor.',
+    AppStrings.onboardingHaveAccount: 'Already have an account?',
+    AppStrings.onboardingPageIndicator: 'Page @current of @total',
   };
 }
