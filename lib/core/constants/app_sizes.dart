@@ -71,6 +71,12 @@ abstract final class AppSizes {
   static const double sheetHandleWidth = 40;
   static const double sheetHandleHeight = 4;
 
+  // ---- Onboarding ----
+  static const double onboardingIllustrationSize = 240;
+  static const double iconHero = 96;
+  static const double pageDotSize = 8;
+  static const double pageDotActiveWidth = 24;
+
   // ---- Input limits (characters) ----
   static const int passwordMinLength = 8;
   static const int nameMinLength = 2;
