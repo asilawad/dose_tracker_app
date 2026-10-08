@@ -7,9 +7,9 @@ import 'package:drift/drift.dart';
 /// must check [findByEmail] before [insert], because the unique constraint
 /// would otherwise throw a raw database error. Passwords and answers arrive
 /// here already hashed. Plain classes like this one need no code generation,
-/// so adding a DAO never requires re-running `build_runner`.
-class AccountsDao {
-  const AccountsDao(this._db);
+/// so adding a data source never requires re-running `build_runner`.
+class AccountsLocalDataSource {
+  const AccountsLocalDataSource(this._db);
 
   final AppDatabase _db;
 

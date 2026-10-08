@@ -2,14 +2,14 @@ import 'package:dose_tracker/core/database/app_database.dart';
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:drift/drift.dart';
 
-/// DAO = Data Access Object: the class that holds every database query for
+/// Local data source: the class that holds every database query for
 /// one table. This one handles family profiles (Me, Mom, Dad, anyone).
 ///
 /// Every method takes the [accountId] and filters by it. That is the account
 /// isolation rule: no query can read or change another account's profiles,
 /// even by guessing an id.
-class ProfilesDao {
-  const ProfilesDao(this._db);
+class ProfilesLocalDataSource {
+  const ProfilesLocalDataSource(this._db);
 
   final AppDatabase _db;
 
