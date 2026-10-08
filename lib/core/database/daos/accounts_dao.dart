@@ -1,4 +1,5 @@
 import 'package:dose_tracker/core/database/app_database.dart';
+import 'package:dose_tracker/core/database/tables/accounts_table.dart';
 import 'package:drift/drift.dart';
 
 /// Database access for accounts: the root that every other table belongs to.
