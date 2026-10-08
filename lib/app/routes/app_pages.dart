@@ -2,6 +2,7 @@ import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_durations.dart';
 import 'package:dose_tracker/features/onboarding/bindings/onboarding_binding.dart';
 import 'package:dose_tracker/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:dose_tracker/features/splash/bindings/splash_binding.dart';
 import 'package:dose_tracker/features/splash/presentation/views/splash_view.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ abstract final class AppPages {
     GetPage<dynamic>(
       name: AppRoutes.splash,
       page: () => const SplashView(),
+      binding: SplashBinding(),
       transitionDuration: AppDurations.pageTransition,
     ),
     GetPage<dynamic>(
