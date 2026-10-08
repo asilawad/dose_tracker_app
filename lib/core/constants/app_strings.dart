@@ -1,8 +1,8 @@
 /// Translation KEYS only, never display text.
 ///
 /// Widgets show text with `AppStrings.someKey.tr` (GetX). The actual English
-/// and Arabic values live in `en_translations.dart` and `ar_translations.dart`
-/// (next steps), and every key declared here must exist in both maps.
+/// and Arabic values live in `en_translations.dart` and `ar_translations.dart`,
+/// and every key declared here must exist in both maps.
 /// Parameters use the `@name` form: `AppStrings.validationPasswordShort.trParams({'min': '8'})`.
 /// Each feature step appends its own keys under a new section header.
 abstract final class AppStrings {
@@ -22,6 +22,7 @@ abstract final class AppStrings {
   static const String actionDone = 'action_done';
   static const String actionClose = 'action_close';
   static const String actionApply = 'action_apply';
+  static const String actionGetStarted = 'action_get_started';
 
   // ---- Common states ----
   static const String stateLoading = 'state_loading';
@@ -39,4 +40,17 @@ abstract final class AppStrings {
   static const String a11yLogo = 'a11y_logo';
   static const String a11yShowPassword = 'a11y_show_password';
   static const String a11yHidePassword = 'a11y_hide_password';
+
+  // ---- Auth (shared) ----
+  static const String authLogIn = 'auth_log_in';
+
+  // ---- Onboarding ----
+  static const String onboardingFamilyTitle = 'onboarding_family_title';
+  static const String onboardingFamilyBody = 'onboarding_family_body';
+  static const String onboardingRemindersTitle = 'onboarding_reminders_title';
+  static const String onboardingRemindersBody = 'onboarding_reminders_body';
+  static const String onboardingStockTitle = 'onboarding_stock_title';
+  static const String onboardingStockBody = 'onboarding_stock_body';
+  static const String onboardingHaveAccount = 'onboarding_have_account';
+  static const String onboardingPageIndicator = 'onboarding_page_indicator';
 }
