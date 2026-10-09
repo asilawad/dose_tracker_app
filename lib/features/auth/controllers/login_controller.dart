@@ -1,3 +1,4 @@
+import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/auth/data/models/auth_results.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
@@ -7,11 +8,10 @@ import 'package:get/get.dart';
 /// State and actions of the Log In screen: the two form fields, the loading
 /// flag and the error message.
 ///
-/// [submit] returns true when the login worked. Moving on to Home is added
-/// in the Home step, because that route does not exist yet; until then the
-/// screen simply stays put after a successful login. [errorKey] holds a
-/// translation key, shown by the screen with `.tr`, so the message follows
-/// the app language.
+/// [submit] returns true when the login worked, and then replaces the whole
+/// navigation stack with Home so Back never returns to Log In. [errorKey]
+/// holds a translation key, shown by the screen with `.tr`, so the message
+/// follows the app language.
 class LoginController extends GetxController {
   LoginController(this._auth);
 
@@ -41,6 +41,7 @@ class LoginController extends GetxController {
       );
       switch (result) {
         case LogInSuccess():
+          await Get.offAllNamed<void>(AppRoutes.home);
           return true;
         case LogInInvalidCredentials():
           errorKey.value = AppStrings.authInvalidCredentials;

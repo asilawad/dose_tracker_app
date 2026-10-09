@@ -11,10 +11,9 @@ import 'package:get/get.dart';
 
 /// The Log In screen: header, the form card, and the link to Sign Up.
 ///
-/// A successful login does not move anywhere yet. Opening Home is added in
-/// the Home step, because that route does not exist yet. The links to Sign
-/// Up and Forgot Password work once those routes are registered, in the next
-/// steps. The controller comes from `LoginBinding`.
+/// A successful login opens Home (the controller does the navigation). The
+/// links to Sign Up and Forgot Password open those screens. The controller
+/// comes from `LoginBinding`.
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
 
