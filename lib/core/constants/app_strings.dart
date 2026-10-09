@@ -114,4 +114,10 @@ abstract final class AppStrings {
   static const String onboardingStockBody = 'onboarding_stock_body';
   static const String onboardingHaveAccount = 'onboarding_have_account';
   static const String onboardingPageIndicator = 'onboarding_page_indicator';
+
+  // ---- Navigation (bottom bar tabs) ----
+  static const String navHome = 'nav_home';
+  static const String navSchedule = 'nav_schedule';
+  static const String navInventory = 'nav_inventory';
+  static const String navSettings = 'nav_settings';
 }
