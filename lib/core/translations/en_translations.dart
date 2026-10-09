@@ -35,7 +35,6 @@ abstract final class EnTranslations {
     AppStrings.validationPasswordMismatch: 'Passwords do not match',
     AppStrings.validationNameShort: 'Name must be at least @min characters',
     AppStrings.validationNameLong: 'Name must be at most @max characters',
-    AppStrings.validationNameLong: 'Name must be at most @max characters',
     // ---- Accessibility labels and tooltips ----
     AppStrings.a11yLogo: 'Dose Tracker logo',
     AppStrings.a11yShowPassword: 'Show password',
