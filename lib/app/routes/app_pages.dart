@@ -1,5 +1,11 @@
 import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_durations.dart';
+import 'package:dose_tracker/features/auth/bindings/forgot_password_binding.dart';
+import 'package:dose_tracker/features/auth/bindings/login_binding.dart';
+import 'package:dose_tracker/features/auth/bindings/sign_up_binding.dart';
+import 'package:dose_tracker/features/auth/presentation/views/forgot_password_view.dart';
+import 'package:dose_tracker/features/auth/presentation/views/login_view.dart';
+import 'package:dose_tracker/features/auth/presentation/views/sign_up_view.dart';
 import 'package:dose_tracker/features/onboarding/bindings/onboarding_binding.dart';
 import 'package:dose_tracker/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:dose_tracker/features/splash/bindings/splash_binding.dart';
@@ -22,6 +28,24 @@ abstract final class AppPages {
       name: AppRoutes.onboarding,
       page: () => const OnboardingView(),
       binding: OnboardingBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.logIn,
+      page: () => const LoginView(),
+      binding: LoginBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.signUp,
+      page: () => const SignUpView(),
+      binding: SignUpBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.forgotPassword,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
       transitionDuration: AppDurations.pageTransition,
     ),
   ];
