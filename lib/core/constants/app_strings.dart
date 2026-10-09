@@ -134,4 +134,11 @@ abstract final class AppStrings {
   static const String settingsLogOut = 'settings_log_out';
   static const String languageEnglishName = 'language_english_name';
   static const String languageArabicName = 'language_arabic_name';
+
+  // ---- Identity color names (accessibility labels) ----
+  static const String personaColorTeal = 'persona_color_teal';
+  static const String personaColorRose = 'persona_color_rose';
+  static const String personaColorOrange = 'persona_color_orange';
+  static const String personaColorPurple = 'persona_color_purple';
+  static const String personaColorBlue = 'persona_color_blue';
 }

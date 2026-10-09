@@ -138,5 +138,12 @@ abstract final class EnTranslations {
     AppStrings.settingsLogOut: 'Log Out',
     AppStrings.languageEnglishName: 'English',
     AppStrings.languageArabicName: 'العربية',
+
+    // ---- Identity color names (accessibility labels) ----
+    AppStrings.personaColorTeal: 'Teal',
+    AppStrings.personaColorRose: 'Rose',
+    AppStrings.personaColorOrange: 'Orange',
+    AppStrings.personaColorPurple: 'Purple',
+    AppStrings.personaColorBlue: 'Blue',
   };
 }

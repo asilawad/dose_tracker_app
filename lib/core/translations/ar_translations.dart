@@ -133,5 +133,12 @@ abstract final class ArTranslations {
     AppStrings.settingsLogOut: 'تسجيل الخروج',
     AppStrings.languageEnglishName: 'English',
     AppStrings.languageArabicName: 'العربية',
+
+    // ---- Identity color names (accessibility labels) ----
+    AppStrings.personaColorTeal: 'تركوازي',
+    AppStrings.personaColorRose: 'وردي',
+    AppStrings.personaColorOrange: 'برتقالي',
+    AppStrings.personaColorPurple: 'بنفسجي',
+    AppStrings.personaColorBlue: 'أزرق',
   };
 }
