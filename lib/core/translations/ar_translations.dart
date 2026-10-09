@@ -33,7 +33,7 @@ abstract final class ArTranslations {
         'يجب أن تتكون كلمة المرور من @min أحرف على الأقل',
     AppStrings.validationPasswordMismatch: 'كلمتا المرور غير متطابقتين',
     AppStrings.validationNameShort: 'يجب أن يتكون الاسم من @min أحرف على الأقل',
-
+    AppStrings.validationNameLong: 'يجب ألا يزيد الاسم عن @max حرفاً',
     // ---- Accessibility labels and tooltips ----
     AppStrings.a11yLogo: 'شعار متتبع الجرعات',
     AppStrings.a11yShowPassword: 'إظهار كلمة المرور',
@@ -140,5 +140,11 @@ abstract final class ArTranslations {
     AppStrings.personaColorOrange: 'برتقالي',
     AppStrings.personaColorPurple: 'بنفسجي',
     AppStrings.personaColorBlue: 'أزرق',
+
+    // ---- Profiles: Add Profile ----
+    AppStrings.profilesAddTitle: 'إضافة فرد من العائلة',
+    AppStrings.profilesColorLabel: 'اختر لوناً لهذا الملف',
+    AppStrings.profilesNameLabel: 'الاسم الكامل',
+    AppStrings.profilesNameHint: 'مثال: ماما',
   };
 }

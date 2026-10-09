@@ -34,7 +34,8 @@ abstract final class EnTranslations {
         'Password must be at least @min characters',
     AppStrings.validationPasswordMismatch: 'Passwords do not match',
     AppStrings.validationNameShort: 'Name must be at least @min characters',
-
+    AppStrings.validationNameLong: 'Name must be at most @max characters',
+    AppStrings.validationNameLong: 'Name must be at most @max characters',
     // ---- Accessibility labels and tooltips ----
     AppStrings.a11yLogo: 'Dose Tracker logo',
     AppStrings.a11yShowPassword: 'Show password',
@@ -145,5 +146,11 @@ abstract final class EnTranslations {
     AppStrings.personaColorOrange: 'Orange',
     AppStrings.personaColorPurple: 'Purple',
     AppStrings.personaColorBlue: 'Blue',
+
+    // ---- Profiles: Add Profile ----
+    AppStrings.profilesAddTitle: 'Add Family Member',
+    AppStrings.profilesColorLabel: 'Choose a color for this profile',
+    AppStrings.profilesNameLabel: 'Full name',
+    AppStrings.profilesNameHint: 'For example: Mom',
   };
 }

@@ -25,6 +25,11 @@ abstract final class Validators {
         'min': AppSizes.nameMinLength.toString(),
       });
     }
+    if (value.trim().length > AppSizes.nameMaxLength) {
+      return AppStrings.validationNameLong.trParams(<String, String>{
+        'max': AppSizes.nameMaxLength.toString(),
+      });
+    }
     return null;
   }
 

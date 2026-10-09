@@ -35,7 +35,7 @@ abstract final class AppStrings {
   static const String validationPasswordMismatch =
       'validation_password_mismatch';
   static const String validationNameShort = 'validation_name_short';
-
+  static const String validationNameLong = 'validation_name_long';
   // ---- Accessibility labels and tooltips ----
   static const String a11yLogo = 'a11y_logo';
   static const String a11yShowPassword = 'a11y_show_password';
@@ -141,4 +141,10 @@ abstract final class AppStrings {
   static const String personaColorOrange = 'persona_color_orange';
   static const String personaColorPurple = 'persona_color_purple';
   static const String personaColorBlue = 'persona_color_blue';
+
+  // ---- Profiles: Add Profile ----
+  static const String profilesAddTitle = 'profiles_add_title';
+  static const String profilesColorLabel = 'profiles_color_label';
+  static const String profilesNameLabel = 'profiles_name_label';
+  static const String profilesNameHint = 'profiles_name_hint';
 }
