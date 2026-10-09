@@ -39,7 +39,7 @@ class LoginView extends GetView<LoginController> {
             AuthSwitchPrompt(
               prompt: AppStrings.authNoAccount.tr,
               linkLabel: AppStrings.authSignUp.tr,
-              onPressed: () => Get.toNamed<void>(AppRoutes.signUp),
+              onPressed: () => Get.offNamed<void>(AppRoutes.signUp),
             ),
             const SizedBox(height: AppSizes.spaceLg),
           ],
