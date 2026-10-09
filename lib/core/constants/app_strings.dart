@@ -70,6 +70,30 @@ abstract final class AppStrings {
   static const String authCreateAccountButton = 'auth_create_account_button';
   static const String authHaveAccount = 'auth_have_account';
 
+  // ---- Auth: Forgot Password ----
+  static const String forgotPasswordTitle = 'forgot_password_title';
+  static const String forgotPasswordEmailSubtitle =
+      'forgot_password_email_subtitle';
+  static const String forgotPasswordContinue = 'forgot_password_continue';
+  static const String forgotPasswordStepIndicator =
+      'forgot_password_step_indicator';
+  static const String forgotPasswordStepVerify = 'forgot_password_step_verify';
+  static const String forgotPasswordStepNewPassword =
+      'forgot_password_step_new_password';
+  static const String forgotPasswordNewTitle = 'forgot_password_new_title';
+  static const String forgotPasswordNewSubtitle =
+      'forgot_password_new_subtitle';
+  static const String forgotPasswordNewPasswordLabel =
+      'forgot_password_new_password_label';
+  static const String forgotPasswordResetButton =
+      'forgot_password_reset_button';
+  static const String forgotPasswordAccountNotFound =
+      'forgot_password_account_not_found';
+  static const String forgotPasswordWrongAnswer =
+      'forgot_password_wrong_answer';
+  static const String forgotPasswordSuccess = 'forgot_password_success';
+  static const String forgotPasswordRemembered = 'forgot_password_remembered';
+
   // ---- Security questions (chosen at Sign Up, used to reset a password) ----
   static const String securityQuestionFirstSchool =
       'security_question_first_school';
