@@ -63,7 +63,7 @@ class SignUpController extends GetxController {
       );
       switch (result) {
         case SignUpSuccess():
-          Get.offAllNamed<void>(AppRoutes.home);
+          await Get.offAllNamed<void>(AppRoutes.home);
           return true;
         case SignUpEmailTaken():
           errorKey.value = AppStrings.authEmailTaken;

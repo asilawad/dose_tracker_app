@@ -11,9 +11,9 @@ import 'package:get/get.dart';
 
 /// The Sign Up screen: header, the form card, and the link to Log In.
 ///
-/// It has no back arrow, as an entry screen. A successful sign-up does not
-/// move anywhere yet: opening Home is added in the Home step, because that
-/// route does not exist yet. The link to Log In replaces this screen
+/// It has no back arrow, as an entry screen. A successful sign-up opens
+/// Home (the controller does the navigation). The link to Log In replaces
+/// this screen
 /// (`offNamed`) so the two screens never pile up. The controller comes from
 /// `SignUpBinding`.
 class SignUpView extends GetView<SignUpController> {

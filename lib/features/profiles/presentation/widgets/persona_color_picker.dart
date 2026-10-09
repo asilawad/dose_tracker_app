@@ -1,3 +1,4 @@
+import 'package:dose_tracker/core/constants/app_durations.dart';
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';

@@ -12,6 +12,7 @@ import 'package:dose_tracker/features/profiles/bindings/add_profile_binding.dart
 import 'package:dose_tracker/features/profiles/presentation/views/add_profile_view.dart';
 import 'package:dose_tracker/features/shell/bindings/main_shell_binding.dart';
 import 'package:dose_tracker/features/shell/presentation/views/main_shell_view.dart';
+import 'package:dose_tracker/features/splash/bindings/splash_binding.dart';
 import 'package:dose_tracker/features/splash/presentation/views/splash_view.dart';
 import 'package:get/get.dart';
 
