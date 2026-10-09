@@ -130,5 +130,13 @@ abstract final class EnTranslations {
         'their medications.',
     AppStrings.homeAddProfile: 'Add family member',
     AppStrings.a11yAddMedication: 'Add medication',
+
+    // ---- Settings ----
+    AppStrings.settingsLanguage: 'Language',
+    AppStrings.settingsAppearance: 'Appearance',
+    AppStrings.settingsComingSoon: 'Coming soon',
+    AppStrings.settingsLogOut: 'Log Out',
+    AppStrings.languageEnglishName: 'English',
+    AppStrings.languageArabicName: 'العربية',
   };
 }

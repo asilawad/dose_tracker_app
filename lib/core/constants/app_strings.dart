@@ -126,4 +126,12 @@ abstract final class AppStrings {
   static const String homeEmptyMessage = 'home_empty_message';
   static const String homeAddProfile = 'home_add_profile';
   static const String a11yAddMedication = 'a11y_add_medication';
+
+  // ---- Settings ----
+  static const String settingsLanguage = 'settings_language';
+  static const String settingsAppearance = 'settings_appearance';
+  static const String settingsComingSoon = 'settings_coming_soon';
+  static const String settingsLogOut = 'settings_log_out';
+  static const String languageEnglishName = 'language_english_name';
+  static const String languageArabicName = 'language_arabic_name';
 }

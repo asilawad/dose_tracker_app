@@ -125,5 +125,13 @@ abstract final class ArTranslations {
         'أنشئ ملفاً لنفسك أو لمن ترعاه، ثم أضف أدويته.',
     AppStrings.homeAddProfile: 'إضافة فرد من العائلة',
     AppStrings.a11yAddMedication: 'إضافة دواء',
+
+    // ---- Settings ----
+    AppStrings.settingsLanguage: 'اللغة',
+    AppStrings.settingsAppearance: 'المظهر',
+    AppStrings.settingsComingSoon: 'قريباً',
+    AppStrings.settingsLogOut: 'تسجيل الخروج',
+    AppStrings.languageEnglishName: 'English',
+    AppStrings.languageArabicName: 'العربية',
   };
 }
