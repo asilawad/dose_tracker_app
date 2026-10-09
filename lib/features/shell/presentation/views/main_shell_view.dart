@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/home/presentation/views/home_tab_view.dart';
+import 'package:dose_tracker/features/settings/presentation/views/settings_tab_view.dart';
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_nav_bar.dart';
 import 'package:dose_tracker/views/widgets/bottom_nav_item.dart';
@@ -11,9 +12,9 @@ import 'package:get/get.dart';
 /// each keeps its state while the bottom bar switches between them.
 ///
 /// The list below is the single source for both the bar and the pages, so
-/// they can never get out of sync. Only Home exists so far; Schedule,
-/// Inventory and Settings are added to the list in the steps that create
-/// them. The add-medication button is added with the Add Medication
+/// they can never get out of sync. Home and Settings exist so far; Schedule
+/// and Inventory are added to the list in the steps that create them. The
+/// add-medication button is added with the Add Medication
 /// screen. The controller comes from `MainShellBinding`.
 class MainShellView extends GetView<MainShellController> {
   const MainShellView({super.key});
@@ -54,5 +55,13 @@ const List<_ShellTab> _tabs = <_ShellTab>[
       labelKey: AppStrings.navHome,
     ),
     page: HomeTabView(),
+  ),
+  _ShellTab(
+    item: BottomNavItem(
+      icon: Icons.settings_outlined,
+      activeIcon: Icons.settings_rounded,
+      labelKey: AppStrings.navSettings,
+    ),
+    page: SettingsTabView(),
   ),
 ];
