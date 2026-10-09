@@ -7,6 +7,7 @@ import 'package:dose_tracker/core/database/data_sources/profiles_local_data_sour
 import 'package:dose_tracker/core/services/password_hasher.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
+import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:get/get.dart';
 
 /// App-wide dependencies, created once when the app starts and kept alive
@@ -29,7 +30,7 @@ class InitialBinding extends Bindings {
       AccountsLocalDataSource(database),
       permanent: true,
     );
-    Get.put<ProfilesLocalDataSource>(
+    final ProfilesLocalDataSource profiles = Get.put<ProfilesLocalDataSource>(
       ProfilesLocalDataSource(database),
       permanent: true,
     );
@@ -54,6 +55,14 @@ class InitialBinding extends Bindings {
       AuthRepository(
         accounts: accounts,
         hasher: hasher,
+        session: Get.find<SessionService>(),
+      ),
+      permanent: true,
+    );
+
+    Get.put<ProfilesRepository>(
+      ProfilesRepository(
+        profiles: profiles,
         session: Get.find<SessionService>(),
       ),
       permanent: true,
