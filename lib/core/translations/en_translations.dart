@@ -116,5 +116,11 @@ abstract final class EnTranslations {
         'report for any family member to bring to their doctor.',
     AppStrings.onboardingHaveAccount: 'Already have an account?',
     AppStrings.onboardingPageIndicator: 'Page @current of @total',
+
+    // ---- Navigation (bottom bar tabs) ----
+    AppStrings.navHome: 'Home',
+    AppStrings.navSchedule: 'Schedule',
+    AppStrings.navInventory: 'Inventory',
+    AppStrings.navSettings: 'Settings',
   };
 }
