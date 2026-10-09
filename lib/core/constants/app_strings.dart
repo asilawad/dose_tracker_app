@@ -120,4 +120,10 @@ abstract final class AppStrings {
   static const String navSchedule = 'nav_schedule';
   static const String navInventory = 'nav_inventory';
   static const String navSettings = 'nav_settings';
+
+  // ---- Home (empty state) and shell ----
+  static const String homeEmptyTitle = 'home_empty_title';
+  static const String homeEmptyMessage = 'home_empty_message';
+  static const String homeAddProfile = 'home_add_profile';
+  static const String a11yAddMedication = 'a11y_add_medication';
 }

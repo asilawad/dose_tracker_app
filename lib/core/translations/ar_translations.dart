@@ -118,5 +118,12 @@ abstract final class ArTranslations {
     AppStrings.navSchedule: 'الجدول',
     AppStrings.navInventory: 'المخزون',
     AppStrings.navSettings: 'الإعدادات',
+
+    // ---- Home (empty state) and shell ----
+    AppStrings.homeEmptyTitle: 'أضف أول فرد من العائلة',
+    AppStrings.homeEmptyMessage:
+        'أنشئ ملفاً لنفسك أو لمن ترعاه، ثم أضف أدويته.',
+    AppStrings.homeAddProfile: 'إضافة فرد من العائلة',
+    AppStrings.a11yAddMedication: 'إضافة دواء',
   };
 }

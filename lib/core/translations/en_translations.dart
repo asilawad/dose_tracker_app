@@ -122,5 +122,13 @@ abstract final class EnTranslations {
     AppStrings.navSchedule: 'Schedule',
     AppStrings.navInventory: 'Inventory',
     AppStrings.navSettings: 'Settings',
+
+    // ---- Home (empty state) and shell ----
+    AppStrings.homeEmptyTitle: 'Add your first family member',
+    AppStrings.homeEmptyMessage:
+        'Create a profile for yourself or someone you care for, then add '
+        'their medications.',
+    AppStrings.homeAddProfile: 'Add family member',
+    AppStrings.a11yAddMedication: 'Add medication',
   };
 }
