@@ -1,3 +1,4 @@
+import 'package:dose_tracker/features/home/bindings/home_binding.dart';
 import 'package:dose_tracker/features/settings/bindings/settings_binding.dart';
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class MainShellBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<MainShellController>(MainShellController.new);
+    HomeBinding().dependencies();
     SettingsBinding().dependencies();
   }
 }
