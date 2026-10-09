@@ -1,3 +1,4 @@
+import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
 import 'package:dose_tracker/features/auth/data/models/auth_results.dart';
@@ -9,9 +10,10 @@ import 'package:get/get.dart';
 /// State and actions of the Sign Up screen: the form fields, the chosen
 /// security question, the loading flag and the error message.
 ///
-/// [submit] returns true when the account was created and logged in. Moving
-/// on to Home is added in the Home step, because that route does not exist
-/// yet. [errorKey] holds a translation key, shown by the screen with `.tr`.
+/// [submit] returns true when the account was created and logged in, and
+/// then replaces the whole navigation stack with Home. No profile is created
+/// here: Home shows its empty state. [errorKey] holds a translation key,
+/// shown by the screen with `.tr`.
 class SignUpController extends GetxController {
   SignUpController(this._auth);
 
@@ -61,6 +63,7 @@ class SignUpController extends GetxController {
       );
       switch (result) {
         case SignUpSuccess():
+          Get.offAllNamed<void>(AppRoutes.home);
           return true;
         case SignUpEmailTaken():
           errorKey.value = AppStrings.authEmailTaken;
