@@ -41,6 +41,41 @@ abstract final class ArTranslations {
 
     // ---- Auth (shared) ----
     AppStrings.authLogIn: 'تسجيل الدخول',
+    AppStrings.authSignUp: 'إنشاء حساب',
+    AppStrings.authEmailLabel: 'البريد الإلكتروني',
+    AppStrings.authEmailHint: 'care@email.com',
+    AppStrings.authPasswordLabel: 'كلمة المرور',
+    AppStrings.authEmailTaken: 'يوجد حساب بهذا البريد الإلكتروني بالفعل',
+
+    // ---- Auth: Log In ----
+    AppStrings.authWelcomeBack: 'أهلاً بعودتك',
+    AppStrings.authLogInSubtitle: 'سجّل الدخول لإدارة أدوية عائلتك اليومية',
+    AppStrings.authForgotPasswordLink: 'نسيت كلمة المرور؟',
+    AppStrings.authNoAccount: 'ليس لديك حساب؟',
+    AppStrings.authInvalidCredentials:
+        'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+
+    // ---- Auth: Sign Up ----
+    AppStrings.authCreateAccountTitle: 'أنشئ حسابك',
+    AppStrings.authCreateAccountSubtitle:
+        'حساب محلي لمقدّم الرعاية لإدارة جرعات العائلة',
+    AppStrings.authFullNameLabel: 'الاسم الكامل',
+    AppStrings.authFullNameHint: 'أحمد محمد',
+    AppStrings.authConfirmPasswordLabel: 'تأكيد كلمة المرور',
+    AppStrings.authSecurityQuestionLabel: 'سؤال الأمان',
+    AppStrings.authSecurityAnswerLabel: 'إجابتك',
+    AppStrings.authSecurityAnswerHelper:
+        'تُستخدم لإعادة تعيين كلمة المرور إذا نسيتها. لا تفرّق بين الأحرف '
+        'الكبيرة والصغيرة.',
+    AppStrings.authCreateAccountButton: 'إنشاء الحساب',
+    AppStrings.authHaveAccount: 'لديك حساب بالفعل؟',
+
+    // ---- Security questions ----
+    AppStrings.securityQuestionFirstSchool: 'ما اسم أول مدرسة التحقت بها؟',
+    AppStrings.securityQuestionBirthCity: 'في أي مدينة وُلدت؟',
+    AppStrings.securityQuestionFirstPet: 'ما اسم أول حيوان أليف امتلكته؟',
+    AppStrings.securityQuestionFavoriteTeacher: 'من هو معلمك المفضل؟',
+    AppStrings.securityQuestionChildhoodNickname: 'ما لقبك في الطفولة؟',
 
     // ---- Onboarding ----
     AppStrings.onboardingFamilyTitle: 'أدِر أدوية عائلتك كلها في مكان واحد',
