@@ -9,13 +9,15 @@ import 'package:get/get.dart';
 /// its work in `onReady`, and nothing on the splash screen reads it, so a
 /// lazy controller would never be created and the app would never leave the
 /// splash. [OnboardingStatusService] and [SessionService] are registered in
-/// `main.dart`.class SplashBinding extends Bindings {
-@override
-void dependencies() {
-  Get.put<SplashController>(
-    SplashController(
-      Get.find<OnboardingStatusService>(),
-      Get.find<SessionService>(),
-    ),
-  );
+/// `main.dart`.
+class SplashBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put<SplashController>(
+      SplashController(
+        Get.find<OnboardingStatusService>(),
+        Get.find<SessionService>(),
+      ),
+    );
+  }
 }
