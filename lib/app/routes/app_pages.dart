@@ -8,6 +8,8 @@ import 'package:dose_tracker/features/auth/presentation/views/login_view.dart';
 import 'package:dose_tracker/features/auth/presentation/views/sign_up_view.dart';
 import 'package:dose_tracker/features/onboarding/bindings/onboarding_binding.dart';
 import 'package:dose_tracker/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:dose_tracker/features/shell/bindings/main_shell_binding.dart';
+import 'package:dose_tracker/features/shell/presentation/views/main_shell_view.dart';
 import 'package:dose_tracker/features/splash/bindings/splash_binding.dart';
 import 'package:dose_tracker/features/splash/presentation/views/splash_view.dart';
 import 'package:get/get.dart';
@@ -46,6 +48,12 @@ abstract final class AppPages {
       name: AppRoutes.forgotPassword,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.home,
+      page: () => const MainShellView(),
+      binding: MainShellBinding(),
       transitionDuration: AppDurations.pageTransition,
     ),
   ];
