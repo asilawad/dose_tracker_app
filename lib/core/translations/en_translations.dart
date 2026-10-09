@@ -42,6 +42,43 @@ abstract final class EnTranslations {
 
     // ---- Auth (shared) ----
     AppStrings.authLogIn: 'Log In',
+    AppStrings.authSignUp: 'Sign Up',
+    AppStrings.authEmailLabel: 'Email address',
+    AppStrings.authEmailHint: 'care@email.com',
+    AppStrings.authPasswordLabel: 'Password',
+    AppStrings.authEmailTaken: 'An account with this email already exists',
+
+    // ---- Auth: Log In ----
+    AppStrings.authWelcomeBack: 'Welcome back',
+    AppStrings.authLogInSubtitle:
+        "Sign in to manage your family's daily medications",
+    AppStrings.authForgotPasswordLink: 'Forgot Password?',
+    AppStrings.authNoAccount: "Don't have an account?",
+    AppStrings.authInvalidCredentials: 'Email or password is incorrect',
+
+    // ---- Auth: Sign Up ----
+    AppStrings.authCreateAccountTitle: 'Create your account',
+    AppStrings.authCreateAccountSubtitle:
+        'Local caregiver account for family dose management',
+    AppStrings.authFullNameLabel: 'Full name',
+    AppStrings.authFullNameHint: 'Alexander Wright',
+    AppStrings.authConfirmPasswordLabel: 'Confirm password',
+    AppStrings.authSecurityQuestionLabel: 'Security question',
+    AppStrings.authSecurityAnswerLabel: 'Your answer',
+    AppStrings.authSecurityAnswerHelper:
+        'Used to reset your password if you forget it. Not case-sensitive.',
+    AppStrings.authCreateAccountButton: 'Create Account',
+    AppStrings.authHaveAccount: 'Already have an account?',
+
+    // ---- Security questions ----
+    AppStrings.securityQuestionFirstSchool:
+        'What was the name of your first school?',
+    AppStrings.securityQuestionBirthCity: 'In which city were you born?',
+    AppStrings.securityQuestionFirstPet: 'What was the name of your first pet?',
+    AppStrings.securityQuestionFavoriteTeacher:
+        'Who was your favorite teacher?',
+    AppStrings.securityQuestionChildhoodNickname:
+        'What was your childhood nickname?',
 
     // ---- Onboarding ----
     AppStrings.onboardingFamilyTitle:
