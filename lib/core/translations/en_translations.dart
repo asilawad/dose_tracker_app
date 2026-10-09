@@ -70,6 +70,25 @@ abstract final class EnTranslations {
     AppStrings.authCreateAccountButton: 'Create Account',
     AppStrings.authHaveAccount: 'Already have an account?',
 
+    // ---- Auth: Forgot Password ----
+    AppStrings.forgotPasswordTitle: 'Reset your password',
+    AppStrings.forgotPasswordEmailSubtitle:
+        'Enter the email of your local account on this device.',
+    AppStrings.forgotPasswordContinue: 'Continue',
+    AppStrings.forgotPasswordStepIndicator: 'Step @current of @total',
+    AppStrings.forgotPasswordStepVerify: 'Verify account',
+    AppStrings.forgotPasswordStepNewPassword: 'New password',
+    AppStrings.forgotPasswordNewTitle: 'Set a new password',
+    AppStrings.forgotPasswordNewSubtitle:
+        'Answer your security question, then choose a new password.',
+    AppStrings.forgotPasswordNewPasswordLabel: 'New password',
+    AppStrings.forgotPasswordResetButton: 'Reset Password',
+    AppStrings.forgotPasswordAccountNotFound:
+        'No account on this device uses this email',
+    AppStrings.forgotPasswordWrongAnswer: 'That answer is not correct',
+    AppStrings.forgotPasswordSuccess: 'Password updated. You can log in now.',
+    AppStrings.forgotPasswordRemembered: 'Remember your password?',
+
     // ---- Security questions ----
     AppStrings.securityQuestionFirstSchool:
         'What was the name of your first school?',
