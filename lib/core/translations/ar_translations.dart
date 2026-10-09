@@ -112,5 +112,11 @@ abstract final class ArTranslations {
         'مرتّباً لأي فرد من العائلة ليأخذه إلى طبيبه.',
     AppStrings.onboardingHaveAccount: 'لديك حساب بالفعل؟',
     AppStrings.onboardingPageIndicator: 'الصفحة @current من @total',
+
+    // ---- Navigation (bottom bar tabs) ----
+    AppStrings.navHome: 'الرئيسية',
+    AppStrings.navSchedule: 'الجدول',
+    AppStrings.navInventory: 'المخزون',
+    AppStrings.navSettings: 'الإعدادات',
   };
 }
