@@ -43,6 +43,43 @@ abstract final class AppStrings {
 
   // ---- Auth (shared) ----
   static const String authLogIn = 'auth_log_in';
+  static const String authSignUp = 'auth_sign_up';
+  static const String authEmailLabel = 'auth_email_label';
+  static const String authEmailHint = 'auth_email_hint';
+  static const String authPasswordLabel = 'auth_password_label';
+  static const String authEmailTaken = 'auth_email_taken';
+
+  // ---- Auth: Log In ----
+  static const String authWelcomeBack = 'auth_welcome_back';
+  static const String authLogInSubtitle = 'auth_log_in_subtitle';
+  static const String authForgotPasswordLink = 'auth_forgot_password_link';
+  static const String authNoAccount = 'auth_no_account';
+  static const String authInvalidCredentials = 'auth_invalid_credentials';
+
+  // ---- Auth: Sign Up ----
+  static const String authCreateAccountTitle = 'auth_create_account_title';
+  static const String authCreateAccountSubtitle =
+      'auth_create_account_subtitle';
+  static const String authFullNameLabel = 'auth_full_name_label';
+  static const String authFullNameHint = 'auth_full_name_hint';
+  static const String authConfirmPasswordLabel = 'auth_confirm_password_label';
+  static const String authSecurityQuestionLabel =
+      'auth_security_question_label';
+  static const String authSecurityAnswerLabel = 'auth_security_answer_label';
+  static const String authSecurityAnswerHelper = 'auth_security_answer_helper';
+  static const String authCreateAccountButton = 'auth_create_account_button';
+  static const String authHaveAccount = 'auth_have_account';
+
+  // ---- Security questions (chosen at Sign Up, used to reset a password) ----
+  static const String securityQuestionFirstSchool =
+      'security_question_first_school';
+  static const String securityQuestionBirthCity =
+      'security_question_birth_city';
+  static const String securityQuestionFirstPet = 'security_question_first_pet';
+  static const String securityQuestionFavoriteTeacher =
+      'security_question_favorite_teacher';
+  static const String securityQuestionChildhoodNickname =
+      'security_question_childhood_nickname';
 
   // ---- Onboarding ----
   static const String onboardingFamilyTitle = 'onboarding_family_title';
