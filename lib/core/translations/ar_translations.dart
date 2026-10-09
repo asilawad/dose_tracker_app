@@ -70,6 +70,26 @@ abstract final class ArTranslations {
     AppStrings.authCreateAccountButton: 'إنشاء الحساب',
     AppStrings.authHaveAccount: 'لديك حساب بالفعل؟',
 
+    // ---- Auth: Forgot Password ----
+    AppStrings.forgotPasswordTitle: 'إعادة تعيين كلمة المرور',
+    AppStrings.forgotPasswordEmailSubtitle:
+        'أدخل البريد الإلكتروني لحسابك المحلي على هذا الجهاز.',
+    AppStrings.forgotPasswordContinue: 'متابعة',
+    AppStrings.forgotPasswordStepIndicator: 'الخطوة @current من @total',
+    AppStrings.forgotPasswordStepVerify: 'التحقق من الحساب',
+    AppStrings.forgotPasswordStepNewPassword: 'كلمة مرور جديدة',
+    AppStrings.forgotPasswordNewTitle: 'تعيين كلمة مرور جديدة',
+    AppStrings.forgotPasswordNewSubtitle:
+        'أجب عن سؤال الأمان، ثم اختر كلمة مرور جديدة.',
+    AppStrings.forgotPasswordNewPasswordLabel: 'كلمة المرور الجديدة',
+    AppStrings.forgotPasswordResetButton: 'إعادة تعيين كلمة المرور',
+    AppStrings.forgotPasswordAccountNotFound:
+        'لا يوجد حساب على هذا الجهاز بهذا البريد الإلكتروني',
+    AppStrings.forgotPasswordWrongAnswer: 'الإجابة غير صحيحة',
+    AppStrings.forgotPasswordSuccess:
+        'تم تحديث كلمة المرور. يمكنك تسجيل الدخول الآن.',
+    AppStrings.forgotPasswordRemembered: 'تذكرت كلمة المرور؟',
+
     // ---- Security questions ----
     AppStrings.securityQuestionFirstSchool: 'ما اسم أول مدرسة التحقت بها؟',
     AppStrings.securityQuestionBirthCity: 'في أي مدينة وُلدت؟',
