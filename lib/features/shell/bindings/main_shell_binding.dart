@@ -1,4 +1,5 @@
 import 'package:dose_tracker/features/home/bindings/home_binding.dart';
+import 'package:dose_tracker/features/inventory/bindings/inventory_binding.dart';
 import 'package:dose_tracker/features/schedule/bindings/schedule_binding.dart';
 import 'package:dose_tracker/features/settings/bindings/settings_binding.dart';
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
@@ -16,6 +17,7 @@ class MainShellBinding extends Bindings {
     Get.lazyPut<MainShellController>(MainShellController.new);
     HomeBinding().dependencies();
     ScheduleBinding().dependencies();
+    InventoryBinding().dependencies();
     SettingsBinding().dependencies();
   }
 }
