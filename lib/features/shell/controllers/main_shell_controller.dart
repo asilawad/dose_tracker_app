@@ -1,3 +1,4 @@
+import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:get/get.dart';
 
 /// Holds the selected bottom tab of the main shell.
@@ -13,5 +14,11 @@ class MainShellController extends GetxController {
       return;
     }
     currentIndex.value = index;
+  }
+
+  /// Opens Add Medication on top of the shell. Only the route name is used;
+  /// nothing is passed along.
+  void openAddMedication() {
+    Get.toNamed<void>(AppRoutes.addMedication);
   }
 }
