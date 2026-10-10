@@ -2,6 +2,7 @@ import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
+import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
@@ -48,7 +49,7 @@ class MedicationNameDoseCard extends GetView<AddMedicationController> {
               children: <Widget>[
                 for (final DoseUnit unit in DoseUnit.values)
                   AppChoiceChip(
-                    label: _unitKey(unit).tr,
+                    label: unit.labelKey.tr,
                     selected: unit == controller.doseUnit.value,
                     onTap: () => controller.selectUnit(unit),
                   ),
@@ -58,14 +59,5 @@ class MedicationNameDoseCard extends GetView<AddMedicationController> {
         ],
       ),
     );
-  }
-
-  static String _unitKey(DoseUnit unit) {
-    return switch (unit) {
-      DoseUnit.mg => AppStrings.medsUnitMg,
-      DoseUnit.iu => AppStrings.medsUnitIu,
-      DoseUnit.ml => AppStrings.medsUnitMl,
-      DoseUnit.pills => AppStrings.medsUnitPills,
-    };
   }
 }
