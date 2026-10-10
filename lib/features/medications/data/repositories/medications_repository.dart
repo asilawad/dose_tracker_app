@@ -150,6 +150,7 @@ class MedicationsRepository {
           stockTotal: stock,
           stockRemaining: stock,
           isActive: true,
+          createdAt: DateTime.now(),
           doseTimes: savedTimes.map(_toDoseTime).toList(),
         ),
       );
@@ -195,6 +196,7 @@ class MedicationsRepository {
             stockTotal: row.stockTotal,
             stockRemaining: row.stockRemaining,
             isActive: row.isActive,
+            createdAt: row.createdAt,
             doseTimes: timesByMedication[row.id] ?? const <DoseTime>[],
           ),
         )
