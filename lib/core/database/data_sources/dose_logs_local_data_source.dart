@@ -85,8 +85,31 @@ class DoseLogsLocalDataSource {
     });
   }
 
-  /// Removes a log, which puts the dose back to pending (the "undo" action).
-  /// Returns how many rows were deleted (0 when it is not in this account).
+  Future<DoseLogRow?> findById({required int accountId, required int id}) {
+    return (_db.select(_db.doseLogs)
+          ..where((t) => t.accountId.equals(accountId) & t.id.equals(id)))
+        .getSingleOrNull();
+  }
+
+  /// The log of one dose (medication, day and time), or null while the dose
+  /// is still pending. [scheduledDate] is local midnight of the day.
+  Future<DoseLogRow?> findForDose({
+    required int accountId,
+    required int medicationId,
+    required DateTime scheduledDate,
+    required int scheduledMinuteOfDay,
+  }) {
+    return (_db.select(_db.doseLogs)..where(
+          (t) =>
+              t.accountId.equals(accountId) &
+              t.medicationId.equals(medicationId) &
+              t.scheduledDate.equals(scheduledDate) &
+              t.scheduledMinuteOfDay.equals(scheduledMinuteOfDay),
+        ))
+        .getSingleOrNull();
+  }
+
+  /// Removes a log, which puts the dose back to pending (the "undo" action).  /// Returns how many rows were deleted (0 when it is not in this account).
   Future<int> deleteById({required int accountId, required int id}) {
     return (_db.delete(
       _db.doseLogs,
