@@ -206,4 +206,23 @@ abstract final class AppStrings {
   static const String a11yUndoTaken = 'a11y_undo_taken';
   static const String a11yPreviousWeek = 'a11y_previous_week';
   static const String a11yNextWeek = 'a11y_next_week';
+
+  // ---- Inventory ----
+  static const String inventoryTitle = 'inventory_title';
+  static const String inventorySummaryTitle = 'inventory_summary_title';
+  static const String inventorySummaryNote = 'inventory_summary_note';
+  static const String inventorySectionTitle = 'inventory_section_title';
+  static const String inventoryLeft = 'inventory_left';
+  static const String inventoryTotal = 'inventory_total';
+  static const String inventoryNotTracked = 'inventory_not_tracked';
+  static const String inventoryPaused = 'inventory_paused';
+  static const String inventoryLowStock = 'inventory_low_stock';
+  static const String inventoryRefillTitle = 'inventory_refill_title';
+  static const String inventoryRefillMessage = 'inventory_refill_message';
+  static const String inventoryRefillShowAll = 'inventory_refill_show_all';
+  static const String inventoryEmptyTitle = 'inventory_empty_title';
+  static const String inventoryEmptyMessage = 'inventory_empty_message';
+  static const String inventoryRestockTitle = 'inventory_restock_title';
+  static const String inventoryRestockLabel = 'inventory_restock_label';
+  static const String inventoryRestocked = 'inventory_restocked';
 }
