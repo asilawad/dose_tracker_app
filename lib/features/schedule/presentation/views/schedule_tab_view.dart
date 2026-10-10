@@ -122,7 +122,7 @@ class _ScheduleHeader extends StatelessWidget {
         IconButton(
           tooltip: AppStrings.a11yPreviousWeek.tr,
           onPressed: onPrevious,
-          icon: const Icon(Icons.chevron_left, textDirection: null),
+          icon: const Icon(Icons.chevron_left),
         ),
         Expanded(
           child: Column(
