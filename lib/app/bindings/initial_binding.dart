@@ -7,6 +7,7 @@ import 'package:dose_tracker/core/database/data_sources/profiles_local_data_sour
 import 'package:dose_tracker/core/services/password_hasher.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
+import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:get/get.dart';
 
@@ -34,14 +35,16 @@ class InitialBinding extends Bindings {
       ProfilesLocalDataSource(database),
       permanent: true,
     );
-    Get.put<MedicationsLocalDataSource>(
-      MedicationsLocalDataSource(database),
-      permanent: true,
-    );
-    Get.put<DoseTimesLocalDataSource>(
-      DoseTimesLocalDataSource(database),
-      permanent: true,
-    );
+    final MedicationsLocalDataSource medications =
+        Get.put<MedicationsLocalDataSource>(
+          MedicationsLocalDataSource(database),
+          permanent: true,
+        );
+    final DoseTimesLocalDataSource doseTimes =
+        Get.put<DoseTimesLocalDataSource>(
+          DoseTimesLocalDataSource(database),
+          permanent: true,
+        );
     Get.put<DoseLogsLocalDataSource>(
       DoseLogsLocalDataSource(database),
       permanent: true,
@@ -62,6 +65,17 @@ class InitialBinding extends Bindings {
 
     Get.put<ProfilesRepository>(
       ProfilesRepository(
+        profiles: profiles,
+        session: Get.find<SessionService>(),
+      ),
+      permanent: true,
+    );
+
+    Get.put<MedicationsRepository>(
+      MedicationsRepository(
+        database: database,
+        medications: medications,
+        doseTimes: doseTimes,
         profiles: profiles,
         session: Get.find<SessionService>(),
       ),
