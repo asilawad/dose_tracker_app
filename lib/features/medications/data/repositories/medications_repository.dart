@@ -157,6 +157,62 @@ class MedicationsRepository {
     });
   }
 
+  /// Records a refill: [newStock] is the count on hand after refilling. It
+  /// becomes the remaining stock, and the stock total grows to it when it is
+  /// larger than the old total.
+  Future<RestockResult> restock({
+    required int medicationId,
+    required int newStock,
+  }) async {
+    final int accountId = _session.requireActiveAccountId();
+
+    if (newStock <= 0) {
+      return const RestockInvalidAmount();
+    }
+    final MedicationRow? row = await _medications.findById(
+      accountId: accountId,
+      id: medicationId,
+    );
+    if (row == null) {
+      return const RestockNotFound();
+    }
+    if (!row.trackInventory) {
+      return const RestockNotTracked();
+    }
+
+    final int oldTotal = row.stockTotal ?? 0;
+    await _medications.updateStock(
+      accountId: accountId,
+      id: medicationId,
+      stockTotal: newStock > oldTotal ? newStock : oldTotal,
+      stockRemaining: newStock,
+    );
+    return const RestockSuccess();
+  }
+
+  /// Pauses ([isActive] false) or resumes a medication. A paused medication
+  /// has no doses in the schedule; its history stays.
+  Future<SetActiveResult> setActive({
+    required int medicationId,
+    required bool isActive,
+  }) async {
+    final int accountId = _session.requireActiveAccountId();
+
+    final MedicationRow? row = await _medications.findById(
+      accountId: accountId,
+      id: medicationId,
+    );
+    if (row == null) {
+      return const SetActiveNotFound();
+    }
+    await _medications.setActive(
+      accountId: accountId,
+      id: medicationId,
+      isActive: isActive,
+    );
+    return const SetActiveSuccess();
+  }
+
   bool _isValidSchedule(List<DoseTimeInput> times) {
     if (times.isEmpty) {
       return false;
