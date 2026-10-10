@@ -196,5 +196,25 @@ abstract final class EnTranslations {
     AppStrings.a11yFrequencyDecrease: 'Decrease daily frequency',
     AppStrings.a11yEditTime: 'Edit dose time',
     AppStrings.a11yRemoveTime: 'Remove dose time',
+
+    // ---- Schedule ----
+    AppStrings.scheduleToday: 'Today',
+    AppStrings.scheduleEmptyTitle: 'No doses on this day',
+    AppStrings.scheduleEmptyMessage:
+        'Add a medication and its doses will show up here.',
+    AppStrings.scheduleFutureNote:
+        "Doses of future days can't be recorded yet.",
+    AppStrings.scheduleStatePending: 'Pending',
+    AppStrings.scheduleStateTaken: 'Taken',
+    AppStrings.scheduleStateTakenLate: 'Taken late',
+    AppStrings.scheduleStateSkipped: 'Skipped',
+    AppStrings.scheduleStateMissed: 'Missed',
+    AppStrings.scheduleSkipTitle: 'Skip this dose?',
+    AppStrings.scheduleSkipReasonLabel: 'Reason (optional)',
+    AppStrings.scheduleSkipReasonHint: 'For example: felt unwell',
+    AppStrings.a11yMarkTaken: 'Mark dose as taken',
+    AppStrings.a11yUndoTaken: 'Undo taken dose',
+    AppStrings.a11yPreviousWeek: 'Previous week',
+    AppStrings.a11yNextWeek: 'Next week',
   };
 }
