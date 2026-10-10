@@ -14,4 +14,11 @@ abstract final class StorageKeys {
   /// True after the user has finished or skipped onboarding, so it is shown
   /// only once per device.
   static const String onboardingCompleted = 'onboarding_completed';
+
+  /// Whether dose reminders are on. Absent means on.
+  static const String remindersEnabled = 'reminders_enabled';
+
+  /// Minutes between repeated reminders for a dose that is not recorded yet;
+  /// 0 means no repeats. Absent means the default (one hour).
+  static const String reminderEscalationMinutes = 'reminder_escalation_minutes';
 }
