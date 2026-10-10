@@ -29,3 +29,41 @@ final class AddMedicationInvalidSchedule extends AddMedicationResult {
 final class AddMedicationInvalidStock extends AddMedicationResult {
   const AddMedicationInvalidStock();
 }
+
+/// Typed outcomes of recording a refill of a medication's stock.
+sealed class RestockResult {
+  const RestockResult();
+}
+
+final class RestockSuccess extends RestockResult {
+  const RestockSuccess();
+}
+
+/// The medication is not in the logged-in account.
+final class RestockNotFound extends RestockResult {
+  const RestockNotFound();
+}
+
+/// The medication does not track stock, so there is nothing to refill.
+final class RestockNotTracked extends RestockResult {
+  const RestockNotTracked();
+}
+
+/// The new stock is not above zero.
+final class RestockInvalidAmount extends RestockResult {
+  const RestockInvalidAmount();
+}
+
+/// Typed outcomes of pausing or resuming a medication.
+sealed class SetActiveResult {
+  const SetActiveResult();
+}
+
+final class SetActiveSuccess extends SetActiveResult {
+  const SetActiveSuccess();
+}
+
+/// The medication is not in the logged-in account.
+final class SetActiveNotFound extends SetActiveResult {
+  const SetActiveNotFound();
+}
