@@ -2,6 +2,7 @@ import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
+import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class MedicationMealCard extends GetView<AddMedicationController> {
               children: <Widget>[
                 for (final MealInstruction meal in MealInstruction.values)
                   AppChoiceChip(
-                    label: _mealKey(meal).tr,
+                    label: meal.labelKey.tr,
                     selected: meal == controller.mealInstruction.value,
                     showCheck: true,
                     onTap: () => controller.selectMeal(meal),
@@ -44,13 +45,5 @@ class MedicationMealCard extends GetView<AddMedicationController> {
         ],
       ),
     );
-  }
-
-  static String _mealKey(MealInstruction meal) {
-    return switch (meal) {
-      MealInstruction.beforeMeal => AppStrings.medsMealBefore,
-      MealInstruction.withMeal => AppStrings.medsMealWith,
-      MealInstruction.afterMeal => AppStrings.medsMealAfter,
-    };
   }
 }
