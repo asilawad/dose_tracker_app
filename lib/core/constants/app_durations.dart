@@ -30,6 +30,8 @@ abstract final class AppDurations {
   static const Duration snackbarVisible = Duration(seconds: 3);
   static const Duration inputDebounce = Duration(milliseconds: 300);
 
+  /// How often the schedule re-checks which pending doses became missed.
+  static const Duration scheduleRefresh = Duration(minutes: 1);
   // ---- Curves ----
   static const Curve standardCurve = Curves.easeOutCubic;
   static const Curve emphasizedCurve = Curves.easeInOutCubic;
