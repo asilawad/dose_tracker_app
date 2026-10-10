@@ -216,5 +216,25 @@ abstract final class EnTranslations {
     AppStrings.a11yUndoTaken: 'Undo taken dose',
     AppStrings.a11yPreviousWeek: 'Previous week',
     AppStrings.a11yNextWeek: 'Next week',
+
+    // ---- Inventory ----
+    AppStrings.inventoryTitle: 'Medicine Cabinet',
+    AppStrings.inventorySummaryTitle: 'Total stock',
+    AppStrings.inventorySummaryNote: 'Across all tracked medications',
+    AppStrings.inventorySectionTitle: 'Medications & inventory',
+    AppStrings.inventoryLeft: '@count left',
+    AppStrings.inventoryTotal: 'Total: @count',
+    AppStrings.inventoryNotTracked: 'Stock tracking is off',
+    AppStrings.inventoryPaused: 'Paused',
+    AppStrings.inventoryLowStock: 'Low stock',
+    AppStrings.inventoryRefillTitle: 'Refill reminder',
+    AppStrings.inventoryRefillMessage: 'Medications running low: @count',
+    AppStrings.inventoryRefillShowAll: 'Tap to show all medications',
+    AppStrings.inventoryEmptyTitle: 'No medications yet',
+    AppStrings.inventoryEmptyMessage:
+        'Add a medication to follow its stock here.',
+    AppStrings.inventoryRestockTitle: 'Refill stock',
+    AppStrings.inventoryRestockLabel: 'Count after refill',
+    AppStrings.inventoryRestocked: 'Stock updated',
   };
 }
