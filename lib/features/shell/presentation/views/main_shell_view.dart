@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/home/presentation/views/home_tab_view.dart';
+import 'package:dose_tracker/features/schedule/presentation/views/schedule_tab_view.dart';
 import 'package:dose_tracker/features/settings/presentation/views/settings_tab_view.dart';
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_nav_bar.dart';
@@ -13,8 +14,8 @@ import 'package:get/get.dart';
 /// each keeps its state while the bottom bar switches between them.
 ///
 /// The list below is the single source for both the bar and the pages, so
-/// they can never get out of sync. Home and Settings exist so far; Schedule
-/// and Inventory are added to the list in the steps that create them. The
+/// they can never get out of sync. Home, Schedule and Settings exist so far;
+/// Inventory is added to the list in the step that creates it. The
 /// add-medication button shows only on tabs marked `showsAddMedication`
 /// (Home, Schedule and Inventory). The controller comes from
 /// `MainShellBinding`.
@@ -72,6 +73,15 @@ const List<_ShellTab> _tabs = <_ShellTab>[
       labelKey: AppStrings.navHome,
     ),
     page: HomeTabView(),
+    showsAddMedication: true,
+  ),
+  _ShellTab(
+    item: BottomNavItem(
+      icon: Icons.calendar_today_outlined,
+      activeIcon: Icons.calendar_today_rounded,
+      labelKey: AppStrings.navSchedule,
+    ),
+    page: ScheduleTabView(),
     showsAddMedication: true,
   ),
   _ShellTab(
