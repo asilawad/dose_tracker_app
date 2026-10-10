@@ -9,6 +9,7 @@ import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
+import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:get/get.dart';
 
 /// App-wide dependencies, created once when the app starts and kept alive
@@ -45,7 +46,7 @@ class InitialBinding extends Bindings {
           DoseTimesLocalDataSource(database),
           permanent: true,
         );
-    Get.put<DoseLogsLocalDataSource>(
+    final DoseLogsLocalDataSource doseLogs = Get.put<DoseLogsLocalDataSource>(
       DoseLogsLocalDataSource(database),
       permanent: true,
     );
@@ -63,20 +64,33 @@ class InitialBinding extends Bindings {
       permanent: true,
     );
 
-    Get.put<ProfilesRepository>(
+    final ProfilesRepository profilesRepository = Get.put<ProfilesRepository>(
       ProfilesRepository(
         profiles: profiles,
         session: Get.find<SessionService>(),
       ),
       permanent: true,
     );
+    final MedicationsRepository medicationsRepository =
+        Get.put<MedicationsRepository>(
+          MedicationsRepository(
+            database: database,
+            medications: medications,
+            doseTimes: doseTimes,
+            profiles: profiles,
+            session: Get.find<SessionService>(),
+          ),
+          permanent: true,
+        );
 
-    Get.put<MedicationsRepository>(
-      MedicationsRepository(
+    Get.put<DoseLogsRepository>(
+      DoseLogsRepository(
         database: database,
+        doseLogs: doseLogs,
         medications: medications,
         doseTimes: doseTimes,
-        profiles: profiles,
+        medicationsRepository: medicationsRepository,
+        profilesRepository: profilesRepository,
         session: Get.find<SessionService>(),
       ),
       permanent: true,
