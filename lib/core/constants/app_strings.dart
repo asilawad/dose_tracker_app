@@ -147,4 +147,45 @@ abstract final class AppStrings {
   static const String profilesColorLabel = 'profiles_color_label';
   static const String profilesNameLabel = 'profiles_name_label';
   static const String profilesNameHint = 'profiles_name_hint';
+
+  // ---- Medications: Add Medication ----
+  static const String medsAddTitle = 'meds_add_title';
+  static const String medsRecipientLabel = 'meds_recipient_label';
+  static const String medsRecipientChange = 'meds_recipient_change';
+  static const String medsRecipientSheetTitle = 'meds_recipient_sheet_title';
+  static const String medsNoProfiles = 'meds_no_profiles';
+  static const String medsNameLabel = 'meds_name_label';
+  static const String medsNameHint = 'meds_name_hint';
+  static const String medsDoseLabel = 'meds_dose_label';
+  static const String medsDoseHint = 'meds_dose_hint';
+  static const String medsUnitMg = 'meds_unit_mg';
+  static const String medsUnitIu = 'meds_unit_iu';
+  static const String medsUnitMl = 'meds_unit_ml';
+  static const String medsUnitPills = 'meds_unit_pills';
+  static const String medsFrequencyTitle = 'meds_frequency_title';
+  static const String medsFrequencySubtitle = 'meds_frequency_subtitle';
+  static const String medsFrequencyUnit = 'meds_frequency_unit';
+  static const String medsScheduleTitle = 'meds_schedule_title';
+  static const String medsAddTime = 'meds_add_time';
+  static const String medsEditTimeTitle = 'meds_edit_time_title';
+  static const String medsQuantityLabel = 'meds_quantity_label';
+  static const String medsQuantitySummary = 'meds_quantity_summary';
+  static const String medsMealTitle = 'meds_meal_title';
+  static const String medsMealBefore = 'meds_meal_before';
+  static const String medsMealWith = 'meds_meal_with';
+  static const String medsMealAfter = 'meds_meal_after';
+  static const String medsInventoryTitle = 'meds_inventory_title';
+  static const String medsInventorySubtitle = 'meds_inventory_subtitle';
+  static const String medsStockLabel = 'meds_stock_label';
+  static const String medsStockNote = 'meds_stock_note';
+  static const String medsSave = 'meds_save';
+  static const String medsSaved = 'meds_saved';
+  static const String medsErrorProfileNotFound = 'meds_error_profile_not_found';
+  static const String medsErrorInvalidSchedule = 'meds_error_invalid_schedule';
+  static const String medsErrorInvalidStock = 'meds_error_invalid_stock';
+  static const String validationNumberInvalid = 'validation_number_invalid';
+  static const String a11yFrequencyIncrease = 'a11y_frequency_increase';
+  static const String a11yFrequencyDecrease = 'a11y_frequency_decrease';
+  static const String a11yEditTime = 'a11y_edit_time';
+  static const String a11yRemoveTime = 'a11y_remove_time';
 }
