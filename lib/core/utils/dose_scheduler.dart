@@ -11,6 +11,12 @@ abstract final class DoseScheduler {
   /// 08:00, the first dose of the day when times are auto-distributed.
   static const int firstDoseMinute = 480;
 
+  static const int defaultFrequency = 1;
+  static const double defaultQuantity = 1;
+
+  /// Gap used to place a time the user adds by hand.
+  static const int addedTimeStepMinutes = 60;
+
   /// Returns [frequency] times (clamped to the allowed range), earliest first.
   static List<int> distribute(int frequency) {
     final int count = frequency
@@ -22,5 +28,26 @@ abstract final class DoseScheduler {
         (firstDoseMinute + index * step) % minutesPerDay,
     ]..sort();
     return minutes;
+  }
+
+  /// A free time for a dose the user adds by hand: [addedTimeStepMinutes]
+  /// steps after the latest [taken] time, skipping any time already used.
+  static int nextFreeMinute(Iterable<int> taken) {
+    final Set<int> used = taken.toSet();
+    if (used.isEmpty) {
+      return firstDoseMinute;
+    }
+    final int latest = used.reduce((int a, int b) => a > b ? a : b);
+    for (
+      int offset = addedTimeStepMinutes;
+      offset <= minutesPerDay;
+      offset += addedTimeStepMinutes
+    ) {
+      final int candidate = (latest + offset) % minutesPerDay;
+      if (!used.contains(candidate)) {
+        return candidate;
+      }
+    }
+    return firstDoseMinute;
   }
 }
