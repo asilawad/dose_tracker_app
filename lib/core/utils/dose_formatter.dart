@@ -16,6 +16,11 @@ abstract final class DoseFormatter {
     return DateFormatter.time(DateTime(0).add(Duration(minutes: minutes)));
   }
 
+  /// A part from 0 to 1 as a percentage, for example 0.65 -> 65%.
+  static String percent(double fraction) {
+    return NumberFormat.percentPattern(_locale).format(fraction);
+  }
+
   /// An amount per dose, for example 1.0 -> 1 and 0.5 -> 0.5.
   static String quantity(double value) {
     return NumberFormat.decimalPattern(_locale).format(value);
