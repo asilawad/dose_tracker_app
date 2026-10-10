@@ -209,5 +209,24 @@ abstract final class ArTranslations {
     AppStrings.a11yUndoTaken: 'التراجع عن الجرعة المأخوذة',
     AppStrings.a11yPreviousWeek: 'الأسبوع السابق',
     AppStrings.a11yNextWeek: 'الأسبوع التالي',
+
+    // ---- Inventory ----
+    AppStrings.inventoryTitle: 'خزانة الأدوية',
+    AppStrings.inventorySummaryTitle: 'إجمالي المخزون',
+    AppStrings.inventorySummaryNote: 'في كل الأدوية المُتتبَّعة',
+    AppStrings.inventorySectionTitle: 'الأدوية والمخزون',
+    AppStrings.inventoryLeft: 'متبقٍ @count',
+    AppStrings.inventoryTotal: 'الإجمالي: @count',
+    AppStrings.inventoryNotTracked: 'تتبّع المخزون متوقف',
+    AppStrings.inventoryPaused: 'موقوف',
+    AppStrings.inventoryLowStock: 'مخزون منخفض',
+    AppStrings.inventoryRefillTitle: 'تذكير بإعادة التعبئة',
+    AppStrings.inventoryRefillMessage: 'أدوية قاربت على النفاد: @count',
+    AppStrings.inventoryRefillShowAll: 'المس لعرض كل الأدوية',
+    AppStrings.inventoryEmptyTitle: 'لا توجد أدوية بعد',
+    AppStrings.inventoryEmptyMessage: 'أضف دواءً لتتابع مخزونه هنا.',
+    AppStrings.inventoryRestockTitle: 'تعبئة المخزون',
+    AppStrings.inventoryRestockLabel: 'الكمية بعد التعبئة',
+    AppStrings.inventoryRestocked: 'تم تحديث المخزون',
   };
 }
