@@ -191,5 +191,23 @@ abstract final class ArTranslations {
     AppStrings.a11yFrequencyDecrease: 'تقليل التكرار اليومي',
     AppStrings.a11yEditTime: 'تعديل موعد الجرعة',
     AppStrings.a11yRemoveTime: 'حذف موعد الجرعة',
+
+    // ---- Schedule ----
+    AppStrings.scheduleToday: 'اليوم',
+    AppStrings.scheduleEmptyTitle: 'لا توجد جرعات في هذا اليوم',
+    AppStrings.scheduleEmptyMessage: 'أضف دواءً وستظهر جرعاته هنا.',
+    AppStrings.scheduleFutureNote: 'لا يمكن تسجيل جرعات الأيام القادمة بعد.',
+    AppStrings.scheduleStatePending: 'قيد الانتظار',
+    AppStrings.scheduleStateTaken: 'تم الأخذ',
+    AppStrings.scheduleStateTakenLate: 'أُخذت متأخرة',
+    AppStrings.scheduleStateSkipped: 'تم التخطي',
+    AppStrings.scheduleStateMissed: 'فائتة',
+    AppStrings.scheduleSkipTitle: 'تخطي هذه الجرعة؟',
+    AppStrings.scheduleSkipReasonLabel: 'السبب (اختياري)',
+    AppStrings.scheduleSkipReasonHint: 'مثال: شعرت بتعب',
+    AppStrings.a11yMarkTaken: 'تسجيل الجرعة كمأخوذة',
+    AppStrings.a11yUndoTaken: 'التراجع عن الجرعة المأخوذة',
+    AppStrings.a11yPreviousWeek: 'الأسبوع السابق',
+    AppStrings.a11yNextWeek: 'الأسبوع التالي',
   };
 }
