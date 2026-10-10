@@ -55,9 +55,11 @@ class _ProfilesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.screenPaddingHorizontal,
-        vertical: AppSizes.space2xl,
+      padding: const EdgeInsetsDirectional.fromSTEB(
+        AppSizes.screenPaddingHorizontal,
+        AppSizes.space2xl,
+        AppSizes.screenPaddingHorizontal,
+        AppSizes.space2xl + AppSizes.bottomOverlayClearance,
       ),
       children: <Widget>[
         Text(
