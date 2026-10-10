@@ -21,6 +21,7 @@ class Medication {
     required this.stockTotal,
     required this.stockRemaining,
     required this.isActive,
+    required this.createdAt,
     required this.doseTimes,
   });
 
@@ -34,8 +35,11 @@ class Medication {
   final int? stockTotal;
   final int? stockRemaining;
   final bool isActive;
-  final List<DoseTime> doseTimes;
 
+  /// When the medication was added. Its doses appear in the schedule only
+  /// from this day on, so older days never show doses that did not exist.
+  final DateTime createdAt;
+  final List<DoseTime> doseTimes;
   @override
   bool operator ==(Object other) {
     return other is Medication &&
@@ -49,6 +53,7 @@ class Medication {
         other.stockTotal == stockTotal &&
         other.stockRemaining == stockRemaining &&
         other.isActive == isActive &&
+        other.createdAt == createdAt &&
         listEquals(other.doseTimes, doseTimes);
   }
 
@@ -64,6 +69,7 @@ class Medication {
     stockTotal,
     stockRemaining,
     isActive,
+    createdAt,
     Object.hashAll(doseTimes),
   );
 }
