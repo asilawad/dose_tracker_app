@@ -7,6 +7,7 @@ import 'package:dose_tracker/core/database/data_sources/profiles_local_data_sour
 import 'package:dose_tracker/core/services/password_hasher.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
+import 'package:dose_tracker/features/inventory/data/repositories/inventory_repository.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
@@ -92,6 +93,14 @@ class InitialBinding extends Bindings {
         medicationsRepository: medicationsRepository,
         profilesRepository: profilesRepository,
         session: Get.find<SessionService>(),
+      ),
+      permanent: true,
+    );
+
+    Get.put<InventoryRepository>(
+      InventoryRepository(
+        medications: medicationsRepository,
+        profiles: profilesRepository,
       ),
       permanent: true,
     );
