@@ -93,6 +93,7 @@ abstract final class DosePlanner {
                 : _derivedState(date, deadlineMinute, now),
             logId: log?.id,
             takenAt: log?.takenAt,
+            skipReason: log?.skipReason,
           ),
         );
       }
