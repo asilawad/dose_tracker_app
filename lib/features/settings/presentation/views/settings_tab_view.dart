@@ -59,6 +59,12 @@ class SettingsTabView extends GetView<SettingsController> {
           ),
         ),
         const SizedBox(height: AppSizes.gutter),
+        SettingsRow(
+          icon: Icons.calendar_month_outlined,
+          title: AppStrings.calendarSettingsRowTitle.tr,
+          onTap: controller.openCalendar,
+        ),
+        const SizedBox(height: AppSizes.gutter),
         Obx(
           () => SettingsRow(
             icon: Icons.language_rounded,
