@@ -225,4 +225,29 @@ abstract final class AppStrings {
   static const String inventoryRestockTitle = 'inventory_restock_title';
   static const String inventoryRestockLabel = 'inventory_restock_label';
   static const String inventoryRestocked = 'inventory_restocked';
+
+  // ---- Notifications ----
+  static const String notifChannelName = 'notif_channel_name';
+  static const String notifChannelDescription = 'notif_channel_description';
+  static const String notifDoseTitle = 'notif_dose_title';
+  static const String notifDoseBody = 'notif_dose_body';
+  static const String notifRepeatBody = 'notif_repeat_body';
+  static const String notifLowStockTitle = 'notif_low_stock_title';
+  static const String notifLowStockBody = 'notif_low_stock_body';
+  static const String notifSettingsRowTitle = 'notif_settings_row_title';
+  static const String notifSettingsRowSubtitle = 'notif_settings_row_subtitle';
+  static const String notifStateOn = 'notif_state_on';
+  static const String notifStateOff = 'notif_state_off';
+  static const String notifSheetTitle = 'notif_sheet_title';
+  static const String notifEnableLabel = 'notif_enable_label';
+  static const String notifEnableSubtitle = 'notif_enable_subtitle';
+  static const String notifRepeatTitle = 'notif_repeat_title';
+  static const String notifRepeatOff = 'notif_repeat_off';
+  static const String notifRepeatThirtyMinutes = 'notif_repeat_thirty_minutes';
+  static const String notifRepeatHour = 'notif_repeat_hour';
+  static const String notifRepeatTwoHours = 'notif_repeat_two_hours';
+  static const String notifPermissionTitle = 'notif_permission_title';
+  static const String notifPermissionGranted = 'notif_permission_granted';
+  static const String notifPermissionDenied = 'notif_permission_denied';
+  static const String notifPermissionAllow = 'notif_permission_allow';
 }
