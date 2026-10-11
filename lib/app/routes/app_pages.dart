@@ -16,6 +16,8 @@ import 'package:dose_tracker/features/profiles/bindings/add_profile_binding.dart
 import 'package:dose_tracker/features/profiles/bindings/edit_profile_binding.dart';
 import 'package:dose_tracker/features/profiles/presentation/views/add_profile_view.dart';
 import 'package:dose_tracker/features/profiles/presentation/views/edit_profile_view.dart';
+import 'package:dose_tracker/features/reports/bindings/report_binding.dart';
+import 'package:dose_tracker/features/reports/presentation/views/report_view.dart';
 import 'package:dose_tracker/features/shell/bindings/main_shell_binding.dart';
 import 'package:dose_tracker/features/shell/presentation/views/main_shell_view.dart';
 import 'package:dose_tracker/features/splash/bindings/splash_binding.dart';
@@ -86,6 +88,12 @@ abstract final class AppPages {
       name: AppRoutes.calendar,
       page: () => const CalendarView(),
       binding: CalendarBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.report,
+      page: () => const ReportView(),
+      binding: ReportBinding(),
       transitionDuration: AppDurations.pageTransition,
     ),
   ];
