@@ -28,6 +28,9 @@ class EditProfileController extends GetxController {
   final RxBool isLoadingProfile = true.obs;
   final RxBool isLoading = false.obs;
 
+  /// The name as saved, for messages that must not change while the user
+  /// types a new name.
+  final RxString savedName = ''.obs;
   @override
   void onInit() {
     super.onInit();
@@ -105,6 +108,7 @@ class EditProfileController extends GetxController {
       Get.back<void>();
       return;
     }
+    savedName.value = profile.name;
     nameController.text = profile.name;
     selectedColor.value = profile.personaColor;
     isLoadingProfile.value = false;
