@@ -49,6 +49,7 @@ class AppBottomNavBar extends StatelessWidget {
         child: SafeArea(
           top: false,
           child: Center(
+            heightFactor: 1,
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: AppSizes.contentMaxWidth,
