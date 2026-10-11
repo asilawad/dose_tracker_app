@@ -96,3 +96,5 @@ flutter:
           weight: 500
         - asset: assets/fonts/SpaceGrotesk-Bold.ttf
           weight: 700
+dependency_overrides:
+  image: 4.5.4
