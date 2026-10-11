@@ -80,6 +80,7 @@ class ScheduleTabView extends GetView<ScheduleController> {
                   onPrevious: () => controller.shiftWeeks(-1),
                   onNext: () => controller.shiftWeeks(1),
                   onToday: controller.goToToday,
+                  onCalendar: controller.openCalendar,
                 ),
                 const SizedBox(height: AppSizes.spaceLg),
                 WeekDayStrip(
@@ -105,6 +106,7 @@ class _ScheduleHeader extends StatelessWidget {
     required this.onPrevious,
     required this.onNext,
     required this.onToday,
+    required this.onCalendar,
   });
 
   final DateTime selected;
@@ -112,7 +114,7 @@ class _ScheduleHeader extends StatelessWidget {
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final VoidCallback onToday;
-
+  final VoidCallback onCalendar;
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -153,6 +155,11 @@ class _ScheduleHeader extends StatelessWidget {
           tooltip: AppStrings.a11yNextWeek.tr,
           onPressed: onNext,
           icon: const Icon(Icons.chevron_right),
+        ),
+        IconButton(
+          tooltip: AppStrings.a11yOpenCalendar.tr,
+          onPressed: onCalendar,
+          icon: const Icon(Icons.calendar_month_outlined),
         ),
       ],
     );
