@@ -226,7 +226,32 @@ abstract final class ArTranslations {
     AppStrings.inventoryEmptyTitle: 'لا توجد أدوية بعد',
     AppStrings.inventoryEmptyMessage: 'أضف دواءً لتتابع مخزونه هنا.',
     AppStrings.inventoryRestockTitle: 'تعبئة المخزون',
-    AppStrings.inventoryRestockLabel: 'الكمية بعد التعبئة',
     AppStrings.inventoryRestocked: 'تم تحديث المخزون',
+
+    // ---- Notifications ----
+    AppStrings.notifChannelName: 'تذكيرات الجرعات',
+    AppStrings.notifChannelDescription:
+        'تذكيرات بمواعيد الأدوية وبنفاد المخزون.',
+    AppStrings.notifDoseTitle: 'حان وقت جرعتك',
+    AppStrings.notifDoseBody: '@medication لـ @profile',
+    AppStrings.notifRepeatBody: 'لم تُسجَّل بعد: @medication لـ @profile',
+    AppStrings.notifLowStockTitle: 'المخزون يوشك على النفاد',
+    AppStrings.notifLowStockBody: '@medication لـ @profile: متبقٍ @count',
+    AppStrings.notifSettingsRowTitle: 'الإشعارات',
+    AppStrings.notifSettingsRowSubtitle: 'تذكيرات الجرعات وتكرارها',
+    AppStrings.notifStateOn: 'مفعّلة',
+    AppStrings.notifStateOff: 'متوقفة',
+    AppStrings.notifSheetTitle: 'الإشعارات',
+    AppStrings.notifEnableLabel: 'تذكيرات الجرعات',
+    AppStrings.notifEnableSubtitle: 'تصلك إشعارات عند موعد كل جرعة',
+    AppStrings.notifRepeatTitle: 'التكرار إذا لم تُسجَّل الجرعة',
+    AppStrings.notifRepeatOff: 'متوقف',
+    AppStrings.notifRepeatThirtyMinutes: 'كل 30 دقيقة',
+    AppStrings.notifRepeatHour: 'كل ساعة',
+    AppStrings.notifRepeatTwoHours: 'كل ساعتين',
+    AppStrings.notifPermissionTitle: 'الإذن',
+    AppStrings.notifPermissionGranted: 'الإشعارات مسموحة',
+    AppStrings.notifPermissionDenied: 'الإشعارات غير مسموحة',
+    AppStrings.notifPermissionAllow: 'السماح بالإشعارات',
   };
 }
