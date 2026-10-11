@@ -53,8 +53,22 @@ class DoseLogsRepository {
   /// medication, a profile or a log changes, and every
   /// [AppDurations.scheduleRefresh] so a pending dose turns missed on time.
   Stream<List<ScheduledDose>> watchDay(DateTime date) {
+    return watchDays(start: date, days: 1);
+  }
+
+  /// Same as [watchDay] for [days] days in a row from [start], in one list
+  /// ordered by day and then time.
+  Stream<List<ScheduledDose>> watchDays({
+    required DateTime start,
+    required int days,
+  }) {
     final int accountId = _session.requireActiveAccountId();
-    final DateTime day = DosePlanner.dayStart(date);
+    final DateTime firstDay = DosePlanner.dayStart(start);
+    final DateTime lastDay = DateTime(
+      firstDay.year,
+      firstDay.month,
+      firstDay.day + days - 1,
+    );
 
     late final StreamController<List<ScheduledDose>> controller;
     final List<StreamSubscription<Object?>> subscriptions =
@@ -72,15 +86,27 @@ class DoseLogsRepository {
           currentLogs == null) {
         return;
       }
-      controller.add(
-        DosePlanner.build(
-          date: day,
-          now: DateTime.now(),
-          medications: currentMedications,
-          profiles: currentProfiles,
-          logs: currentLogs,
-        ),
-      );
+      final DateTime now = DateTime.now();
+      final List<ScheduledDose> doses = <ScheduledDose>[];
+      for (int offset = 0; offset < days; offset++) {
+        final DateTime day = DateTime(
+          firstDay.year,
+          firstDay.month,
+          firstDay.day + offset,
+        );
+        doses.addAll(
+          DosePlanner.build(
+            date: day,
+            now: now,
+            medications: currentMedications,
+            profiles: currentProfiles,
+            logs: currentLogs
+                .where((DoseLogRow log) => _sameDay(log.scheduledDate, day))
+                .toList(),
+          ),
+        );
+      }
+      controller.add(doses);
     }
 
     controller = StreamController<List<ScheduledDose>>(
@@ -97,7 +123,11 @@ class DoseLogsRepository {
             emit();
           }, onError: controller.addError),
           _doseLogs
-              .watchByDateRange(accountId: accountId, from: day, to: day)
+              .watchByDateRange(
+                accountId: accountId,
+                from: firstDay,
+                to: lastDay,
+              )
               .listen((List<DoseLogRow> value) {
                 logs = value;
                 emit();
@@ -279,6 +309,10 @@ class DoseLogsRepository {
       stockTotal: medication.stockTotal,
       stockRemaining: updated,
     );
+  }
+
+  bool _sameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 
   bool _wasTaken(DoseStatus status) {
