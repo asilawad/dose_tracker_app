@@ -250,4 +250,13 @@ abstract final class AppStrings {
   static const String notifPermissionGranted = 'notif_permission_granted';
   static const String notifPermissionDenied = 'notif_permission_denied';
   static const String notifPermissionAllow = 'notif_permission_allow';
+
+  // ---- Profiles: Edit and delete ----
+  static const String profilesEditTitle = 'profiles_edit_title';
+  static const String profilesSaved = 'profiles_saved';
+  static const String profilesNotFound = 'profiles_not_found';
+  static const String profilesDeleteAction = 'profiles_delete_action';
+  static const String profilesDeleteTitle = 'profiles_delete_title';
+  static const String profilesDeleteMessage = 'profiles_delete_message';
+  static const String profilesDeleted = 'profiles_deleted';
 }
