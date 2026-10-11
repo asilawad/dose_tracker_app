@@ -26,6 +26,7 @@ class ScheduledDose {
     required this.state,
     required this.logId,
     required this.takenAt,
+    required this.skipReason,
   });
 
   final int medicationId;
@@ -42,6 +43,9 @@ class ScheduledDose {
   final DoseState state;
   final int? logId;
   final DateTime? takenAt;
+
+  /// The reason the user gave when skipping the dose, if any.
+  final String? skipReason;
 
   /// Identifies this dose in a list: a medication has one dose per time.
   String get key => '$medicationId-$minuteOfDay';
@@ -62,7 +66,8 @@ class ScheduledDose {
         other.quantity == quantity &&
         other.state == state &&
         other.logId == logId &&
-        other.takenAt == takenAt;
+        other.takenAt == takenAt &&
+        other.skipReason == skipReason;
   }
 
   @override
@@ -81,5 +86,6 @@ class ScheduledDose {
     state,
     logId,
     takenAt,
+    skipReason,
   );
 }
