@@ -262,5 +262,16 @@ abstract final class EnTranslations {
     AppStrings.notifPermissionGranted: 'Notifications are allowed',
     AppStrings.notifPermissionDenied: 'Notifications are not allowed',
     AppStrings.notifPermissionAllow: 'Allow notifications',
+
+    // ---- Profiles: Edit and delete ----
+    AppStrings.profilesEditTitle: 'Edit Profile',
+    AppStrings.profilesSaved: 'Changes saved',
+    AppStrings.profilesNotFound: 'This profile no longer exists.',
+    AppStrings.profilesDeleteAction: 'Delete profile',
+    AppStrings.profilesDeleteTitle: 'Delete this profile?',
+    AppStrings.profilesDeleteMessage:
+        '@name and all of their medications and dose history will be '
+        'deleted. This cannot be undone.',
+    AppStrings.profilesDeleted: 'Profile deleted',
   };
 }
