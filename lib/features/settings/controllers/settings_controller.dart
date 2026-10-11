@@ -49,6 +49,10 @@ class SettingsController extends GetxController {
     return _language.changeLanguage(locale);
   }
 
+  void openCalendar() {
+    Get.toNamed<void>(AppRoutes.calendar);
+  }
+
   Future<void> refreshPermission() async {
     permission.value = await _reminders.permission();
   }
