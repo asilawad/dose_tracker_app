@@ -7,21 +7,23 @@ import 'package:flutter/material.dart';
 /// One family member on Home: the avatar in the profile's identity color
 /// and the name.
 ///
-/// It is not tappable yet. Medication counts, the adherence bar and the
-/// tap to open the profile are added with the screens that need them.
+/// Tapping the card calls [onTap], which opens the profile for editing.
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({required this.profile, super.key});
+  const ProfileCard({required this.profile, required this.onTap, super.key});
 
   final Profile profile;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Semantics(
+      button: true,
       label: profile.name,
       child: ExcludeSemantics(
         child: AppCard(
+          onTap: onTap,
           child: Row(
             children: <Widget>[
               PersonaAvatar(persona: profile.personaColor),
