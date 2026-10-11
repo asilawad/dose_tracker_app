@@ -1,4 +1,6 @@
 import 'package:dose_tracker/core/services/language_service.dart';
+import 'package:dose_tracker/core/services/reminder_service.dart';
+import 'package:dose_tracker/core/services/reminder_settings_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
 import 'package:dose_tracker/features/settings/controllers/settings_controller.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,8 @@ class SettingsBinding extends Bindings {
       () => SettingsController(
         Get.find<LanguageService>(),
         Get.find<AuthRepository>(),
+        Get.find<ReminderSettingsService>(),
+        Get.find<ReminderService>(),
       ),
     );
   }
