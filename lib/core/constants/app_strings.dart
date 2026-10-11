@@ -259,4 +259,21 @@ abstract final class AppStrings {
   static const String profilesDeleteTitle = 'profiles_delete_title';
   static const String profilesDeleteMessage = 'profiles_delete_message';
   static const String profilesDeleted = 'profiles_deleted';
+
+  // ---- Adherence calendar ----
+  static const String calendarTitle = 'calendar_title';
+  static const String calendarSettingsRowTitle = 'calendar_settings_row_title';
+  static const String calendarAdherenceBadge = 'calendar_adherence_badge';
+  static const String calendarLegendAllTaken = 'calendar_legend_all_taken';
+  static const String calendarLegendPartial = 'calendar_legend_partial';
+  static const String calendarLegendMissed = 'calendar_legend_missed';
+  static const String calendarSelectedDay = 'calendar_selected_day';
+  static const String calendarDosesLogged = 'calendar_doses_logged';
+  static const String calendarDayEmpty = 'calendar_day_empty';
+  static const String calendarLogNow = 'calendar_log_now';
+  static const String calendarEmptyTitle = 'calendar_empty_title';
+  static const String calendarEmptyMessage = 'calendar_empty_message';
+  static const String a11yPreviousMonth = 'a11y_previous_month';
+  static const String a11yNextMonth = 'a11y_next_month';
+  static const String a11yOpenCalendar = 'a11y_open_calendar';
 }
