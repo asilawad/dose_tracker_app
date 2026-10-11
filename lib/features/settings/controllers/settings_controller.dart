@@ -53,6 +53,10 @@ class SettingsController extends GetxController {
     Get.toNamed<void>(AppRoutes.calendar);
   }
 
+  void openReport() {
+    Get.toNamed<void>(AppRoutes.report);
+  }
+
   Future<void> refreshPermission() async {
     permission.value = await _reminders.permission();
   }
