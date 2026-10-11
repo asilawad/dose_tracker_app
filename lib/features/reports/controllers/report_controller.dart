@@ -112,27 +112,17 @@ class ReportController extends GetxController {
   /// Chooses a custom range. The ends are swapped when reversed, and a range
   /// longer than [ReportRange.maxDays] is shortened from its start.
   void setCustomRange(DateTime start, DateTime end) {
-    DateTime from = DosePlanner.dayStart(start);
-    final DateTime to = DosePlanner.dayStart(end);
-    if (from.isAfter(to)) {
-      customRange.value = ReportRange(from: to, to: from);
-      from = to;
-    }
-    final DateTime last = from.isAfter(to) ? from : to;
-    final DateTime first = DosePlanner.dayStart(
-      start.isBefore(end) ? start : end,
-    );
-    final ReportRange range = ReportRange(from: first, to: last);
-    customRange.value = range.days > ReportRange.maxDays
+    final DateTime first = DosePlanner.dayStart(start);
+    final DateTime second = DosePlanner.dayStart(end);
+    final DateTime from = first.isBefore(second) ? first : second;
+    final DateTime to = first.isBefore(second) ? second : first;
+    final ReportRange chosen = ReportRange(from: from, to: to);
+    customRange.value = chosen.days > ReportRange.maxDays
         ? ReportRange(
-            from: DateTime(
-              last.year,
-              last.month,
-              last.day - ReportRange.maxDays + 1,
-            ),
-            to: last,
+            from: DateTime(to.year, to.month, to.day - ReportRange.maxDays + 1),
+            to: to,
           )
-        : range;
+        : chosen;
     interval.value = ReportInterval.custom;
     _load();
   }
