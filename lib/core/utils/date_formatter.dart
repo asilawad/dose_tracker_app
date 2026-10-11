@@ -19,6 +19,14 @@ abstract final class DateFormatter {
       (Get.locale ?? AppTranslations.fallbackLocale).languageCode;
 
   /// For example 9:00 AM.
+  /// A file name for a report over a day range, for example
+  /// `dose-report-20260801-20260830.pdf`. It is for files, not for display,
+  /// so it always uses English digits.
+  static String fileName(DateTime from, DateTime to) {
+    final DateFormat format = DateFormat('yyyyMMdd', 'en');
+    return 'dose-report-${format.format(from)}-${format.format(to)}.pdf';
+  }
+
   static String time(DateTime value) =>
       DateFormat(_timeSkeleton, _locale).format(value);
 
