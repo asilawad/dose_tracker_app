@@ -21,6 +21,8 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.isPassword = false,
     this.onSubmitted,
+    this.minLines,
+    this.maxLines = 1,
     super.key,
   });
 
@@ -34,6 +36,10 @@ class AppTextField extends StatefulWidget {
   final bool isPassword;
   final ValueChanged<String>? onSubmitted;
 
+  /// Lines the field shows at least, and the most it grows to. The default
+  /// is a single line; a password field is always a single line.
+  final int? minLines;
+  final int? maxLines;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
@@ -67,6 +73,8 @@ class _AppTextFieldState extends State<AppTextField> {
           controller: widget.controller,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
+          minLines: widget.isPassword ? 1 : widget.minLines,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onSubmitted,
           obscureText: _obscured,
