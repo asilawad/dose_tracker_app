@@ -9,8 +9,9 @@ import 'package:get/get.dart';
 /// loading flag and the error flag.
 ///
 /// The list updates by itself when a profile is added, because it listens
-/// to the repository stream. [retry] listens again after an error. Only the
-/// route name is used to open Add Profile; nothing is passed along.
+/// to the repository stream. [retry] listens again after an error. Add
+/// Profile opens with the route name only; Edit Profile gets nothing but the
+/// profile id.
 class HomeController extends GetxController {
   HomeController(this._profiles);
 
@@ -36,6 +37,10 @@ class HomeController extends GetxController {
 
   void openAddProfile() {
     Get.toNamed<void>(AppRoutes.addProfile);
+  }
+
+  void openEditProfile(int profileId) {
+    Get.toNamed<void>(AppRoutes.editProfile, arguments: profileId);
   }
 
   void _listen() {
