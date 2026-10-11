@@ -253,5 +253,16 @@ abstract final class ArTranslations {
     AppStrings.notifPermissionGranted: 'الإشعارات مسموحة',
     AppStrings.notifPermissionDenied: 'الإشعارات غير مسموحة',
     AppStrings.notifPermissionAllow: 'السماح بالإشعارات',
+
+    // ---- Profiles: Edit and delete ----
+    AppStrings.profilesEditTitle: 'تعديل الملف الشخصي',
+    AppStrings.profilesSaved: 'تم حفظ التغييرات',
+    AppStrings.profilesNotFound: 'هذا الملف الشخصي لم يعد موجوداً.',
+    AppStrings.profilesDeleteAction: 'حذف الملف الشخصي',
+    AppStrings.profilesDeleteTitle: 'حذف هذا الملف الشخصي؟',
+    AppStrings.profilesDeleteMessage:
+        'سيتم حذف @name مع كل أدويته وسجل جرعاته. لا يمكن التراجع عن '
+        'ذلك.',
+    AppStrings.profilesDeleted: 'تم حذف الملف الشخصي',
   };
 }
