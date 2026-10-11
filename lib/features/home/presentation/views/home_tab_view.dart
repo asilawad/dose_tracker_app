@@ -41,16 +41,22 @@ class HomeTabView extends GetView<HomeController> {
       return _ProfilesList(
         profiles: controller.profiles.toList(),
         onAddProfile: controller.openAddProfile,
+        onEditProfile: controller.openEditProfile,
       );
     });
   }
 }
 
 class _ProfilesList extends StatelessWidget {
-  const _ProfilesList({required this.profiles, required this.onAddProfile});
+  const _ProfilesList({
+    required this.profiles,
+    required this.onAddProfile,
+    required this.onEditProfile,
+  });
 
   final List<Profile> profiles;
   final VoidCallback onAddProfile;
+  final ValueChanged<int> onEditProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +74,7 @@ class _ProfilesList extends StatelessWidget {
         ),
         const SizedBox(height: AppSizes.space2xl),
         for (final Profile profile in profiles) ...<Widget>[
-          ProfileCard(profile: profile),
+          ProfileCard(profile: profile, onTap: () => onEditProfile(profile.id)),
           const SizedBox(height: AppSizes.gutter),
         ],
         const SizedBox(height: AppSizes.spaceSm),
