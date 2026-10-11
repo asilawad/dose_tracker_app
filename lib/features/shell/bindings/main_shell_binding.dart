@@ -1,6 +1,11 @@
+import 'package:dose_tracker/core/services/reminder_service.dart';
+import 'package:dose_tracker/core/services/reminder_settings_service.dart';
 import 'package:dose_tracker/features/home/bindings/home_binding.dart';
 import 'package:dose_tracker/features/inventory/bindings/inventory_binding.dart';
+import 'package:dose_tracker/features/inventory/data/repositories/inventory_repository.dart';
+import 'package:dose_tracker/features/notifications/controllers/reminder_scheduler.dart';
 import 'package:dose_tracker/features/schedule/bindings/schedule_binding.dart';
+import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:dose_tracker/features/settings/bindings/settings_binding.dart';
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:get/get.dart';
@@ -19,5 +24,13 @@ class MainShellBinding extends Bindings {
     ScheduleBinding().dependencies();
     InventoryBinding().dependencies();
     SettingsBinding().dependencies();
+    Get.put<ReminderScheduler>(
+      ReminderScheduler(
+        Get.find<DoseLogsRepository>(),
+        Get.find<InventoryRepository>(),
+        Get.find<ReminderSettingsService>(),
+        Get.find<ReminderService>(),
+      ),
+    );
   }
 }
