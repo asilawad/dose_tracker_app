@@ -6,6 +6,8 @@ import 'package:dose_tracker/features/auth/bindings/sign_up_binding.dart';
 import 'package:dose_tracker/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:dose_tracker/features/auth/presentation/views/login_view.dart';
 import 'package:dose_tracker/features/auth/presentation/views/sign_up_view.dart';
+import 'package:dose_tracker/features/calendar/bindings/calendar_binding.dart';
+import 'package:dose_tracker/features/calendar/presentation/views/calendar_view.dart';
 import 'package:dose_tracker/features/medications/bindings/add_medication_binding.dart';
 import 'package:dose_tracker/features/medications/presentation/views/add_medication_view.dart';
 import 'package:dose_tracker/features/onboarding/bindings/onboarding_binding.dart';
@@ -78,6 +80,12 @@ abstract final class AppPages {
       name: AppRoutes.editProfile,
       page: () => const EditProfileView(),
       binding: EditProfileBinding(),
+      transitionDuration: AppDurations.pageTransition,
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.calendar,
+      page: () => const CalendarView(),
+      binding: CalendarBinding(),
       transitionDuration: AppDurations.pageTransition,
     ),
   ];
