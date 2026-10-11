@@ -236,5 +236,31 @@ abstract final class EnTranslations {
     AppStrings.inventoryRestockTitle: 'Refill stock',
     AppStrings.inventoryRestockLabel: 'Count after refill',
     AppStrings.inventoryRestocked: 'Stock updated',
+
+    // ---- Notifications ----
+    AppStrings.notifChannelName: 'Dose reminders',
+    AppStrings.notifChannelDescription:
+        'Reminders for medication doses and low stock.',
+    AppStrings.notifDoseTitle: 'Time for your dose',
+    AppStrings.notifDoseBody: '@medication for @profile',
+    AppStrings.notifRepeatBody: 'Not recorded yet: @medication for @profile',
+    AppStrings.notifLowStockTitle: 'Running low',
+    AppStrings.notifLowStockBody: '@medication for @profile: @count left',
+    AppStrings.notifSettingsRowTitle: 'Notifications',
+    AppStrings.notifSettingsRowSubtitle: 'Dose reminders & repeats',
+    AppStrings.notifStateOn: 'On',
+    AppStrings.notifStateOff: 'Off',
+    AppStrings.notifSheetTitle: 'Notifications',
+    AppStrings.notifEnableLabel: 'Dose reminders',
+    AppStrings.notifEnableSubtitle: 'Get a notification when a dose is due',
+    AppStrings.notifRepeatTitle: 'Repeat if not recorded',
+    AppStrings.notifRepeatOff: 'Off',
+    AppStrings.notifRepeatThirtyMinutes: 'Every 30 min',
+    AppStrings.notifRepeatHour: 'Every hour',
+    AppStrings.notifRepeatTwoHours: 'Every 2 hours',
+    AppStrings.notifPermissionTitle: 'Permission',
+    AppStrings.notifPermissionGranted: 'Notifications are allowed',
+    AppStrings.notifPermissionDenied: 'Notifications are not allowed',
+    AppStrings.notifPermissionAllow: 'Allow notifications',
   };
 }
