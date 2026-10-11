@@ -52,6 +52,62 @@ class ProfilesRepository {
     );
   }
 
+  /// The profile with [id], or null when it is not in this account.
+  Future<Profile?> findProfile(int id) async {
+    final int accountId = _session.requireActiveAccountId();
+    final ProfileRow? row = await _profiles.findById(
+      accountId: accountId,
+      id: id,
+    );
+    return row == null ? null : _toProfile(row);
+  }
+
+  /// Changes a profile's name and identity color. Its reminder choice stays
+  /// as it was.
+  Future<UpdateProfileResult> updateProfile({
+    required int id,
+    required String name,
+    required PersonaColor personaColor,
+  }) async {
+    final int accountId = _session.requireActiveAccountId();
+    final ProfileRow? row = await _profiles.findById(
+      accountId: accountId,
+      id: id,
+    );
+    if (row == null) {
+      return const UpdateProfileNotFound();
+    }
+
+    final String trimmedName = name.trim();
+    await _profiles.updateDetails(
+      accountId: accountId,
+      id: id,
+      name: trimmedName,
+      personaColor: personaColor,
+      remindersEnabled: row.remindersEnabled,
+    );
+    return UpdateProfileSuccess(
+      Profile(
+        id: id,
+        name: trimmedName,
+        personaColor: personaColor,
+        remindersEnabled: row.remindersEnabled,
+      ),
+    );
+  }
+
+  /// Deletes a profile together with its medications, dose times and history.
+  Future<DeleteProfileResult> deleteProfile(int id) async {
+    final int accountId = _session.requireActiveAccountId();
+    final int deleted = await _profiles.deleteById(
+      accountId: accountId,
+      id: id,
+    );
+    return deleted == 0
+        ? const DeleteProfileNotFound()
+        : const DeleteProfileSuccess();
+  }
+
   Profile _toProfile(ProfileRow row) {
     return Profile(
       id: row.id,
