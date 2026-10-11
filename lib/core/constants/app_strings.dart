@@ -276,4 +276,37 @@ abstract final class AppStrings {
   static const String a11yPreviousMonth = 'a11y_previous_month';
   static const String a11yNextMonth = 'a11y_next_month';
   static const String a11yOpenCalendar = 'a11y_open_calendar';
+
+  // ---- Doctor's report ----
+  static const String reportTitle = 'report_title';
+  static const String reportSettingsRowTitle = 'report_settings_row_title';
+  static const String reportPatientLabel = 'report_patient_label';
+  static const String reportIntervalTitle = 'report_interval_title';
+  static const String reportLast7 = 'report_last_7';
+  static const String reportLast30 = 'report_last_30';
+  static const String reportCustom = 'report_custom';
+  static const String reportRangeValue = 'report_range_value';
+  static const String reportMedicationTitle = 'report_medication_title';
+  static const String reportAllMedications = 'report_all_medications';
+  static const String reportOverviewTitle = 'report_overview_title';
+  static const String reportOverviewSummary = 'report_overview_summary';
+  static const String reportAdherenceBadge = 'report_adherence_badge';
+  static const String reportStatMissed = 'report_stat_missed';
+  static const String reportStatLate = 'report_stat_late';
+  static const String reportDetailsTitle = 'report_details_title';
+  static const String reportColumnPrescribed = 'report_column_prescribed';
+  static const String reportColumnTaken = 'report_column_taken';
+  static const String reportColumnMissed = 'report_column_missed';
+  static const String reportMissedTitle = 'report_missed_title';
+  static const String reportMissedNone = 'report_missed_none';
+  static const String reportSkippedReason = 'report_skipped_reason';
+  static const String reportNotesTitle = 'report_notes_title';
+  static const String reportNotesOptional = 'report_notes_optional';
+  static const String reportNotesHint = 'report_notes_hint';
+  static const String reportGenerate = 'report_generate';
+  static const String reportEmptyTitle = 'report_empty_title';
+  static const String reportEmptyMessage = 'report_empty_message';
+  static const String reportGeneratedOn = 'report_generated_on';
+  static const String reportFooter = 'report_footer';
+  static const String reportFailed = 'report_failed';
 }
