@@ -1,6 +1,7 @@
 import 'package:dose_tracker/app/routes/app.dart';
 import 'package:dose_tracker/core/services/language_service.dart';
 import 'package:dose_tracker/core/services/onboarding_status_service.dart';
+import 'package:dose_tracker/core/services/reminder_service.dart';
 import 'package:dose_tracker/core/services/reminder_settings_service.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:flutter/widgets.dart';
@@ -22,5 +23,6 @@ Future<void> main() async {
     ReminderSettingsService.create,
     permanent: true,
   );
+  await Get.putAsync<ReminderService>(ReminderService.create, permanent: true);
   runApp(const DoseTrackerApp());
 }
