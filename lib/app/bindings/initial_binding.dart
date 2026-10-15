@@ -8,6 +8,7 @@ import 'package:dose_tracker/core/services/password_hasher.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/features/auth/data/repositories/auth_repository.dart';
 import 'package:dose_tracker/features/inventory/data/repositories/inventory_repository.dart';
+import 'package:dose_tracker/features/medications/data/repositories/medication_updates_repository.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
@@ -83,6 +84,14 @@ class InitialBinding extends Bindings {
           ),
           permanent: true,
         );
+
+    Get.put<MedicationUpdatesRepository>(
+      MedicationUpdatesRepository(
+        medications: medications,
+        session: Get.find<SessionService>(),
+      ),
+      permanent: true,
+    );
 
     Get.put<DoseLogsRepository>(
       DoseLogsRepository(

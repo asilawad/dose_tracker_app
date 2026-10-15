@@ -5,16 +5,16 @@ import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_so
 import 'package:dose_tracker/core/database/data_sources/medications_local_data_source.dart';
 import 'package:dose_tracker/core/database/data_sources/profiles_local_data_source.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
-import 'package:dose_tracker/core/utils/dose_scheduler.dart';
-import 'package:dose_tracker/features/medications/data/models/dose_time.dart';
 import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_results.dart';
+import 'package:dose_tracker/features/medications/data/repositories/medication_mapper.dart';
 
-/// All medication rules in one place. It always works on the logged-in
+/// Reading and creating medications. It always works on the logged-in
 /// account: the account id comes from the session here, so no screen can
 /// ask for another account's medications, and every query it runs is
-/// filtered by that id.
+/// filtered by that id. Changes to an existing medication live in
+/// `MedicationUpdatesRepository`.
 ///
 /// Call it only after login. A medication and its dose times are saved in
 /// one transaction, so a failure never leaves a medication without its
@@ -55,7 +55,7 @@ class MedicationsRepository {
       if (medications == null || times == null) {
         return;
       }
-      controller.add(_combine(medications, times));
+      controller.add(MedicationMapper.combine(medications, times));
     }
 
     controller = StreamController<List<Medication>>(
@@ -98,7 +98,7 @@ class MedicationsRepository {
   }) async {
     final int accountId = _session.requireActiveAccountId();
 
-    if (!_isValidSchedule(times)) {
+    if (!MedicationMapper.isValidSchedule(times)) {
       return const AddMedicationInvalidSchedule();
     }
     if (trackInventory && (currentStock == null || currentStock <= 0)) {
@@ -151,119 +151,9 @@ class MedicationsRepository {
           stockRemaining: stock,
           isActive: true,
           createdAt: DateTime.now(),
-          doseTimes: savedTimes.map(_toDoseTime).toList(),
+          doseTimes: savedTimes.map(MedicationMapper.toDoseTime).toList(),
         ),
       );
     });
-  }
-
-  /// Records a refill: [newStock] is the count on hand after refilling. It
-  /// becomes the remaining stock, and the stock total grows to it when it is
-  /// larger than the old total.
-  Future<RestockResult> restock({
-    required int medicationId,
-    required int newStock,
-  }) async {
-    final int accountId = _session.requireActiveAccountId();
-
-    if (newStock <= 0) {
-      return const RestockInvalidAmount();
-    }
-    final MedicationRow? row = await _medications.findById(
-      accountId: accountId,
-      id: medicationId,
-    );
-    if (row == null) {
-      return const RestockNotFound();
-    }
-    if (!row.trackInventory) {
-      return const RestockNotTracked();
-    }
-
-    final int oldTotal = row.stockTotal ?? 0;
-    await _medications.updateStock(
-      accountId: accountId,
-      id: medicationId,
-      stockTotal: newStock > oldTotal ? newStock : oldTotal,
-      stockRemaining: newStock,
-    );
-    return const RestockSuccess();
-  }
-
-  /// Pauses ([isActive] false) or resumes a medication. A paused medication
-  /// has no doses in the schedule; its history stays.
-  Future<SetActiveResult> setActive({
-    required int medicationId,
-    required bool isActive,
-  }) async {
-    final int accountId = _session.requireActiveAccountId();
-
-    final MedicationRow? row = await _medications.findById(
-      accountId: accountId,
-      id: medicationId,
-    );
-    if (row == null) {
-      return const SetActiveNotFound();
-    }
-    await _medications.setActive(
-      accountId: accountId,
-      id: medicationId,
-      isActive: isActive,
-    );
-    return const SetActiveSuccess();
-  }
-
-  bool _isValidSchedule(List<DoseTimeInput> times) {
-    if (times.isEmpty) {
-      return false;
-    }
-    final Set<int> seen = <int>{};
-    for (final DoseTimeInput time in times) {
-      final bool inRange =
-          time.minuteOfDay >= 0 &&
-          time.minuteOfDay < DoseScheduler.minutesPerDay;
-      if (!inRange || time.quantity <= 0 || !seen.add(time.minuteOfDay)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  List<Medication> _combine(
-    List<MedicationRow> medications,
-    List<DoseTimeRow> times,
-  ) {
-    final Map<int, List<DoseTime>> timesByMedication = <int, List<DoseTime>>{};
-    for (final DoseTimeRow row in times) {
-      timesByMedication
-          .putIfAbsent(row.medicationId, () => <DoseTime>[])
-          .add(_toDoseTime(row));
-    }
-    return medications
-        .map(
-          (MedicationRow row) => Medication(
-            id: row.id,
-            profileId: row.profileId,
-            name: row.name,
-            doseAmount: row.doseAmount,
-            doseUnit: row.doseUnit,
-            mealInstruction: row.mealInstruction,
-            trackInventory: row.trackInventory,
-            stockTotal: row.stockTotal,
-            stockRemaining: row.stockRemaining,
-            isActive: row.isActive,
-            createdAt: row.createdAt,
-            doseTimes: timesByMedication[row.id] ?? const <DoseTime>[],
-          ),
-        )
-        .toList();
-  }
-
-  DoseTime _toDoseTime(DoseTimeRow row) {
-    return DoseTime(
-      id: row.id,
-      minuteOfDay: row.minuteOfDay,
-      quantity: row.quantity,
-    );
   }
 }

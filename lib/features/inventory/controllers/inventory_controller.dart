@@ -5,7 +5,7 @@ import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/features/inventory/data/models/inventory_item.dart';
 import 'package:dose_tracker/features/inventory/data/repositories/inventory_repository.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_results.dart';
-import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
+import 'package:dose_tracker/features/medications/data/repositories/medication_updates_repository.dart';
 import 'package:get/get.dart';
 
 /// State and actions of the Inventory tab: the live list of medications with
@@ -20,7 +20,7 @@ class InventoryController extends GetxController {
   InventoryController(this._inventory, this._medications);
 
   final InventoryRepository _inventory;
-  final MedicationsRepository _medications;
+  final MedicationUpdatesRepository _medications;
 
   final RxList<InventoryItem> items = <InventoryItem>[].obs;
   final RxBool isLoading = true.obs;
