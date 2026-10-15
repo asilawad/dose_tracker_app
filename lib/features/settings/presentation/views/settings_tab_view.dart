@@ -7,6 +7,7 @@ import 'package:dose_tracker/features/settings/presentation/widgets/language_she
 import 'package:dose_tracker/features/settings/presentation/widgets/notification_settings_sheet_content.dart';
 import 'package:dose_tracker/features/settings/presentation/widgets/settings_row.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_sheet.dart';
+import 'package:dose_tracker/views/widgets/confirm_sheet_content.dart';
 import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,6 +33,18 @@ class SettingsTabView extends GetView<SettingsController> {
     AppBottomSheet.show<void>(
       title: AppStrings.notifSheetTitle.tr,
       child: const NotificationSettingsSheetContent(),
+    );
+  }
+
+  void _openLogOutSheet() {
+    AppBottomSheet.show<void>(
+      title: AppStrings.settingsLogOutTitle.tr,
+      child: ConfirmSheetContent(
+        message: AppStrings.settingsLogOutMessage.tr,
+        confirmLabel: AppStrings.settingsLogOut.tr,
+        icon: Icons.logout_rounded,
+        onConfirm: controller.logOut,
+      ),
     );
   }
 
@@ -90,7 +103,7 @@ class SettingsTabView extends GetView<SettingsController> {
           label: AppStrings.settingsLogOut.tr,
           icon: Icons.logout_rounded,
           tone: ActionTone.danger,
-          onPressed: controller.logOut,
+          onPressed: _openLogOutSheet,
         ),
       ],
     );

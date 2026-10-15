@@ -131,6 +131,9 @@ abstract final class ArTranslations {
     AppStrings.settingsAppearance: 'المظهر',
     AppStrings.settingsComingSoon: 'قريباً',
     AppStrings.settingsLogOut: 'تسجيل الخروج',
+    AppStrings.settingsLogOutTitle: 'تسجيل الخروج؟',
+    AppStrings.settingsLogOutMessage:
+        'ستحتاج إلى تسجيل الدخول مرة أخرى. بياناتك تبقى محفوظة على هذا الجهاز.',
     AppStrings.languageEnglishName: 'English',
     AppStrings.languageArabicName: 'العربية',
 

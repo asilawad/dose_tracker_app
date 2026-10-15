@@ -132,6 +132,8 @@ abstract final class AppStrings {
   static const String settingsAppearance = 'settings_appearance';
   static const String settingsComingSoon = 'settings_coming_soon';
   static const String settingsLogOut = 'settings_log_out';
+  static const String settingsLogOutTitle = 'settings_log_out_title';
+  static const String settingsLogOutMessage = 'settings_log_out_message';
   static const String languageEnglishName = 'language_english_name';
   static const String languageArabicName = 'language_arabic_name';
 

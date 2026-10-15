@@ -136,6 +136,9 @@ abstract final class EnTranslations {
     AppStrings.settingsAppearance: 'Appearance',
     AppStrings.settingsComingSoon: 'Coming soon',
     AppStrings.settingsLogOut: 'Log Out',
+    AppStrings.settingsLogOutTitle: 'Log out?',
+    AppStrings.settingsLogOutMessage:
+        'You will need to log in again. Your data stays on this device.',
     AppStrings.languageEnglishName: 'English',
     AppStrings.languageArabicName: 'العربية',
 
