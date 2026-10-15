@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_source.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
-import 'package:dose_tracker/core/utils/dose_scheduler.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
+import 'package:dose_tracker/features/medications/controllers/dose_times_editor.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_results.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
@@ -17,11 +17,10 @@ import 'package:get/get.dart';
 /// chosen profile, unit and meal instruction, the dose times and the stock
 /// switch.
 ///
-/// The number of times is always the length of [times]. The stepper
-/// redistributes the times evenly over 24 hours (which discards manual
-/// edits), while adding, removing or editing one time keeps the others as
-/// they are. The first profile is chosen by default. [submit] returns true
-/// when the medication was saved, and then closes the screen.
+/// The dose times live in a [DoseTimesEditor]; this controller only forwards
+/// to it, so the screen widgets use one object. The first profile is chosen
+/// by default. [submit] returns true when the medication was saved, and then
+/// closes the screen.
 class AddMedicationController extends GetxController {
   AddMedicationController(this._profiles, this._medications);
 
@@ -37,9 +36,10 @@ class AddMedicationController extends GetxController {
   final Rxn<int> selectedProfileId = Rxn<int>();
   final Rx<DoseUnit> doseUnit = DoseUnit.mg.obs;
   final Rxn<MealInstruction> mealInstruction = Rxn<MealInstruction>();
-  final RxList<DoseTimeInput> times = <DoseTimeInput>[].obs;
   final RxBool trackInventory = false.obs;
   final RxBool isLoading = false.obs;
+
+  final DoseTimesEditor _timesEditor = DoseTimesEditor();
 
   StreamSubscription<List<Profile>>? _subscription;
 
@@ -54,18 +54,17 @@ class AddMedicationController extends GetxController {
     return null;
   }
 
-  int get frequency => times.length;
+  RxList<DoseTimeInput> get times => _timesEditor.times;
 
-  bool get canIncreaseFrequency =>
-      times.length < DoseScheduler.maxDailyFrequency;
+  int get frequency => _timesEditor.frequency;
 
-  bool get canDecreaseFrequency =>
-      times.length > DoseScheduler.minDailyFrequency;
+  bool get canIncreaseFrequency => _timesEditor.canIncrease;
+
+  bool get canDecreaseFrequency => _timesEditor.canDecrease;
 
   @override
   void onInit() {
     super.onInit();
-    _setDistributedTimes(DoseScheduler.defaultFrequency);
     _subscription = _profiles.watchProfiles().listen(_onProfiles);
   }
 
@@ -96,38 +95,13 @@ class AddMedicationController extends GetxController {
     trackInventory.value = value;
   }
 
-  void increaseFrequency() {
-    if (canIncreaseFrequency) {
-      _setDistributedTimes(frequency + 1);
-    }
-  }
+  void increaseFrequency() => _timesEditor.increase();
 
-  void decreaseFrequency() {
-    if (canDecreaseFrequency) {
-      _setDistributedTimes(frequency - 1);
-    }
-  }
+  void decreaseFrequency() => _timesEditor.decrease();
 
-  /// Adds one time after the latest one, keeping the other times as they are.
-  void addTime() {
-    if (!canIncreaseFrequency) {
-      return;
-    }
-    times.add((
-      minuteOfDay: DoseScheduler.nextFreeMinute(
-        times.map((DoseTimeInput time) => time.minuteOfDay),
-      ),
-      quantity: DoseScheduler.defaultQuantity,
-    ));
-    _sortTimes();
-  }
+  void addTime() => _timesEditor.addTime();
 
-  void removeTime(int index) {
-    if (!canDecreaseFrequency || index < 0 || index >= times.length) {
-      return;
-    }
-    times.removeAt(index);
-  }
+  void removeTime(int index) => _timesEditor.removeTime(index);
 
   /// Changes one time. Returns false, and changes nothing, when another time
   /// already uses the same minute or the index is invalid.
@@ -136,17 +110,11 @@ class AddMedicationController extends GetxController {
     required int minuteOfDay,
     required double quantity,
   }) {
-    if (index < 0 || index >= times.length) {
-      return false;
-    }
-    for (int other = 0; other < times.length; other++) {
-      if (other != index && times[other].minuteOfDay == minuteOfDay) {
-        return false;
-      }
-    }
-    times[index] = (minuteOfDay: minuteOfDay, quantity: quantity);
-    _sortTimes();
-    return true;
+    return _timesEditor.updateTime(
+      index: index,
+      minuteOfDay: minuteOfDay,
+      quantity: quantity,
+    );
   }
 
   Future<bool> submit() async {
@@ -205,24 +173,6 @@ class AddMedicationController extends GetxController {
     if (!stillExists) {
       selectedProfileId.value = list.isEmpty ? null : list.first.id;
     }
-  }
-
-  void _setDistributedTimes(int count) {
-    times.assignAll(
-      DoseScheduler.distribute(count).map(
-        (int minute) =>
-            (minuteOfDay: minute, quantity: DoseScheduler.defaultQuantity),
-      ),
-    );
-  }
-
-  void _sortTimes() {
-    final List<DoseTimeInput> sorted = times.toList()
-      ..sort(
-        (DoseTimeInput a, DoseTimeInput b) =>
-            a.minuteOfDay.compareTo(b.minuteOfDay),
-      );
-    times.assignAll(sorted);
   }
 
   @override
