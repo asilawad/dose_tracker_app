@@ -13,8 +13,10 @@ import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 /// A dose with a log shows that log's outcome. A dose without one is
 /// pending, until the next dose time of the same medication (or the end of
 /// the day, whichever comes first) arrives: from then on it shows as missed.
-/// Paused medications, medications of deleted profiles and days before the
-/// medication was added produce no doses.
+/// Paused medications and medications of deleted profiles produce no doses.
+/// A dose scheduled earlier than the minute its medication was added is not
+/// created (unless it already has a log), so adding a medication at noon
+/// never creates a missed 8 AM dose.
 abstract final class DosePlanner {
   /// A dose taken more than this many minutes after its time is logged as
   /// taken late instead of taken.
@@ -57,11 +59,10 @@ abstract final class DosePlanner {
     final List<ScheduledDose> doses = <ScheduledDose>[];
     for (final Medication medication in medications) {
       final Profile? profile = profilesById[medication.profileId];
-      if (!medication.isActive ||
-          profile == null ||
-          date.isBefore(dayStart(medication.createdAt))) {
+      if (!medication.isActive || profile == null) {
         continue;
       }
+      final DateTime addedAt = _truncateToMinute(medication.createdAt);
 
       final List<DoseTime> times = medication.doseTimes.toList()
         ..sort(
@@ -74,6 +75,9 @@ abstract final class DosePlanner {
             : DoseScheduler.minutesPerDay;
         final DoseLogRow? log =
             logsByDose['${medication.id}-${time.minuteOfDay}'];
+        if (log == null && _at(date, time.minuteOfDay).isBefore(addedAt)) {
+          continue;
+        }
 
         doses.add(
           ScheduledDose(
@@ -119,6 +123,16 @@ abstract final class DosePlanner {
   ) {
     final DateTime deadline = _at(date, deadlineMinute);
     return now.isBefore(deadline) ? DoseState.pending : DoseState.missed;
+  }
+
+  static DateTime _truncateToMinute(DateTime value) {
+    return DateTime(
+      value.year,
+      value.month,
+      value.day,
+      value.hour,
+      value.minute,
+    );
   }
 
   /// [minutes] after local midnight of [date]; 1440 gives the next midnight.
