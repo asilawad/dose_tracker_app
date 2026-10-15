@@ -185,7 +185,7 @@ abstract final class EnTranslations {
     AppStrings.medsInventorySubtitle: 'Decrease the count on taken doses',
     AppStrings.medsStockLabel: 'Current stock',
     AppStrings.medsStockNote:
-        "You'll get a refill alert when 10% of your stock is left.",
+        "You'll get a refill alert when your stock runs low.",
     AppStrings.medsSave: 'Save medication schedule',
     AppStrings.medsSaved: 'Medication added',
     AppStrings.medsErrorProfileNotFound: 'This family member no longer exists.',

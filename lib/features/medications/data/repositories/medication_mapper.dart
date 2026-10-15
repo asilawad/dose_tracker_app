@@ -47,7 +47,7 @@ abstract final class MedicationMapper {
             doseUnit: row.doseUnit,
             mealInstruction: row.mealInstruction,
             trackInventory: row.trackInventory,
-            stockTotal: row.stockTotal,
+            stockThreshold: row.stockThreshold,
             stockRemaining: row.stockRemaining,
             isActive: row.isActive,
             createdAt: row.createdAt,

@@ -3,7 +3,6 @@ import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/inventory/controllers/inventory_controller.dart';
 import 'package:dose_tracker/features/inventory/data/models/inventory_item.dart';
 import 'package:dose_tracker/features/inventory/presentation/widgets/inventory_item_card.dart';
-import 'package:dose_tracker/features/inventory/presentation/widgets/inventory_summary_card.dart';
 import 'package:dose_tracker/features/inventory/presentation/widgets/refill_reminder_banner.dart';
 import 'package:dose_tracker/features/inventory/presentation/widgets/restock_sheet_content.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_sheet.dart';
@@ -17,8 +16,8 @@ import 'package:get/get.dart';
 /// scaffold, because the main shell owns the scaffold and the bottom bar.
 ///
 /// It shows a spinner while loading, an error with retry, an empty state
-/// when there are no medications, and otherwise the stock summary, one card
-/// per medication and, when something runs low, the refill banner. Tapping
+/// when there are no medications, and otherwise one card per medication and,
+/// when something runs low, the refill banner. Tapping
 /// a medication opens the refill sheet. The controller comes from
 /// `InventoryBinding`.
 class InventoryTabView extends GetView<InventoryController> {
@@ -52,7 +51,6 @@ class InventoryTabView extends GetView<InventoryController> {
         );
       }
 
-      final double? totalFraction = controller.totalFraction;
       final int lowCount = controller.lowStockCount;
 
       return ListView(
@@ -69,13 +67,6 @@ class InventoryTabView extends GetView<InventoryController> {
             style: textTheme.headlineMedium,
           ),
           const SizedBox(height: AppSizes.space2xl),
-          if (totalFraction != null) ...<Widget>[
-            InventorySummaryCard(
-              totalRemaining: controller.totalRemaining,
-              fraction: totalFraction,
-            ),
-            const SizedBox(height: AppSizes.space2xl),
-          ],
           Text(
             AppStrings.inventorySectionTitle.tr,
             style: textTheme.headlineSmall,

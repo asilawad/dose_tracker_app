@@ -9,7 +9,7 @@ import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.da
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final Profile profile = Profile(
+  const Profile profile = Profile(
     id: 1,
     name: 'Test',
     personaColor: PersonaColor.teal,
@@ -24,7 +24,7 @@ void main() {
     doseUnit: DoseUnit.mg,
     mealInstruction: null,
     trackInventory: false,
-    stockTotal: null,
+    stockThreshold: null,
     stockRemaining: null,
     isActive: true,
     createdAt: DateTime(2026, 10, 15, 12, 0, 30),

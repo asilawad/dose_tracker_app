@@ -20,8 +20,7 @@ class MedicationUpdatesRepository {
   final SessionService _session;
 
   /// Records a refill: [newStock] is the count on hand after refilling. It
-  /// becomes the remaining stock, and the stock total grows to it when it is
-  /// larger than the old total.
+  /// becomes the remaining stock.
   Future<RestockResult> restock({
     required int medicationId,
     required int newStock,
@@ -42,11 +41,9 @@ class MedicationUpdatesRepository {
       return const RestockNotTracked();
     }
 
-    final int oldTotal = row.stockTotal ?? 0;
     await _medications.updateStock(
       accountId: accountId,
       id: medicationId,
-      stockTotal: newStock > oldTotal ? newStock : oldTotal,
       stockRemaining: newStock,
     );
     return const RestockSuccess();

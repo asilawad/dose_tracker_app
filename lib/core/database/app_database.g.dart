@@ -1109,12 +1109,12 @@ class $MedicationsTable extends Medications
     ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _stockTotalMeta = const VerificationMeta(
-    'stockTotal',
+  static const VerificationMeta _stockThresholdMeta = const VerificationMeta(
+    'stockThreshold',
   );
   @override
-  late final GeneratedColumn<int> stockTotal = GeneratedColumn<int>(
-    'stock_total',
+  late final GeneratedColumn<int> stockThreshold = GeneratedColumn<int>(
+    'stock_threshold',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -1168,7 +1168,7 @@ class $MedicationsTable extends Medications
     doseUnit,
     mealInstruction,
     trackInventory,
-    stockTotal,
+    stockThreshold,
     stockRemaining,
     isActive,
     createdAt,
@@ -1229,10 +1229,13 @@ class $MedicationsTable extends Medications
         ),
       );
     }
-    if (data.containsKey('stock_total')) {
+    if (data.containsKey('stock_threshold')) {
       context.handle(
-        _stockTotalMeta,
-        stockTotal.isAcceptableOrUnknown(data['stock_total']!, _stockTotalMeta),
+        _stockThresholdMeta,
+        stockThreshold.isAcceptableOrUnknown(
+          data['stock_threshold']!,
+          _stockThresholdMeta,
+        ),
       );
     }
     if (data.containsKey('stock_remaining')) {
@@ -1301,9 +1304,9 @@ class $MedicationsTable extends Medications
         DriftSqlType.bool,
         data['${effectivePrefix}track_inventory'],
       )!,
-      stockTotal: attachedDatabase.typeMapping.read(
+      stockThreshold: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}stock_total'],
+        data['${effectivePrefix}stock_threshold'],
       ),
       stockRemaining: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -1346,7 +1349,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
   final DoseUnit doseUnit;
   final MealInstruction? mealInstruction;
   final bool trackInventory;
-  final int? stockTotal;
+  final int? stockThreshold;
   final int? stockRemaining;
   final bool isActive;
   final DateTime createdAt;
@@ -1359,7 +1362,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
     required this.doseUnit,
     this.mealInstruction,
     required this.trackInventory,
-    this.stockTotal,
+    this.stockThreshold,
     this.stockRemaining,
     required this.isActive,
     required this.createdAt,
@@ -1383,8 +1386,8 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
       );
     }
     map['track_inventory'] = Variable<bool>(trackInventory);
-    if (!nullToAbsent || stockTotal != null) {
-      map['stock_total'] = Variable<int>(stockTotal);
+    if (!nullToAbsent || stockThreshold != null) {
+      map['stock_threshold'] = Variable<int>(stockThreshold);
     }
     if (!nullToAbsent || stockRemaining != null) {
       map['stock_remaining'] = Variable<int>(stockRemaining);
@@ -1406,9 +1409,9 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
           ? const Value.absent()
           : Value(mealInstruction),
       trackInventory: Value(trackInventory),
-      stockTotal: stockTotal == null && nullToAbsent
+      stockThreshold: stockThreshold == null && nullToAbsent
           ? const Value.absent()
-          : Value(stockTotal),
+          : Value(stockThreshold),
       stockRemaining: stockRemaining == null && nullToAbsent
           ? const Value.absent()
           : Value(stockRemaining),
@@ -1435,7 +1438,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
         serializer.fromJson<String?>(json['mealInstruction']),
       ),
       trackInventory: serializer.fromJson<bool>(json['trackInventory']),
-      stockTotal: serializer.fromJson<int?>(json['stockTotal']),
+      stockThreshold: serializer.fromJson<int?>(json['stockThreshold']),
       stockRemaining: serializer.fromJson<int?>(json['stockRemaining']),
       isActive: serializer.fromJson<bool>(json['isActive']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -1457,7 +1460,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
         $MedicationsTable.$convertermealInstructionn.toJson(mealInstruction),
       ),
       'trackInventory': serializer.toJson<bool>(trackInventory),
-      'stockTotal': serializer.toJson<int?>(stockTotal),
+      'stockThreshold': serializer.toJson<int?>(stockThreshold),
       'stockRemaining': serializer.toJson<int?>(stockRemaining),
       'isActive': serializer.toJson<bool>(isActive),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -1473,7 +1476,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
     DoseUnit? doseUnit,
     Value<MealInstruction?> mealInstruction = const Value.absent(),
     bool? trackInventory,
-    Value<int?> stockTotal = const Value.absent(),
+    Value<int?> stockThreshold = const Value.absent(),
     Value<int?> stockRemaining = const Value.absent(),
     bool? isActive,
     DateTime? createdAt,
@@ -1488,7 +1491,9 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
         ? mealInstruction.value
         : this.mealInstruction,
     trackInventory: trackInventory ?? this.trackInventory,
-    stockTotal: stockTotal.present ? stockTotal.value : this.stockTotal,
+    stockThreshold: stockThreshold.present
+        ? stockThreshold.value
+        : this.stockThreshold,
     stockRemaining: stockRemaining.present
         ? stockRemaining.value
         : this.stockRemaining,
@@ -1511,9 +1516,9 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
       trackInventory: data.trackInventory.present
           ? data.trackInventory.value
           : this.trackInventory,
-      stockTotal: data.stockTotal.present
-          ? data.stockTotal.value
-          : this.stockTotal,
+      stockThreshold: data.stockThreshold.present
+          ? data.stockThreshold.value
+          : this.stockThreshold,
       stockRemaining: data.stockRemaining.present
           ? data.stockRemaining.value
           : this.stockRemaining,
@@ -1533,7 +1538,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
           ..write('doseUnit: $doseUnit, ')
           ..write('mealInstruction: $mealInstruction, ')
           ..write('trackInventory: $trackInventory, ')
-          ..write('stockTotal: $stockTotal, ')
+          ..write('stockThreshold: $stockThreshold, ')
           ..write('stockRemaining: $stockRemaining, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
@@ -1551,7 +1556,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
     doseUnit,
     mealInstruction,
     trackInventory,
-    stockTotal,
+    stockThreshold,
     stockRemaining,
     isActive,
     createdAt,
@@ -1568,7 +1573,7 @@ class MedicationRow extends DataClass implements Insertable<MedicationRow> {
           other.doseUnit == this.doseUnit &&
           other.mealInstruction == this.mealInstruction &&
           other.trackInventory == this.trackInventory &&
-          other.stockTotal == this.stockTotal &&
+          other.stockThreshold == this.stockThreshold &&
           other.stockRemaining == this.stockRemaining &&
           other.isActive == this.isActive &&
           other.createdAt == this.createdAt);
@@ -1583,7 +1588,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
   final Value<DoseUnit> doseUnit;
   final Value<MealInstruction?> mealInstruction;
   final Value<bool> trackInventory;
-  final Value<int?> stockTotal;
+  final Value<int?> stockThreshold;
   final Value<int?> stockRemaining;
   final Value<bool> isActive;
   final Value<DateTime> createdAt;
@@ -1596,7 +1601,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
     this.doseUnit = const Value.absent(),
     this.mealInstruction = const Value.absent(),
     this.trackInventory = const Value.absent(),
-    this.stockTotal = const Value.absent(),
+    this.stockThreshold = const Value.absent(),
     this.stockRemaining = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1610,7 +1615,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
     required DoseUnit doseUnit,
     this.mealInstruction = const Value.absent(),
     this.trackInventory = const Value.absent(),
-    this.stockTotal = const Value.absent(),
+    this.stockThreshold = const Value.absent(),
     this.stockRemaining = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1628,7 +1633,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
     Expression<String>? doseUnit,
     Expression<String>? mealInstruction,
     Expression<bool>? trackInventory,
-    Expression<int>? stockTotal,
+    Expression<int>? stockThreshold,
     Expression<int>? stockRemaining,
     Expression<bool>? isActive,
     Expression<DateTime>? createdAt,
@@ -1642,7 +1647,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
       if (doseUnit != null) 'dose_unit': doseUnit,
       if (mealInstruction != null) 'meal_instruction': mealInstruction,
       if (trackInventory != null) 'track_inventory': trackInventory,
-      if (stockTotal != null) 'stock_total': stockTotal,
+      if (stockThreshold != null) 'stock_threshold': stockThreshold,
       if (stockRemaining != null) 'stock_remaining': stockRemaining,
       if (isActive != null) 'is_active': isActive,
       if (createdAt != null) 'created_at': createdAt,
@@ -1658,7 +1663,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
     Value<DoseUnit>? doseUnit,
     Value<MealInstruction?>? mealInstruction,
     Value<bool>? trackInventory,
-    Value<int?>? stockTotal,
+    Value<int?>? stockThreshold,
     Value<int?>? stockRemaining,
     Value<bool>? isActive,
     Value<DateTime>? createdAt,
@@ -1672,7 +1677,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
       doseUnit: doseUnit ?? this.doseUnit,
       mealInstruction: mealInstruction ?? this.mealInstruction,
       trackInventory: trackInventory ?? this.trackInventory,
-      stockTotal: stockTotal ?? this.stockTotal,
+      stockThreshold: stockThreshold ?? this.stockThreshold,
       stockRemaining: stockRemaining ?? this.stockRemaining,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
@@ -1712,8 +1717,8 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
     if (trackInventory.present) {
       map['track_inventory'] = Variable<bool>(trackInventory.value);
     }
-    if (stockTotal.present) {
-      map['stock_total'] = Variable<int>(stockTotal.value);
+    if (stockThreshold.present) {
+      map['stock_threshold'] = Variable<int>(stockThreshold.value);
     }
     if (stockRemaining.present) {
       map['stock_remaining'] = Variable<int>(stockRemaining.value);
@@ -1738,7 +1743,7 @@ class MedicationsCompanion extends UpdateCompanion<MedicationRow> {
           ..write('doseUnit: $doseUnit, ')
           ..write('mealInstruction: $mealInstruction, ')
           ..write('trackInventory: $trackInventory, ')
-          ..write('stockTotal: $stockTotal, ')
+          ..write('stockThreshold: $stockThreshold, ')
           ..write('stockRemaining: $stockRemaining, ')
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt')
@@ -4110,7 +4115,7 @@ typedef $$MedicationsTableCreateCompanionBuilder =
       required DoseUnit doseUnit,
       Value<MealInstruction?> mealInstruction,
       Value<bool> trackInventory,
-      Value<int?> stockTotal,
+      Value<int?> stockThreshold,
       Value<int?> stockRemaining,
       Value<bool> isActive,
       Value<DateTime> createdAt,
@@ -4125,7 +4130,7 @@ typedef $$MedicationsTableUpdateCompanionBuilder =
       Value<DoseUnit> doseUnit,
       Value<MealInstruction?> mealInstruction,
       Value<bool> trackInventory,
-      Value<int?> stockTotal,
+      Value<int?> stockThreshold,
       Value<int?> stockRemaining,
       Value<bool> isActive,
       Value<DateTime> createdAt,
@@ -4257,8 +4262,8 @@ class $$MedicationsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get stockTotal => $composableBuilder(
-    column: $table.stockTotal,
+  ColumnFilters<int> get stockThreshold => $composableBuilder(
+    column: $table.stockThreshold,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4413,8 +4418,8 @@ class $$MedicationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get stockTotal => $composableBuilder(
-    column: $table.stockTotal,
+  ColumnOrderings<int> get stockThreshold => $composableBuilder(
+    column: $table.stockThreshold,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4514,8 +4519,8 @@ class $$MedicationsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get stockTotal => $composableBuilder(
-    column: $table.stockTotal,
+  GeneratedColumn<int> get stockThreshold => $composableBuilder(
+    column: $table.stockThreshold,
     builder: (column) => column,
   );
 
@@ -4668,7 +4673,7 @@ class $$MedicationsTableTableManager
                 Value<DoseUnit> doseUnit = const Value.absent(),
                 Value<MealInstruction?> mealInstruction = const Value.absent(),
                 Value<bool> trackInventory = const Value.absent(),
-                Value<int?> stockTotal = const Value.absent(),
+                Value<int?> stockThreshold = const Value.absent(),
                 Value<int?> stockRemaining = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -4681,7 +4686,7 @@ class $$MedicationsTableTableManager
                 doseUnit: doseUnit,
                 mealInstruction: mealInstruction,
                 trackInventory: trackInventory,
-                stockTotal: stockTotal,
+                stockThreshold: stockThreshold,
                 stockRemaining: stockRemaining,
                 isActive: isActive,
                 createdAt: createdAt,
@@ -4696,7 +4701,7 @@ class $$MedicationsTableTableManager
                 required DoseUnit doseUnit,
                 Value<MealInstruction?> mealInstruction = const Value.absent(),
                 Value<bool> trackInventory = const Value.absent(),
-                Value<int?> stockTotal = const Value.absent(),
+                Value<int?> stockThreshold = const Value.absent(),
                 Value<int?> stockRemaining = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -4709,7 +4714,7 @@ class $$MedicationsTableTableManager
                 doseUnit: doseUnit,
                 mealInstruction: mealInstruction,
                 trackInventory: trackInventory,
-                stockTotal: stockTotal,
+                stockThreshold: stockThreshold,
                 stockRemaining: stockRemaining,
                 isActive: isActive,
                 createdAt: createdAt,

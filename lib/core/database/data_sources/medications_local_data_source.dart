@@ -50,7 +50,7 @@ class MedicationsLocalDataSource {
     required DoseUnit doseUnit,
     required MealInstruction? mealInstruction,
     required bool trackInventory,
-    required int? stockTotal,
+    required int? stockThreshold,
     required int? stockRemaining,
   }) {
     return _db
@@ -64,7 +64,7 @@ class MedicationsLocalDataSource {
             doseUnit: doseUnit,
             mealInstruction: Value<MealInstruction?>(mealInstruction),
             trackInventory: Value<bool>(trackInventory),
-            stockTotal: Value<int?>(stockTotal),
+            stockThreshold: Value<int?>(stockThreshold),
             stockRemaining: Value<int?>(stockRemaining),
           ),
         );
@@ -96,21 +96,16 @@ class MedicationsLocalDataSource {
     );
   }
 
-  /// Sets the stock after a refill or a taken dose. [stockTotal] changes only
-  /// on a refill, so pass the existing value when just decrementing.
+  /// Sets the remaining stock after a refill or a taken dose.
   Future<int> updateStock({
     required int accountId,
     required int id,
-    required int? stockTotal,
     required int? stockRemaining,
   }) {
     return (_db.update(
       _db.medications,
     )..where((t) => t.accountId.equals(accountId) & t.id.equals(id))).write(
-      MedicationsCompanion(
-        stockTotal: Value<int?>(stockTotal),
-        stockRemaining: Value<int?>(stockRemaining),
-      ),
+      MedicationsCompanion(stockRemaining: Value<int?>(stockRemaining)),
     );
   }
 

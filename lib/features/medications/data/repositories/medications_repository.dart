@@ -5,6 +5,7 @@ import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_so
 import 'package:dose_tracker/core/database/data_sources/medications_local_data_source.dart';
 import 'package:dose_tracker/core/database/data_sources/profiles_local_data_source.dart';
 import 'package:dose_tracker/core/services/session_service.dart';
+import 'package:dose_tracker/core/utils/stock_policy.dart';
 import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_results.dart';
@@ -84,8 +85,9 @@ class MedicationsRepository {
 
   /// Saves a medication for [profileId] with its dose [times].
   ///
-  /// When [trackInventory] is true, [currentStock] becomes both the total
-  /// and the remaining stock; otherwise both stay empty.
+  /// When [trackInventory] is true, [currentStock] becomes the remaining
+  /// stock and [stockThreshold] the refill alert level; otherwise both stay
+  /// empty.
   Future<AddMedicationResult> addMedication({
     required int profileId,
     required String name,
@@ -95,18 +97,21 @@ class MedicationsRepository {
     required List<DoseTimeInput> times,
     required bool trackInventory,
     int? currentStock,
+    int stockThreshold = StockPolicy.defaultThreshold,
   }) async {
     final int accountId = _session.requireActiveAccountId();
 
     if (!MedicationMapper.isValidSchedule(times)) {
       return const AddMedicationInvalidSchedule();
     }
-    if (trackInventory && (currentStock == null || currentStock <= 0)) {
+    if (trackInventory &&
+        (currentStock == null || currentStock <= 0 || stockThreshold <= 0)) {
       return const AddMedicationInvalidStock();
     }
 
     final String trimmedName = name.trim();
     final int? stock = trackInventory ? currentStock : null;
+    final int? threshold = trackInventory ? stockThreshold : null;
 
     return _database.transaction<AddMedicationResult>(() async {
       final ProfileRow? profile = await _profiles.findById(
@@ -125,7 +130,7 @@ class MedicationsRepository {
         doseUnit: doseUnit,
         mealInstruction: mealInstruction,
         trackInventory: trackInventory,
-        stockTotal: stock,
+        stockThreshold: threshold,
         stockRemaining: stock,
       );
       await _doseTimes.replaceForMedication(
@@ -147,7 +152,7 @@ class MedicationsRepository {
           doseUnit: doseUnit,
           mealInstruction: mealInstruction,
           trackInventory: trackInventory,
-          stockTotal: stock,
+          stockThreshold: threshold,
           stockRemaining: stock,
           isActive: true,
           createdAt: DateTime.now(),

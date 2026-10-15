@@ -180,7 +180,7 @@ abstract final class ArTranslations {
     AppStrings.medsInventorySubtitle: 'ينقص العدد عند تسجيل كل جرعة',
     AppStrings.medsStockLabel: 'المخزون الحالي',
     AppStrings.medsStockNote:
-        'ستصلك تنبيهات إعادة التعبئة عند بقاء 10٪ من المخزون.',
+        'ستصلك تنبيهات إعادة التعبئة عند انخفاض المخزون.',
     AppStrings.medsSave: 'حفظ جدول الدواء',
     AppStrings.medsSaved: 'تمت إضافة الدواء',
     AppStrings.medsErrorProfileNotFound: 'هذا الفرد لم يعد موجوداً.',

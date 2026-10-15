@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 /// it is for, whether it is active, and its stock.
 ///
 /// It is built from a medication and its profile, never stored. The stock
-/// fields are null when [trackInventory] is false.
+/// fields are null when [trackInventory] is false. [stockThreshold] is the
+/// refill alert level.
 @immutable
 class InventoryItem {
   const InventoryItem({
@@ -19,7 +20,7 @@ class InventoryItem {
     required this.doseUnit,
     required this.isActive,
     required this.trackInventory,
-    required this.stockTotal,
+    required this.stockThreshold,
     required this.stockRemaining,
   });
 
@@ -31,24 +32,19 @@ class InventoryItem {
   final DoseUnit doseUnit;
   final bool isActive;
   final bool trackInventory;
-  final int? stockTotal;
+  final int? stockThreshold;
   final int? stockRemaining;
 
-  /// The part of the stock left, from 0 to 1, or null when not tracked.
-  double? get remainingFraction {
-    if (!trackInventory) {
-      return null;
-    }
-    return StockPolicy.remainingFraction(
-      total: stockTotal,
-      remaining: stockRemaining,
-    );
-  }
+  /// True when the stock is tracked and the count left is known.
+  bool get tracksStock => trackInventory && stockRemaining != null;
 
-  /// True when the stock is tracked and at or below the low-stock level.
+  /// True when the stock is tracked and at or below the refill alert level.
   bool get isLowStock {
     return trackInventory &&
-        StockPolicy.isLow(total: stockTotal, remaining: stockRemaining);
+        StockPolicy.isLow(
+          remaining: stockRemaining,
+          threshold: stockThreshold,
+        );
   }
 
   @override
@@ -62,7 +58,7 @@ class InventoryItem {
         other.doseUnit == doseUnit &&
         other.isActive == isActive &&
         other.trackInventory == trackInventory &&
-        other.stockTotal == stockTotal &&
+        other.stockThreshold == stockThreshold &&
         other.stockRemaining == stockRemaining;
   }
 
@@ -76,7 +72,7 @@ class InventoryItem {
     doseUnit,
     isActive,
     trackInventory,
-    stockTotal,
+    stockThreshold,
     stockRemaining,
   );
 }

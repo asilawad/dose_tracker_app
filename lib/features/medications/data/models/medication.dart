@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 ///
 /// Screens never see the database row. The repository builds this from it.
 /// Only the [id] travels between routes, never this object. Stock fields are
-/// null when [trackInventory] is false. [doseTimes] is ordered earliest first.
+/// null when [trackInventory] is false; [stockThreshold] is the refill alert
+/// level. [doseTimes] is ordered earliest first.
 @immutable
 class Medication {
   const Medication({
@@ -18,7 +19,7 @@ class Medication {
     required this.doseUnit,
     required this.mealInstruction,
     required this.trackInventory,
-    required this.stockTotal,
+    required this.stockThreshold,
     required this.stockRemaining,
     required this.isActive,
     required this.createdAt,
@@ -32,7 +33,7 @@ class Medication {
   final DoseUnit doseUnit;
   final MealInstruction? mealInstruction;
   final bool trackInventory;
-  final int? stockTotal;
+  final int? stockThreshold;
   final int? stockRemaining;
   final bool isActive;
 
@@ -50,7 +51,7 @@ class Medication {
         other.doseUnit == doseUnit &&
         other.mealInstruction == mealInstruction &&
         other.trackInventory == trackInventory &&
-        other.stockTotal == stockTotal &&
+        other.stockThreshold == stockThreshold &&
         other.stockRemaining == stockRemaining &&
         other.isActive == isActive &&
         other.createdAt == createdAt &&
@@ -66,7 +67,7 @@ class Medication {
     doseUnit,
     mealInstruction,
     trackInventory,
-    stockTotal,
+    stockThreshold,
     stockRemaining,
     isActive,
     createdAt,

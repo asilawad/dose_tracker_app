@@ -9,9 +9,9 @@ import 'package:drift/drift.dart';
 /// query can filter by account directly, which is the isolation rule.
 /// [doseAmount] and [doseUnit] are the strength, for example 500 mg. How many
 /// tablets are taken at each time is stored with the dose times, not here.
-/// Inventory fields are null when [trackInventory] is false. [stockTotal] is
-/// the amount at the last refill, and the fixed 10% low-stock alert is
-/// computed from it. Deleting a profile or account deletes its medications.
+/// Inventory fields are null when [trackInventory] is false. [stockThreshold]
+/// is the refill alert level: the stock is low when [stockRemaining] is at or
+/// below it. Deleting a profile or account deletes its medications.
 /// The name length limit is checked by form validation, not the table.
 @DataClassName('MedicationRow')
 class Medications extends Table {
@@ -34,7 +34,7 @@ class Medications extends Table {
   BoolColumn get trackInventory =>
       boolean().withDefault(const Constant(false))();
 
-  IntColumn get stockTotal => integer().nullable()();
+  IntColumn get stockThreshold => integer().nullable()();
 
   IntColumn get stockRemaining => integer().nullable()();
 

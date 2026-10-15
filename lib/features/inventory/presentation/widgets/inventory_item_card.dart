@@ -7,15 +7,13 @@ import 'package:dose_tracker/features/medications/presentation/medication_labels
 import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/persona_avatar.dart';
 import 'package:dose_tracker/views/widgets/status_badge.dart';
-import 'package:dose_tracker/views/widgets/stock_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// One medication in the inventory list: avatar, name with dose, who it is
-/// for and its stock total, a switch to pause or resume it, and the stock
-/// bar with the count left.
+/// for, a switch to pause or resume it, and the count left.
 ///
-/// A medication that does not track stock shows a note instead of the bar.
+/// A medication that does not track stock shows a note instead of the count.
 /// Low stock and paused medications show a labeled badge, so state never
 /// relies on color alone. Tapping the card calls [onRestock] (pass null when
 /// there is no stock to refill); the switch calls [onActiveChanged].
@@ -35,7 +33,6 @@ class InventoryItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColorTokens colors = context.appColors;
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final double? fraction = item.remainingFraction;
     final String title =
         '${item.medicationName} ${DoseFormatter.quantity(item.doseAmount)} '
         '${item.doseUnit.labelKey.tr}';
@@ -59,31 +56,7 @@ class InventoryItemCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.titleMedium,
                     ),
-                    Wrap(
-                      spacing: AppSizes.spaceSm,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: <Widget>[
-                        Text(item.profileName, style: textTheme.bodyMedium),
-                        if (fraction != null) ...<Widget>[
-                          Container(
-                            width: AppSizes.spaceXs,
-                            height: AppSizes.spaceXs,
-                            decoration: BoxDecoration(
-                              color: colors.textSecondary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          Text(
-                            AppStrings.inventoryTotal.trParams(<String, String>{
-                              'count': DoseFormatter.quantity(
-                                (item.stockTotal ?? 0).toDouble(),
-                              ),
-                            }),
-                            style: textTheme.bodyMedium,
-                          ),
-                        ],
-                      ],
-                    ),
+                    Text(item.profileName, style: textTheme.bodyMedium),
                   ],
                 ),
               ),
@@ -99,27 +72,16 @@ class InventoryItemCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSizes.spaceMd),
-          if (fraction == null)
+          if (!item.tracksStock)
             Text(AppStrings.inventoryNotTracked.tr, style: textTheme.bodyMedium)
           else
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: StockProgressBar(
-                    fraction: fraction,
-                    isLow: item.isLowStock,
-                  ),
+            Text(
+              AppStrings.inventoryLeft.trParams(<String, String>{
+                'count': DoseFormatter.quantity(
+                  (item.stockRemaining ?? 0).toDouble(),
                 ),
-                const SizedBox(width: AppSizes.spaceMd),
-                Text(
-                  AppStrings.inventoryLeft.trParams(<String, String>{
-                    'count': DoseFormatter.quantity(
-                      (item.stockRemaining ?? 0).toDouble(),
-                    ),
-                  }),
-                  style: textTheme.bodyMedium,
-                ),
-              ],
+              }),
+              style: textTheme.bodyMedium,
             ),
           if (item.isLowStock || !item.isActive)
             Padding(

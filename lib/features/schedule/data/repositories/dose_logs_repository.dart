@@ -22,8 +22,8 @@ import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.da
 /// Call it only after login. Taking a dose also lowers the medication's
 /// stock (when stock tracking is on) by the dose quantity rounded up, never
 /// below zero, in the same transaction as the log; changing or undoing a
-/// taken dose gives that amount back, never above the stock total. Doses of
-/// a day after today cannot be recorded.
+/// taken dose gives that amount back. Doses of a day after today cannot be
+/// recorded.
 class DoseLogsRepository {
   const DoseLogsRepository({
     required AppDatabase database,
@@ -284,7 +284,7 @@ class DoseLogsRepository {
   }
 
   /// Adds [delta] (negative to decrease) to the remaining stock when the
-  /// medication tracks stock, keeping it between zero and the stock total.
+  /// medication tracks stock, never letting it go below zero.
   Future<void> _changeStock({
     required int accountId,
     required int medicationId,
@@ -301,12 +301,10 @@ class DoseLogsRepository {
     if (medication == null || !medication.trackInventory || remaining == null) {
       return;
     }
-    final int cap = medication.stockTotal ?? remaining;
-    final int updated = (remaining + delta).clamp(0, cap).toInt();
+    final int updated = remaining + delta < 0 ? 0 : remaining + delta;
     await _medications.updateStock(
       accountId: accountId,
       id: medicationId,
-      stockTotal: medication.stockTotal,
       stockRemaining: updated,
     );
   }

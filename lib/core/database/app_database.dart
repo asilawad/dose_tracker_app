@@ -32,7 +32,7 @@ class AppDatabase extends _$AppDatabase {
   /// Database file name (the platform adds its own extension and folder).
   static const String fileName = 'dose_tracker';
 
-  static const int currentSchemaVersion = 1;
+  static const int currentSchemaVersion = 2;
 
   @override
   int get schemaVersion => currentSchemaVersion;
@@ -40,6 +40,19 @@ class AppDatabase extends _$AppDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (Migrator migrator) => migrator.createAll(),
+    onUpgrade: (Migrator migrator, int from, int to) async {
+      if (from < 2) {
+        // Version 2: the refill alert level replaces the stock total. Old
+        // medications keep their old 10% rule (at least 1).
+        await migrator.addColumn(medications, medications.stockThreshold);
+        await customStatement(
+          'UPDATE medications '
+          'SET stock_threshold = MAX(1, stock_total / 10) '
+          'WHERE track_inventory = 1 AND stock_total IS NOT NULL',
+        );
+        await migrator.dropColumn(medications, 'stock_total');
+      }
+    },
     beforeOpen: (OpeningDetails details) async {
       // SQLite ignores foreign keys unless enabled on every connection.
       // Cascading deletes (account -> profiles -> medications) rely on it.

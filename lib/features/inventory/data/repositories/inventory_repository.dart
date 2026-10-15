@@ -86,7 +86,7 @@ class InventoryRepository {
           doseUnit: medication.doseUnit,
           isActive: medication.isActive,
           trackInventory: medication.trackInventory,
-          stockTotal: medication.stockTotal,
+          stockThreshold: medication.stockThreshold,
           stockRemaining: medication.stockRemaining,
         ),
       );

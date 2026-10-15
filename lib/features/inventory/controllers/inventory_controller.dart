@@ -9,8 +9,7 @@ import 'package:dose_tracker/features/medications/data/repositories/medication_u
 import 'package:get/get.dart';
 
 /// State and actions of the Inventory tab: the live list of medications with
-/// their stock, the overall stock summary, the low-stock filter, and the
-/// pause and refill actions.
+/// their stock, the low-stock filter, and the pause and refill actions.
 ///
 /// A medication needs a refill when it is active, tracks stock and is at or
 /// below the low-stock level. The filter turns itself off when no medication
@@ -37,38 +36,6 @@ class InventoryController extends GetxController {
   }
 
   int get lowStockCount => items.where(_needsRefill).length;
-
-  bool get hasTrackedStock {
-    return items.any((InventoryItem item) => item.remainingFraction != null);
-  }
-
-  /// Stock left across every medication that tracks stock.
-  int get totalRemaining {
-    int sum = 0;
-    for (final InventoryItem item in items) {
-      if (item.remainingFraction != null) {
-        sum += item.stockRemaining ?? 0;
-      }
-    }
-    return sum;
-  }
-
-  /// The part of the combined stock still left, from 0 to 1, or null when
-  /// no medication tracks stock.
-  double? get totalFraction {
-    int remaining = 0;
-    int total = 0;
-    for (final InventoryItem item in items) {
-      if (item.remainingFraction != null) {
-        remaining += item.stockRemaining ?? 0;
-        total += item.stockTotal ?? 0;
-      }
-    }
-    if (total <= 0) {
-      return null;
-    }
-    return (remaining / total).clamp(0.0, 1.0).toDouble();
-  }
 
   @override
   void onInit() {
