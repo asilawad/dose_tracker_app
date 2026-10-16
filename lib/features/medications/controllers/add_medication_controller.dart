@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dose_tracker/core/constants/app_strings.dart';
+import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_source.dart'
+    show DoseTimeInput;
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
 import 'package:dose_tracker/features/medications/controllers/dose_times_editor.dart';
