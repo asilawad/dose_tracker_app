@@ -24,7 +24,7 @@ Medication _medication(int profileId, {bool isActive = true}) => Medication(
   doseUnit: DoseUnit.mg,
   mealInstruction: null,
   trackInventory: false,
-  stockTotal: null,
+  stockThreshold: null,
   stockRemaining: null,
   isActive: isActive,
   createdAt: DateTime(2026, 10, 1),
