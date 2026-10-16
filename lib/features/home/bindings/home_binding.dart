@@ -1,5 +1,7 @@
 import 'package:dose_tracker/features/home/controllers/home_controller.dart';
+import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
+import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:get/get.dart';
 
 /// Provides the [HomeController] for the Home tab. It is run by
@@ -8,7 +10,11 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<HomeController>(
-      () => HomeController(Get.find<ProfilesRepository>()),
+      () => HomeController(
+        Get.find<ProfilesRepository>(),
+        Get.find<MedicationsRepository>(),
+        Get.find<DoseLogsRepository>(),
+      ),
     );
   }
 }

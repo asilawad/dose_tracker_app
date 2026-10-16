@@ -1,8 +1,8 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/home/controllers/home_controller.dart';
+import 'package:dose_tracker/features/home/data/models/profile_summary.dart';
 import 'package:dose_tracker/features/home/presentation/widgets/profile_card.dart';
-import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/views/widgets/empty_state.dart';
 import 'package:dose_tracker/views/widgets/error_state.dart';
 import 'package:dose_tracker/views/widgets/loading_state.dart';
@@ -29,7 +29,7 @@ class HomeTabView extends GetView<HomeController> {
       if (controller.hasError.value) {
         return ErrorState(onRetry: controller.retry);
       }
-      if (controller.profiles.isEmpty) {
+      if (controller.summaries.isEmpty) {
         return EmptyState(
           icon: Icons.group_add_rounded,
           title: AppStrings.homeEmptyTitle.tr,
@@ -39,7 +39,7 @@ class HomeTabView extends GetView<HomeController> {
         );
       }
       return _ProfilesList(
-        profiles: controller.profiles.toList(),
+        summaries: controller.summaries.toList(),
         onAddProfile: controller.openAddProfile,
         onEditProfile: controller.openEditProfile,
       );
@@ -49,12 +49,12 @@ class HomeTabView extends GetView<HomeController> {
 
 class _ProfilesList extends StatelessWidget {
   const _ProfilesList({
-    required this.profiles,
+    required this.summaries,
     required this.onAddProfile,
     required this.onEditProfile,
   });
 
-  final List<Profile> profiles;
+  final List<ProfileSummary> summaries;
   final VoidCallback onAddProfile;
   final ValueChanged<int> onEditProfile;
 
@@ -73,8 +73,11 @@ class _ProfilesList extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: AppSizes.space2xl),
-        for (final Profile profile in profiles) ...<Widget>[
-          ProfileCard(profile: profile, onTap: () => onEditProfile(profile.id)),
+        for (final ProfileSummary summary in summaries) ...<Widget>[
+          ProfileCard(
+            summary: summary,
+            onTap: () => onEditProfile(summary.profile.id),
+          ),
           const SizedBox(height: AppSizes.gutter),
         ],
         const SizedBox(height: AppSizes.spaceSm),

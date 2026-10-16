@@ -125,6 +125,10 @@ abstract final class AppStrings {
   static const String homeEmptyTitle = 'home_empty_title';
   static const String homeEmptyMessage = 'home_empty_message';
   static const String homeAddProfile = 'home_add_profile';
+  static const String homeNoMedications = 'home_no_medications';
+  static const String homeMedicationCount = 'home_medication_count';
+  static const String homeNoDosesToday = 'home_no_doses_today';
+  static const String homeDosesProgress = 'home_doses_progress';
   static const String a11yAddMedication = 'a11y_add_medication';
 
   // ---- Settings ----

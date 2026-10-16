@@ -124,6 +124,10 @@ abstract final class ArTranslations {
     AppStrings.homeEmptyMessage:
         'أنشئ ملفاً لنفسك أو لمن ترعاه، ثم أضف أدويته.',
     AppStrings.homeAddProfile: 'إضافة فرد من العائلة',
+    AppStrings.homeNoMedications: 'لا أدوية بعد',
+    AppStrings.homeMedicationCount: '@count أدوية',
+    AppStrings.homeNoDosesToday: 'لا جرعات اليوم',
+    AppStrings.homeDosesProgress: 'أُخذ @taken من @total اليوم',
     AppStrings.a11yAddMedication: 'إضافة دواء',
 
     // ---- Settings ----

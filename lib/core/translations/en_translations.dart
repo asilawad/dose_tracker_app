@@ -129,6 +129,10 @@ abstract final class EnTranslations {
         'Create a profile for yourself or someone you care for, then add '
         'their medications.',
     AppStrings.homeAddProfile: 'Add family member',
+    AppStrings.homeNoMedications: 'No medications yet',
+    AppStrings.homeMedicationCount: '@count medications',
+    AppStrings.homeNoDosesToday: 'No doses today',
+    AppStrings.homeDosesProgress: '@taken of @total taken today',
     AppStrings.a11yAddMedication: 'Add medication',
 
     // ---- Settings ----
