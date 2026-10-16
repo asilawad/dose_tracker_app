@@ -133,6 +133,9 @@ abstract final class EnTranslations {
     AppStrings.homeMedicationCount: '@count medications',
     AppStrings.homeNoDosesToday: 'No doses today',
     AppStrings.homeDosesProgress: '@taken of @total taken today',
+    AppStrings.profileDetailTitle: 'Family member',
+    AppStrings.profileTodaySection: 'Today',
+    AppStrings.profileMedicationsSection: 'Medications',
     AppStrings.a11yAddMedication: 'Add medication',
 
     // ---- Settings ----

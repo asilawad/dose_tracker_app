@@ -128,6 +128,9 @@ abstract final class ArTranslations {
     AppStrings.homeMedicationCount: '@count أدوية',
     AppStrings.homeNoDosesToday: 'لا جرعات اليوم',
     AppStrings.homeDosesProgress: 'أُخذ @taken من @total اليوم',
+    AppStrings.profileDetailTitle: 'فرد من العائلة',
+    AppStrings.profileTodaySection: 'اليوم',
+    AppStrings.profileMedicationsSection: 'الأدوية',
     AppStrings.a11yAddMedication: 'إضافة دواء',
 
     // ---- Settings ----

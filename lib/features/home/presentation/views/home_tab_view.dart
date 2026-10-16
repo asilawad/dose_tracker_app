@@ -41,7 +41,7 @@ class HomeTabView extends GetView<HomeController> {
       return _ProfilesList(
         summaries: controller.summaries.toList(),
         onAddProfile: controller.openAddProfile,
-        onEditProfile: controller.openEditProfile,
+        onOpenProfile: controller.openProfile,
       );
     });
   }
@@ -51,12 +51,12 @@ class _ProfilesList extends StatelessWidget {
   const _ProfilesList({
     required this.summaries,
     required this.onAddProfile,
-    required this.onEditProfile,
+    required this.onOpenProfile,
   });
 
   final List<ProfileSummary> summaries;
   final VoidCallback onAddProfile;
-  final ValueChanged<int> onEditProfile;
+  final ValueChanged<int> onOpenProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class _ProfilesList extends StatelessWidget {
         for (final ProfileSummary summary in summaries) ...<Widget>[
           ProfileCard(
             summary: summary,
-            onTap: () => onEditProfile(summary.profile.id),
+            onTap: () => onOpenProfile(summary.profile.id),
           ),
           const SizedBox(height: AppSizes.gutter),
         ],

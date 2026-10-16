@@ -129,6 +129,9 @@ abstract final class AppStrings {
   static const String homeMedicationCount = 'home_medication_count';
   static const String homeNoDosesToday = 'home_no_doses_today';
   static const String homeDosesProgress = 'home_doses_progress';
+  static const String profileDetailTitle = 'profile_detail_title';
+  static const String profileTodaySection = 'profile_today_section';
+  static const String profileMedicationsSection = 'profile_medications_section';
   static const String a11yAddMedication = 'a11y_add_medication';
 
   // ---- Settings ----

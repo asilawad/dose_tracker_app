@@ -52,8 +52,8 @@ class HomeController extends GetxController {
     Get.toNamed<void>(AppRoutes.addProfile);
   }
 
-  void openEditProfile(int profileId) {
-    Get.toNamed<void>(AppRoutes.editProfile, arguments: profileId);
+  void openProfile(int profileId) {
+    Get.toNamed<void>(AppRoutes.profile, arguments: profileId);
   }
 
   void _listen() {
