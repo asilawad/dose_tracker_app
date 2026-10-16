@@ -162,7 +162,7 @@ class ProfileDetailController extends GetxController {
     }
     _closing = true;
     Get.until(
-      (Route<dynamic> route) => route.settings.name == AppRoutes.home,
+      (route) => route.settings.name == AppRoutes.home,
     );
   }
 
