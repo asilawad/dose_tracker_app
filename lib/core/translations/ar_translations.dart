@@ -272,23 +272,10 @@ abstract final class ArTranslations {
         'ذلك.',
     AppStrings.profilesDeleted: 'تم حذف الملف الشخصي',
 
-    // ---- Adherence calendar ----
-    AppStrings.calendarTitle: 'تقويم الالتزام',
-    AppStrings.calendarSettingsRowTitle: 'تقويم الالتزام',
-    AppStrings.calendarAdherenceBadge: 'الالتزام @percent',
-    AppStrings.calendarLegendAllTaken: 'كلها مأخوذة',
-    AppStrings.calendarLegendPartial: 'جزئي',
-    AppStrings.calendarLegendMissed: 'فائتة',
-    AppStrings.calendarSelectedDay: 'اليوم المختار',
-    AppStrings.calendarDosesLogged: 'الجرعات المسجّلة',
-    AppStrings.calendarDayEmpty: 'لا توجد جرعات في هذا اليوم',
-    AppStrings.calendarLogNow: 'سجّل الآن',
+    // ---- Report empty state ----
     AppStrings.calendarEmptyTitle: 'لا يوجد أفراد بعد',
     AppStrings.calendarEmptyMessage:
         'أضف فرداً من العائلة وأدويته لتتابع الالتزام هنا.',
-    AppStrings.a11yPreviousMonth: 'الشهر السابق',
-    AppStrings.a11yNextMonth: 'الشهر التالي',
-    AppStrings.a11yOpenCalendar: 'فتح تقويم الالتزام',
 
     // ---- Doctor's report ----
     AppStrings.reportTitle: 'تقرير الطبيب',

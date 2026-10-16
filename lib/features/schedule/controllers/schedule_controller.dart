@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_log_results.dart';
@@ -57,10 +56,6 @@ class ScheduleController extends GetxController {
   }
 
   void retry() => _listen();
-
-  void openCalendar() {
-    Get.toNamed<void>(AppRoutes.calendar);
-  }
 
   void selectDate(DateTime date) {
     final DateTime day = DosePlanner.dayStart(date);

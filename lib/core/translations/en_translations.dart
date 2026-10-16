@@ -281,23 +281,10 @@ abstract final class EnTranslations {
         'deleted. This cannot be undone.',
     AppStrings.profilesDeleted: 'Profile deleted',
 
-    // ---- Adherence calendar ----
-    AppStrings.calendarTitle: 'Adherence Calendar',
-    AppStrings.calendarSettingsRowTitle: 'Adherence calendar',
-    AppStrings.calendarAdherenceBadge: '@percent adherence',
-    AppStrings.calendarLegendAllTaken: 'All taken',
-    AppStrings.calendarLegendPartial: 'Partial',
-    AppStrings.calendarLegendMissed: 'Missed',
-    AppStrings.calendarSelectedDay: 'Selected day',
-    AppStrings.calendarDosesLogged: 'Doses logged',
-    AppStrings.calendarDayEmpty: 'No doses on this day',
-    AppStrings.calendarLogNow: 'Log now',
+    // ---- Report empty state ----
     AppStrings.calendarEmptyTitle: 'No family members yet',
     AppStrings.calendarEmptyMessage:
         'Add a family member and their medications to follow adherence here.',
-    AppStrings.a11yPreviousMonth: 'Previous month',
-    AppStrings.a11yNextMonth: 'Next month',
-    AppStrings.a11yOpenCalendar: 'Open adherence calendar',
 
     // ---- Doctor's report ----
     AppStrings.reportTitle: "Doctor's Report",

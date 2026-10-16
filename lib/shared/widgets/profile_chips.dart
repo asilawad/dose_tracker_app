@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 ///
 /// [onSelect] gets the id of the tapped profile. Each pill is a button of
 /// at least 48 px that announces its name and whether it is selected.
-class CalendarProfileChips extends StatelessWidget {
-  const CalendarProfileChips({
+class ProfileChips extends StatelessWidget {
+  const ProfileChips({
     required this.profiles,
     required this.selectedId,
     required this.onSelect,

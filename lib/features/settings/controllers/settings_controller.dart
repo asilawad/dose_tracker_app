@@ -49,10 +49,6 @@ class SettingsController extends GetxController {
     return _language.changeLanguage(locale);
   }
 
-  void openCalendar() {
-    Get.toNamed<void>(AppRoutes.calendar);
-  }
-
   void openReport() {
     Get.toNamed<void>(AppRoutes.report);
   }

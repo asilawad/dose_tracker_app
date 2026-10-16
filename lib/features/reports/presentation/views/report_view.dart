@@ -1,7 +1,6 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
-import 'package:dose_tracker/features/calendar/presentation/widgets/calendar_profile_chips.dart';
 import 'package:dose_tracker/features/reports/controllers/report_controller.dart';
 import 'package:dose_tracker/features/reports/data/models/doctor_report.dart';
 import 'package:dose_tracker/features/reports/presentation/widgets/report_interval_card.dart';
@@ -10,6 +9,7 @@ import 'package:dose_tracker/features/reports/presentation/widgets/report_medica
 import 'package:dose_tracker/features/reports/presentation/widgets/report_missed_card.dart';
 import 'package:dose_tracker/features/reports/presentation/widgets/report_notes_card.dart';
 import 'package:dose_tracker/features/reports/presentation/widgets/report_overview_card.dart';
+import 'package:dose_tracker/shared/widgets/profile_chips.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/empty_state.dart';
 import 'package:dose_tracker/views/widgets/error_state.dart';
@@ -72,7 +72,7 @@ class ReportView extends GetView<ReportController> {
         return ListView(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceLg),
           children: <Widget>[
-            CalendarProfileChips(
+            ProfileChips(
               profiles: controller.profiles.toList(),
               selectedId: controller.selectedProfileId.value,
               onSelect: controller.selectProfile,

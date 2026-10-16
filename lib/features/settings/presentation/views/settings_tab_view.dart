@@ -15,8 +15,7 @@ import 'package:get/get.dart';
 /// The Settings tab: notifications and language (each opens a bottom
 /// sheet), the Appearance row (visible but disabled for now) and Log Out.
 ///
-/// It is a body only; the main shell owns the scaffold. Calendar and
-/// Report rows are added with those screens. The controller comes from
+/// It is a body only; the main shell owns the scaffold. The controller comes from
 /// `SettingsBinding`.
 class SettingsTabView extends GetView<SettingsController> {
   const SettingsTabView({super.key});
@@ -70,12 +69,6 @@ class SettingsTabView extends GetView<SettingsController> {
                 : AppStrings.notifStateOff.tr,
             onTap: _openNotificationsSheet,
           ),
-        ),
-        const SizedBox(height: AppSizes.gutter),
-        SettingsRow(
-          icon: Icons.calendar_month_outlined,
-          title: AppStrings.calendarSettingsRowTitle.tr,
-          onTap: controller.openCalendar,
         ),
         const SizedBox(height: AppSizes.gutter),
         SettingsRow(
