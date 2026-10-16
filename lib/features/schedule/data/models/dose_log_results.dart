@@ -6,7 +6,9 @@ sealed class LogDoseResult {
 }
 
 final class LogDoseSuccess extends LogDoseResult {
-  const LogDoseSuccess();
+  const LogDoseSuccess({required this.logId});
+
+  final int logId;
 }
 
 /// The medication is not in the logged-in account, or it has no dose at the

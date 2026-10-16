@@ -197,21 +197,19 @@ abstract final class AppStrings {
 
   // ---- Schedule ----
   static const String scheduleToday = 'schedule_today';
+  static const String scheduleDoseTaken = 'schedule_dose_taken';
+  static const String scheduleUndo = 'schedule_undo';
+  static const String scheduleAllDone = 'schedule_all_done';
+  static const String scheduleTakenProgress = 'schedule_taken_progress';
   static const String scheduleEmptyTitle = 'schedule_empty_title';
   static const String scheduleEmptyMessage = 'schedule_empty_message';
-  static const String scheduleFutureNote = 'schedule_future_note';
-  static const String scheduleStatePending = 'schedule_state_pending';
-  static const String scheduleStateTaken = 'schedule_state_taken';
-  static const String scheduleStateTakenLate = 'schedule_state_taken_late';
-  static const String scheduleStateSkipped = 'schedule_state_skipped';
   static const String scheduleStateMissed = 'schedule_state_missed';
   static const String scheduleSkipTitle = 'schedule_skip_title';
   static const String scheduleSkipReasonLabel = 'schedule_skip_reason_label';
   static const String scheduleSkipReasonHint = 'schedule_skip_reason_hint';
+  static const String scheduleStateSkipped = 'schedule_state_skipped';
   static const String a11yMarkTaken = 'a11y_mark_taken';
   static const String a11yUndoTaken = 'a11y_undo_taken';
-  static const String a11yPreviousWeek = 'a11y_previous_week';
-  static const String a11yNextWeek = 'a11y_next_week';
 
   // ---- Inventory ----
   static const String inventoryTitle = 'inventory_title';

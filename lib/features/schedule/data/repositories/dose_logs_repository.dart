@@ -254,7 +254,7 @@ class DoseLogsRepository {
           );
       final bool isTaking = _wasTaken(status);
 
-      await _doseLogs.upsert(
+      final int logId = await _doseLogs.upsert(
         accountId: accountId,
         profileId: medication.profileId,
         medicationId: medicationId,
@@ -279,7 +279,7 @@ class DoseLogsRepository {
         medicationId: medicationId,
         delta: delta,
       );
-      return const LogDoseSuccess();
+      return LogDoseSuccess(logId: logId);
     });
   }
 

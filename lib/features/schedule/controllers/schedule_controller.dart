@@ -7,99 +7,94 @@ import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-/// State and actions of the Schedule tab: the chosen day, the week shown in
-/// the day strip, the live list of that day's doses, and the loading and
-/// error flags.
-///
-/// The list updates by itself when a dose is recorded, because it listens to
-/// the repository stream; choosing another day listens to that day instead.
-/// Doses of a day after today cannot be recorded, so the actions do nothing
-/// there (the screen also disables them). Pressing a taken dose again
-/// undoes it; any other dose is taken.
-class ScheduleController extends GetxController {
+/// State and actions for today's doses.
+class ScheduleController extends GetxController with WidgetsBindingObserver {
   ScheduleController(this._doseLogs);
+
+  static const Duration _checkedHold = Duration(milliseconds: 600);
 
   final DoseLogsRepository _doseLogs;
 
-  /// The week in the day strip starts on this weekday.
-  static const int weekStartWeekday = DateTime.sunday;
-
-  final Rx<DateTime> selectedDate = DosePlanner.dayStart(DateTime.now()).obs;
   final RxList<ScheduledDose> doses = <ScheduledDose>[].obs;
+  final RxSet<String> _justChecked = <String>{}.obs;
   final RxBool isLoading = true.obs;
   final RxBool hasError = false.obs;
 
   StreamSubscription<List<ScheduledDose>>? _subscription;
 
-  /// The seven days of the week that contains the chosen day.
-  List<DateTime> get weekDays {
-    final DateTime day = selectedDate.value;
-    final int offset = (day.weekday - weekStartWeekday) % DateTime.daysPerWeek;
-    return <DateTime>[
-      for (int index = 0; index < DateTime.daysPerWeek; index++)
-        DateTime(day.year, day.month, day.day - offset + index),
-    ];
-  }
+  List<ScheduledDose> get visible => doses
+      .where(
+        (ScheduledDose dose) =>
+            dose.state == DoseState.pending ||
+            dose.state == DoseState.missed ||
+            _justChecked.contains(dose.key),
+      )
+      .toList();
 
-  bool get isToday => selectedDate.value == _today;
+  final Map<String, int> _checkedLogIds = <String, int>{};
 
-  bool get isFutureDay => selectedDate.value.isAfter(_today);
+  bool isJustChecked(ScheduledDose dose) => _justChecked.contains(dose.key);
 
-  DateTime get _today => DosePlanner.dayStart(DateTime.now());
+  int get takenCount => doses
+      .where(
+        (ScheduledDose dose) =>
+            dose.state == DoseState.taken || dose.state == DoseState.takenLate,
+      )
+      .length;
+
+  int get totalCount => doses.length;
 
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     _listen();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _listen();
+    }
   }
 
   void retry() => _listen();
 
-  void selectDate(DateTime date) {
-    final DateTime day = DosePlanner.dayStart(date);
-    if (day == selectedDate.value) {
+  Future<void> check(ScheduledDose dose) async {
+    if (!_justChecked.add(dose.key)) {
       return;
     }
-    selectedDate.value = day;
-    _listen();
+    final LogDoseResult result = await _doseLogs.takeDose(
+      medicationId: dose.medicationId,
+      date: dose.date,
+      minuteOfDay: dose.minuteOfDay,
+    );
+    if (result is! LogDoseSuccess) {
+      _justChecked.remove(dose.key);
+      _showLogError(result);
+      return;
+    }
+    _checkedLogIds[dose.key] = result.logId;
+    AppSnackbar.undo(AppStrings.scheduleDoseTaken.tr, () => undo(dose));
+    Future<void>.delayed(_checkedHold, () {
+      _justChecked.remove(dose.key);
+    });
   }
 
-  void goToToday() => selectDate(DateTime.now());
-
-  /// Moves the chosen day by whole weeks (negative goes back).
-  void shiftWeeks(int weeks) {
-    final DateTime day = selectedDate.value;
-    selectDate(
-      DateTime(day.year, day.month, day.day + weeks * DateTime.daysPerWeek),
-    );
-  }
-
-  /// Takes a pending, missed or skipped dose, or undoes a taken one.
-  Future<void> toggleDose(ScheduledDose dose) async {
-    if (isFutureDay) {
-      return;
+  Future<void> undo(ScheduledDose dose) async {
+    _justChecked.remove(dose.key);
+    final int? logId =
+        _checkedLogIds.remove(dose.key) ??
+        doses.firstWhereOrNull((ScheduledDose current) => current.key == dose.key)?.logId;
+    if (logId != null) {
+      await undoDose(logId);
     }
-    final bool wasTaken =
-        dose.state == DoseState.taken || dose.state == DoseState.takenLate;
-    if (wasTaken) {
-      await undoDose(dose);
-      return;
-    }
-    _showLogError(
-      await _doseLogs.takeDose(
-        medicationId: dose.medicationId,
-        date: dose.date,
-        minuteOfDay: dose.minuteOfDay,
-      ),
-    );
   }
 
   Future<void> skipDose(ScheduledDose dose, {String? reason}) async {
-    if (isFutureDay) {
-      return;
-    }
     _showLogError(
       await _doseLogs.skipDose(
         medicationId: dose.medicationId,
@@ -110,12 +105,7 @@ class ScheduleController extends GetxController {
     );
   }
 
-  /// Puts a recorded dose back to pending.
-  Future<void> undoDose(ScheduledDose dose) async {
-    final int? logId = dose.logId;
-    if (logId == null) {
-      return;
-    }
+  Future<void> undoDose(int logId) async {
     final UndoDoseResult result = await _doseLogs.undoDose(logId);
     switch (result) {
       case UndoDoseSuccess():
@@ -140,7 +130,7 @@ class ScheduleController extends GetxController {
     isLoading.value = true;
     _subscription?.cancel();
     _subscription = _doseLogs
-        .watchDay(selectedDate.value)
+        .watchDay(DosePlanner.dayStart(DateTime.now()))
         .listen(
           (List<ScheduledDose> list) {
             doses.assignAll(list);
@@ -156,6 +146,7 @@ class ScheduleController extends GetxController {
 
   @override
   void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
     _subscription?.cancel();
     super.onClose();
   }

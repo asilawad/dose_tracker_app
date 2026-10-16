@@ -206,23 +206,20 @@ abstract final class EnTranslations {
 
     // ---- Schedule ----
     AppStrings.scheduleToday: 'Today',
-    AppStrings.scheduleEmptyTitle: 'No doses on this day',
+    AppStrings.scheduleDoseTaken: 'Dose taken',
+    AppStrings.scheduleUndo: 'Undo',
+    AppStrings.scheduleAllDone: 'All done for today',
+    AppStrings.scheduleTakenProgress: '@taken of @total taken',
+    AppStrings.scheduleEmptyTitle: 'No doses today',
     AppStrings.scheduleEmptyMessage:
         'Add a medication and its doses will show up here.',
-    AppStrings.scheduleFutureNote:
-        "Doses of future days can't be recorded yet.",
-    AppStrings.scheduleStatePending: 'Pending',
-    AppStrings.scheduleStateTaken: 'Taken',
-    AppStrings.scheduleStateTakenLate: 'Taken late',
-    AppStrings.scheduleStateSkipped: 'Skipped',
     AppStrings.scheduleStateMissed: 'Missed',
     AppStrings.scheduleSkipTitle: 'Skip this dose?',
     AppStrings.scheduleSkipReasonLabel: 'Reason (optional)',
     AppStrings.scheduleSkipReasonHint: 'For example: felt unwell',
+    AppStrings.scheduleStateSkipped: 'Skipped',
     AppStrings.a11yMarkTaken: 'Mark dose as taken',
     AppStrings.a11yUndoTaken: 'Undo taken dose',
-    AppStrings.a11yPreviousWeek: 'Previous week',
-    AppStrings.a11yNextWeek: 'Next week',
 
     // ---- Inventory ----
     AppStrings.inventoryTitle: 'Medicine Cabinet',
