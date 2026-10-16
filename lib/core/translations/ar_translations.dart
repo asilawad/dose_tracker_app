@@ -131,7 +131,7 @@ abstract final class ArTranslations {
     AppStrings.profileDetailTitle: 'فرد من العائلة',
     AppStrings.profileTodaySection: 'اليوم',
     AppStrings.profileMedicationsSection: 'الأدوية',
-    AppStrings.a11yAddMedication: 'إضافة دواء',
+    AppStrings.profileAddMedication: 'إضافة دواء',
 
     // ---- Settings ----
     AppStrings.settingsLanguage: 'اللغة',
@@ -160,9 +160,6 @@ abstract final class ArTranslations {
     // ---- Medications: Add Medication ----
     AppStrings.medsAddTitle: 'إضافة دواء جديد',
     AppStrings.medsRecipientLabel: 'متلقي الجرعة',
-    AppStrings.medsRecipientChange: 'تغيير',
-    AppStrings.medsRecipientSheetTitle: 'لمن هذا الدواء؟',
-    AppStrings.medsNoProfiles: 'أضف فرداً من العائلة أولاً',
     AppStrings.medsNameLabel: 'اسم الدواء / المكمّل',
     AppStrings.medsNameHint: 'مثال: ميتفورمين',
     AppStrings.medsDoseLabel: 'مقدار الجرعة ووحدتها',

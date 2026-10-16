@@ -10,6 +10,7 @@ import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/presentation/widgets/dose_tile.dart';
 import 'package:dose_tracker/views/widgets/error_state.dart';
 import 'package:dose_tracker/views/widgets/loading_state.dart';
+import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:dose_tracker/views/widgets/screen_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,6 +69,12 @@ class ProfileDetailView extends GetView<ProfileDetailController> {
             ],
             const SizedBox(height: AppSizes.spaceMd),
             _SectionTitle(AppStrings.profileMedicationsSection.tr),
+            OutlinedActionButton(
+              label: AppStrings.profileAddMedication.tr,
+              icon: Icons.add_rounded,
+              onPressed: controller.openAddMedication,
+            ),
+            const SizedBox(height: AppSizes.gutter),
             if (medications.isEmpty)
               _EmptyLine(AppStrings.homeNoMedications.tr),
             for (final Medication medication in medications) ...<Widget>[

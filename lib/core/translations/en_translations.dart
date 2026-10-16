@@ -136,7 +136,7 @@ abstract final class EnTranslations {
     AppStrings.profileDetailTitle: 'Family member',
     AppStrings.profileTodaySection: 'Today',
     AppStrings.profileMedicationsSection: 'Medications',
-    AppStrings.a11yAddMedication: 'Add medication',
+    AppStrings.profileAddMedication: 'Add medication',
 
     // ---- Settings ----
     AppStrings.settingsLanguage: 'Language',
@@ -165,9 +165,6 @@ abstract final class EnTranslations {
     // ---- Medications: Add Medication ----
     AppStrings.medsAddTitle: 'Add New Medication',
     AppStrings.medsRecipientLabel: 'Dose recipient',
-    AppStrings.medsRecipientChange: 'Change',
-    AppStrings.medsRecipientSheetTitle: 'Who is this medication for?',
-    AppStrings.medsNoProfiles: 'Add a family member first',
     AppStrings.medsNameLabel: 'Medication / supplement name',
     AppStrings.medsNameHint: 'For example: Metformin',
     AppStrings.medsDoseLabel: 'Dose amount & unit',

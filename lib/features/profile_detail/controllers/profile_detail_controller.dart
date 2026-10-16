@@ -67,6 +67,13 @@ class ProfileDetailController extends GetxController {
     }
   }
 
+  void openAddMedication() {
+    final int? id = _profileId;
+    if (id != null) {
+      Get.toNamed<void>(AppRoutes.addMedication, arguments: id);
+    }
+  }
+
   Future<void> toggleDose(ScheduledDose dose) async {
     final bool wasTaken =
         dose.state == DoseState.taken || dose.state == DoseState.takenLate;

@@ -132,7 +132,7 @@ abstract final class AppStrings {
   static const String profileDetailTitle = 'profile_detail_title';
   static const String profileTodaySection = 'profile_today_section';
   static const String profileMedicationsSection = 'profile_medications_section';
-  static const String a11yAddMedication = 'a11y_add_medication';
+  static const String profileAddMedication = 'profile_add_medication';
 
   // ---- Settings ----
   static const String settingsLanguage = 'settings_language';
@@ -160,9 +160,6 @@ abstract final class AppStrings {
   // ---- Medications: Add Medication ----
   static const String medsAddTitle = 'meds_add_title';
   static const String medsRecipientLabel = 'meds_recipient_label';
-  static const String medsRecipientChange = 'meds_recipient_change';
-  static const String medsRecipientSheetTitle = 'meds_recipient_sheet_title';
-  static const String medsNoProfiles = 'meds_no_profiles';
   static const String medsNameLabel = 'meds_name_label';
   static const String medsNameHint = 'meds_name_hint';
   static const String medsDoseLabel = 'meds_dose_label';

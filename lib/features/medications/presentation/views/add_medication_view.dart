@@ -17,9 +17,9 @@ import 'package:get/get.dart';
 /// is for, name and dose, daily frequency, schedule, meal instruction,
 /// inventory) followed by the Save button.
 ///
-/// It is opened on top of the main shell, so the back arrow (mirrored in
-/// RTL) returns there, and a successful save closes it. The controller
-/// comes from `AddMedicationBinding`.
+/// It is opened from a profile's page, which passes the profile id, so the
+/// back arrow (mirrored in RTL) returns there and a successful save closes
+/// it. The controller comes from `AddMedicationBinding`.
 class AddMedicationView extends GetView<AddMedicationController> {
   const AddMedicationView({super.key});
 

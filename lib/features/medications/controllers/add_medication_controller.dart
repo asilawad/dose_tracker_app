@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_source.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
 import 'package:dose_tracker/features/medications/controllers/dose_times_editor.dart';
@@ -14,26 +13,27 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 /// State and actions of the Add Medication screen: the text fields, the
-/// chosen profile, unit and meal instruction, the dose times and the stock
-/// switch.
+/// unit and meal instruction, the dose times and the stock switch.
 ///
+/// The screen is opened from one profile's page, so the recipient is fixed:
+/// [_profileId] comes from the route arguments and cannot be changed here.
 /// The dose times live in a [DoseTimesEditor]; this controller only forwards
-/// to it, so the screen widgets use one object. The first profile is chosen
-/// by default. [submit] returns true when the medication was saved, and then
-/// closes the screen.
+/// to it, so the screen widgets use one object. [submit] returns true when
+/// the medication was saved, and then closes the screen.
 class AddMedicationController extends GetxController {
-  AddMedicationController(this._profiles, this._medications);
+  AddMedicationController(this._profiles, this._medications, this._profileId);
 
   final ProfilesRepository _profiles;
   final MedicationsRepository _medications;
+  final int? _profileId;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController doseController = TextEditingController();
   final TextEditingController stockController = TextEditingController();
 
-  final RxList<Profile> profiles = <Profile>[].obs;
-  final Rxn<int> selectedProfileId = Rxn<int>();
+  /// The recipient, or null while loading or if the profile was deleted.
+  final Rxn<Profile> profile = Rxn<Profile>();
   final Rx<DoseUnit> doseUnit = DoseUnit.mg.obs;
   final Rxn<MealInstruction> mealInstruction = Rxn<MealInstruction>();
   final RxBool trackInventory = false.obs;
@@ -42,17 +42,6 @@ class AddMedicationController extends GetxController {
   final DoseTimesEditor _timesEditor = DoseTimesEditor();
 
   StreamSubscription<List<Profile>>? _subscription;
-
-  /// The chosen profile, or null while the list is empty or loading.
-  Profile? get selectedProfile {
-    final int? id = selectedProfileId.value;
-    for (final Profile profile in profiles) {
-      if (profile.id == id) {
-        return profile;
-      }
-    }
-    return null;
-  }
 
   RxList<DoseTimeInput> get times => _timesEditor.times;
 
@@ -74,10 +63,6 @@ class AddMedicationController extends GetxController {
 
   String? validateStock(String? value) {
     return trackInventory.value ? Validators.positiveInteger(value) : null;
-  }
-
-  void selectProfile(int id) {
-    selectedProfileId.value = id;
   }
 
   void selectUnit(DoseUnit unit) {
@@ -124,19 +109,19 @@ class AddMedicationController extends GetxController {
     if (!(formKey.currentState?.validate() ?? false)) {
       return false;
     }
-    final Profile? profile = selectedProfile;
+    final int? profileId = _profileId;
     final double? doseAmount = Validators.parsePositiveNumber(
       doseController.text,
     );
-    if (profile == null || doseAmount == null) {
-      AppSnackbar.error(AppStrings.medsNoProfiles.tr);
+    if (profileId == null || doseAmount == null) {
+      AppSnackbar.error(AppStrings.medsErrorProfileNotFound.tr);
       return false;
     }
 
     isLoading.value = true;
     try {
       final AddMedicationResult result = await _medications.addMedication(
-        profileId: profile.id,
+        profileId: profileId,
         name: nameController.text,
         doseAmount: doseAmount,
         doseUnit: doseUnit.value,
@@ -166,13 +151,14 @@ class AddMedicationController extends GetxController {
   }
 
   void _onProfiles(List<Profile> list) {
-    profiles.assignAll(list);
-    final bool stillExists = list.any(
-      (Profile profile) => profile.id == selectedProfileId.value,
-    );
-    if (!stillExists) {
-      selectedProfileId.value = list.isEmpty ? null : list.first.id;
+    Profile? found;
+    for (final Profile candidate in list) {
+      if (candidate.id == _profileId) {
+        found = candidate;
+        break;
+      }
     }
+    profile.value = found;
   }
 
   @override
