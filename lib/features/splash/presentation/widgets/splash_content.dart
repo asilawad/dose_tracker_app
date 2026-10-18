@@ -5,9 +5,10 @@ import 'package:dose_tracker/views/widgets/logo_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Splash animation: the logo scales and fades in, then the app name and
-/// tagline fade in. One controller drives both phases through intervals, and
-/// all timings come from [AppDurations].
+/// Splash content: the logo is shown at once, at the exact center of the
+/// screen and at the same size as the native splash image, so the hand-off
+/// from the native splash is invisible; then the app name and tagline fade
+/// in below it.
 class SplashContent extends StatefulWidget {
   const SplashContent({super.key});
 
@@ -28,27 +29,6 @@ class _SplashContentState extends State<SplashContent>
     duration: _total,
   )..forward();
 
-  late final Animation<double> _logoScale = Tween<double>(begin: 0, end: 1)
-      .animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Interval(
-            0,
-            _fraction(AppDurations.splashLogoEntrance),
-            curve: AppDurations.entranceCurve,
-          ),
-        ),
-      );
-
-  late final Animation<double> _logoFade = CurvedAnimation(
-    parent: _controller,
-    curve: Interval(
-      0,
-      _fraction(AppDurations.splashLogoEntrance),
-      curve: AppDurations.standardCurve,
-    ),
-  );
-
   late final Animation<double> _textFade = CurvedAnimation(
     parent: _controller,
     curve: Interval(
@@ -68,28 +48,40 @@ class _SplashContentState extends State<SplashContent>
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        FadeTransition(
-          opacity: _logoFade,
-          child: ScaleTransition(
-            scale: _logoScale,
-            child: const LogoImage(size: AppSizes.logoSplash),
+    // The logo is the only child that takes part in the layout, so it stays
+    // at the exact center; the text hangs below it without moving it.
+    return SizedBox(
+      width: AppSizes.logoSplash,
+      height: AppSizes.logoSplash,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          const LogoImage(size: AppSizes.logoSplash),
+          Positioned(
+            top: AppSizes.logoSplash + AppSizes.spaceXl,
+            left: -AppSizes.splashTextOverflow,
+            right: -AppSizes.splashTextOverflow,
+            child: FadeTransition(
+              opacity: _textFade,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    AppStrings.appName.tr,
+                    textAlign: TextAlign.center,
+                    style: textTheme.displayMedium,
+                  ),
+                  const SizedBox(height: AppSizes.spaceSm),
+                  Text(
+                    AppStrings.appTagline.tr,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: AppSizes.spaceXl),
-        FadeTransition(
-          opacity: _textFade,
-          child: Column(
-            children: <Widget>[
-              Text(AppStrings.appName.tr, style: textTheme.displayMedium),
-              const SizedBox(height: AppSizes.spaceSm),
-              Text(AppStrings.appTagline.tr, style: textTheme.bodyMedium),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

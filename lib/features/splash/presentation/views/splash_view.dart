@@ -1,5 +1,5 @@
+import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/splash/presentation/widgets/splash_content.dart';
-import 'package:dose_tracker/views/widgets/screen_scaffold.dart';
 import 'package:flutter/material.dart';
 
 /// First screen shown at launch: the animated logo and app name.
@@ -11,6 +11,9 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ScreenScaffold(body: Center(child: SplashContent()));
+    return Scaffold(
+      backgroundColor: context.appColors.appBackground,
+      body: const Center(child: SplashContent()),
+    );
   }
 }

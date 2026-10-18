@@ -68,6 +68,9 @@ abstract final class AppSizes {
   static const double logoSplash = 96;
   static const double logoHeader = 32;
   static const double logoAuth = 64;
+
+  /// How far the splash text may extend past each side of the splash logo.
+  static const double splashTextOverflow = 120;
   static const double sheetHandleWidth = 40;
   static const double sheetHandleHeight = 4;
 

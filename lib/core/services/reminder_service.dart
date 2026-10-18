@@ -27,7 +27,7 @@ class ReminderService extends GetxService {
   ReminderService._(this._plugin, {required this.isSupported});
 
   static const String _channelId = 'dose_reminders';
-  static const String _androidIcon = '@mipmap/ic_launcher';
+  static const String _androidIcon = '@drawable/ic_stat_dose';
   static const int _lowStockIdBase = 2000000000;
   static const int _lowStockIdSlots = 100000;
 
