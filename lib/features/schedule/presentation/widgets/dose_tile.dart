@@ -1,17 +1,18 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
+import 'package:dose_tracker/core/theme/app_color_tokens.dart';
+import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/presentation/widgets/dose_tile_parts.dart';
-import 'package:dose_tracker/views/widgets/persona_avatar.dart';
 import 'package:dose_tracker/views/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// One medication row inside a time-group card.
-/// Title: medication name + profile chip (top-right).
+/// Title: medication name.
 /// Subtitle: "amount unit • meal instruction". Long-press opens skip.
 class DoseTile extends StatelessWidget {
   const DoseTile({
@@ -37,6 +38,7 @@ class DoseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme text = Theme.of(context).textTheme;
+    final PersonaShade persona = dose.personaColor.resolve(context.appColors);
 
     final bool checked = isTaken ??
         (dose.state == DoseState.taken || dose.state == DoseState.takenLate);
@@ -47,9 +49,18 @@ class DoseTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceSm),
         child: Row(
           children: <Widget>[
-            PersonaAvatar(
-              persona: dose.personaColor,
-              size: PersonaAvatarSize.small,
+            Container(
+              width: AppSizes.avatarSm,
+              height: AppSizes.avatarSm,
+              decoration: BoxDecoration(
+                color: persona.tint,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.medication_rounded,
+                size: AppSizes.iconMd,
+                color: persona.main,
+              ),
             ),
             const SizedBox(width: AppSizes.spaceMd),
             Expanded(
@@ -65,11 +76,6 @@ class DoseTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: text.titleMedium,
                         ),
-                      ),
-                      const SizedBox(width: AppSizes.spaceSm),
-                      DoseProfileChip(
-                        name: dose.profileName,
-                        persona: dose.personaColor,
                       ),
                     ],
                   ),

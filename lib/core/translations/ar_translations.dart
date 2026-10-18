@@ -202,6 +202,7 @@ abstract final class ArTranslations {
     // ---- Schedule ----
     AppStrings.scheduleToday: 'اليوم',
     AppStrings.scheduleDoseTaken: 'تم تسجيل الجرعة',
+    AppStrings.scheduleConfirmAll: 'تأكيد الكل',
     AppStrings.scheduleUndo: 'تراجع',
     AppStrings.scheduleAllDone: 'اكتملت جرعات اليوم',
     AppStrings.scheduleTakenProgress: 'تم أخذ @taken من @total',

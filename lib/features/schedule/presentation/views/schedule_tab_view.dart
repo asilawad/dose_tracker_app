@@ -50,6 +50,7 @@ class ScheduleTabView extends GetView<ScheduleController> {
       onUndo: controller.undo,
       onSkip: _openSkipSheet,
       isJustChecked: controller.isJustChecked,
+      canConfirmAll: true,
     );
   }
 

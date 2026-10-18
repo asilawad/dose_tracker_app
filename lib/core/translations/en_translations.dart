@@ -207,6 +207,7 @@ abstract final class EnTranslations {
     // ---- Schedule ----
     AppStrings.scheduleToday: 'Today',
     AppStrings.scheduleDoseTaken: 'Dose taken',
+    AppStrings.scheduleConfirmAll: 'Confirm all',
     AppStrings.scheduleUndo: 'Undo',
     AppStrings.scheduleAllDone: 'All done for today',
     AppStrings.scheduleTakenProgress: '@taken of @total taken',
