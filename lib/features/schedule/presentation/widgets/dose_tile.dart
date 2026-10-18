@@ -1,21 +1,24 @@
-import 'package:dose_tracker/core/constants/app_durations.dart';
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
+import 'package:dose_tracker/features/schedule/presentation/widgets/dose_tile_parts.dart';
 import 'package:dose_tracker/views/widgets/persona_avatar.dart';
+import 'package:dose_tracker/views/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// One medication row inside a time-group card.
+/// Title: medication name + profile chip (top-right).
+/// Subtitle: "amount unit • meal instruction". Long-press opens skip.
 class DoseTile extends StatelessWidget {
   const DoseTile({
     required this.dose,
-    required this.onToggle,
-    required this.onSkip,
     this.isTaken,
+    this.onToggle,
+    this.onSkip,
     super.key,
   });
 
@@ -24,12 +27,20 @@ class DoseTile extends StatelessWidget {
   final VoidCallback? onToggle;
   final VoidCallback? onSkip;
 
+  String get _subtitle {
+    final String amount =
+        '${DoseFormatter.quantity(dose.doseAmount)} ${dose.doseUnit.labelKey.tr}';
+    final String? meal = dose.mealInstruction?.labelKey.tr;
+    return meal == null ? amount : '$amount • $meal';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final bool checked =
-        isTaken ??
+    final TextTheme text = Theme.of(context).textTheme;
+
+    final bool checked = isTaken ??
         (dose.state == DoseState.taken || dose.state == DoseState.takenLate);
+
     return InkWell(
       onLongPress: onSkip,
       child: Padding(
@@ -45,73 +56,40 @@ class DoseTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(dose.medicationName, style: textTheme.titleMedium),
-                  Text(
-                    '${DoseFormatter.quantity(dose.doseAmount)} '
-                    '${dose.doseUnit.labelKey.tr}',
-                    style: textTheme.bodyMedium,
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          dose.medicationName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: text.titleMedium,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.spaceSm),
+                      DoseProfileChip(
+                        name: dose.profileName,
+                        persona: dose.personaColor,
+                      ),
+                    ],
                   ),
+                  Text(_subtitle, style: text.bodyMedium),
                   if (dose.state == DoseState.missed) ...<Widget>[
                     const SizedBox(height: AppSizes.spaceXs),
-                    Text(
-                      AppStrings.scheduleStateMissed.tr,
-                      style: textTheme.bodySmall,
+                    StatusBadge(
+                      label: AppStrings.scheduleStateMissed.tr,
+                      tone: BadgeTone.danger,
+                      icon: Icons.close_rounded,
                     ),
                   ],
                 ],
               ),
             ),
-            _Check(isTaken: checked, onTap: onToggle),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Check extends StatelessWidget {
-  const _Check({required this.isTaken, required this.onTap});
-
-  final bool isTaken;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final AppColorTokens colors = context.appColors;
-    return Semantics(
-      button: onTap != null,
-      label: (isTaken ? AppStrings.a11yUndoTaken : AppStrings.a11yMarkTaken).tr,
-      child: ExcludeSemantics(
-        child: InkResponse(
-          onTap: onTap,
-          radius: AppSizes.minTapTarget / 2,
-          child: SizedBox(
-            width: AppSizes.minTapTarget,
-            height: AppSizes.minTapTarget,
-            child: Center(
-              child: AnimatedContainer(
-                duration: AppDurations.fast,
-                curve: AppDurations.standardCurve,
-                width: AppSizes.iconXl,
-                height: AppSizes.iconXl,
-                decoration: BoxDecoration(
-                  color: isTaken ? colors.success : colors.surface,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isTaken ? colors.success : colors.borderHairline,
-                    width: AppSizes.borderHairline,
-                  ),
-                ),
-                child: isTaken
-                    ? Icon(
-                        Icons.check_rounded,
-                        size: AppSizes.iconMd,
-                        color: colors.onActive,
-                      )
-                    : null,
-              ),
+            DoseCheck(
+              isTaken: checked,
+              onTap: onToggle,
             ),
-          ),
+          ],
         ),
       ),
     );
