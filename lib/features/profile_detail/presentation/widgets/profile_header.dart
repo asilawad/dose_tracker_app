@@ -19,6 +19,9 @@ class ProfileHeader extends StatelessWidget {
   final VoidCallback onEdit;
 
   String get _medicationsText {
+    if (summary.medicationCount == 0) {
+      return AppStrings.homeNoMedications.tr;
+    }
     return AppStrings.homeMedicationCount.trParams(<String, String>{
       'count': '${summary.medicationCount}',
     });
@@ -43,7 +46,7 @@ class ProfileHeader extends StatelessWidget {
       label: profile.name,
       child: AppCard(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             PersonaAvatar(
               persona: profile.personaColor,
@@ -75,7 +78,11 @@ class ProfileHeader extends StatelessWidget {
               persona: profile.personaColor,
             ),
             const SizedBox(height: AppSizes.spaceSm),
-            Text(_progressText, style: textTheme.bodySmall),
+            Text(
+              _progressText,
+              textAlign: TextAlign.center,
+              style: textTheme.bodySmall,
+            ),
           ],
         ),
       ),
