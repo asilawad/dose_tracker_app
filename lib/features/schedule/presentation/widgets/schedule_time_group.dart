@@ -12,18 +12,20 @@ class ScheduleTimeGroup extends StatelessWidget {
     required this.group,
     required this.onCheck,
     required this.onUndo,
-    required this.onSkip,
+    this.onSkip,
     required this.isJustChecked,
-    required this.canConfirmAll,
+    this.canConfirmAll = false,
+    this.showProfile = true,
     super.key,
   });
 
   final schedule_data.ScheduleTimeGroup group;
   final ValueChanged<ScheduledDose> onCheck;
   final ValueChanged<ScheduledDose> onUndo;
-  final ValueChanged<ScheduledDose> onSkip;
+  final ValueChanged<ScheduledDose>? onSkip;
   final bool Function(ScheduledDose) isJustChecked;
   final bool canConfirmAll;
+  final bool showProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class ScheduleTimeGroup extends StatelessWidget {
               onSkip: onSkip,
               isJustChecked: isJustChecked,
               canConfirmAll: canConfirmAll,
+              showProfile: showProfile,
             ),
           ],
         ],

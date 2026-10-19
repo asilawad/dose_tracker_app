@@ -19,5 +19,6 @@ abstract final class AppRoutes {
   static const String editProfile = '/edit-profile';
   /// Opens with the profile id (an int) as `arguments`.
   static const String profile = '/profile';
+  static const String profileMedications = '/profile-medications';
   static const String report = '/report';
 }

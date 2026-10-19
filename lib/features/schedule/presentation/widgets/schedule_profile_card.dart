@@ -15,18 +15,20 @@ class ScheduleProfileCard extends StatelessWidget {
     required this.group,
     required this.onCheck,
     required this.onUndo,
-    required this.onSkip,
+    this.onSkip,
     required this.isJustChecked,
-    required this.canConfirmAll,
+    this.canConfirmAll = false,
+    this.showProfile = true,
     super.key,
   });
 
   final ScheduleProfileGroup group;
   final ValueChanged<ScheduledDose> onCheck;
   final ValueChanged<ScheduledDose> onUndo;
-  final ValueChanged<ScheduledDose> onSkip;
+  final ValueChanged<ScheduledDose>? onSkip;
   final bool Function(ScheduledDose) isJustChecked;
   final bool canConfirmAll;
+  final bool showProfile;
 
   bool _canCheck(ScheduledDose dose) =>
       dose.state == DoseState.pending || dose.state == DoseState.missed;
@@ -43,12 +45,11 @@ class ScheduleProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColorTokens colors = context.appColors;
     final int confirmableCount = group.doses.where(_canCheck).length;
-    return Semantics(
-      label: group.profileName,
-      child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+    final Widget card = AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (showProfile) ...<Widget>[
             Row(
               children: <Widget>[
                 PersonaAvatar(
@@ -78,32 +79,37 @@ class ScheduleProfileCard extends StatelessWidget {
               thickness: AppSizes.borderHairline,
               color: colors.borderHairline,
             ),
-            for (int index = 0; index < group.doses.length; index++) ...<Widget>[
-              if (index > 0)
-                Divider(
-                  height: AppSizes.borderHairline,
-                  thickness: AppSizes.borderHairline,
-                  color: colors.borderHairline,
-                ),
-              DoseTile(
-                key: ValueKey<String>(group.doses[index].key),
-                dose: group.doses[index],
-                isTaken:
-                    group.doses[index].state == DoseState.taken ||
-                    group.doses[index].state == DoseState.takenLate ||
-                    isJustChecked(group.doses[index]),
-                onToggle: () =>
-                    group.doses[index].state == DoseState.taken ||
-                        group.doses[index].state == DoseState.takenLate ||
-                        isJustChecked(group.doses[index])
-                    ? onUndo(group.doses[index])
-                    : onCheck(group.doses[index]),
-                onSkip: () => onSkip(group.doses[index]),
-              ),
-            ],
           ],
-        ),
+          for (int index = 0; index < group.doses.length; index++) ...<Widget>[
+            if (showProfile && index > 0)
+              Divider(
+                height: AppSizes.borderHairline,
+                thickness: AppSizes.borderHairline,
+                color: colors.borderHairline,
+              ),
+            DoseTile(
+              key: ValueKey<String>(group.doses[index].key),
+              dose: group.doses[index],
+              isTaken:
+                  group.doses[index].state == DoseState.taken ||
+                  group.doses[index].state == DoseState.takenLate ||
+                  isJustChecked(group.doses[index]),
+              onToggle: () =>
+                  group.doses[index].state == DoseState.taken ||
+                      group.doses[index].state == DoseState.takenLate ||
+                      isJustChecked(group.doses[index])
+                  ? onUndo(group.doses[index])
+                  : onCheck(group.doses[index]),
+              onSkip: onSkip == null
+                  ? null
+                  : () => onSkip!(group.doses[index]),
+            ),
+          ],
+        ],
       ),
     );
+    return showProfile
+        ? Semantics(label: group.profileName, child: card)
+        : card;
   }
 }

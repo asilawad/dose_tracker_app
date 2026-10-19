@@ -37,7 +37,6 @@ class ProfileDetailController extends GetxController {
 
   final Rxn<ProfileSummary> summary = Rxn<ProfileSummary>();
   final RxList<ScheduledDose> doses = <ScheduledDose>[].obs;
-  final RxList<Medication> medications = <Medication>[].obs;
   final RxBool isLoading = true.obs;
   final RxBool hasError = false.obs;
 
@@ -71,6 +70,13 @@ class ProfileDetailController extends GetxController {
     final int? id = _profileId;
     if (id != null) {
       Get.toNamed<void>(AppRoutes.addMedication, arguments: id);
+    }
+  }
+
+  void openAllMedications() {
+    final int? id = _profileId;
+    if (id != null) {
+      Get.toNamed<void>(AppRoutes.profileMedications, arguments: id);
     }
   }
 
@@ -144,13 +150,6 @@ class ProfileDetailController extends GetxController {
       _closeToShell();
       return;
     }
-    final List<Medication> own = allMedications
-        .where((Medication medication) => medication.profileId == _profileId)
-        .toList();
-    medications.assignAll(<Medication>[
-      ...own.where((Medication medication) => medication.isActive),
-      ...own.where((Medication medication) => !medication.isActive),
-    ]);
     doses.assignAll(
       allDoses.where((ScheduledDose dose) => dose.profileId == _profileId),
     );
