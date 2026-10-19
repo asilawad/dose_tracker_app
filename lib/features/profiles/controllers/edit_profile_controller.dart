@@ -3,6 +3,7 @@ import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile_results.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +26,7 @@ class EditProfileController extends GetxController {
   final TextEditingController nameController = TextEditingController();
 
   final Rx<PersonaColor> selectedColor = PersonaColor.values.first.obs;
+  final Rxn<ProfileAvatar> avatar = Rxn<ProfileAvatar>();
   final RxBool isLoadingProfile = true.obs;
   final RxBool isLoading = false.obs;
 
@@ -58,6 +60,7 @@ class EditProfileController extends GetxController {
         id: id,
         name: nameController.text,
         personaColor: selectedColor.value,
+        avatar: avatar.value,
       );
       switch (result) {
         case UpdateProfileSuccess():
@@ -111,6 +114,7 @@ class EditProfileController extends GetxController {
     savedName.value = profile.name;
     nameController.text = profile.name;
     selectedColor.value = profile.personaColor;
+    avatar.value = profile.avatar;
     isLoadingProfile.value = false;
   }
 

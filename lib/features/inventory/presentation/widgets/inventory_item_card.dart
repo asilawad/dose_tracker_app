@@ -44,7 +44,11 @@ class InventoryItemCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              PersonaAvatar(persona: item.personaColor),
+              PersonaAvatar(
+                persona: item.personaColor,
+                avatar: item.profileAvatar,
+                name: item.profileName,
+              ),
               const SizedBox(width: AppSizes.spaceMd),
               Expanded(
                 child: Column(

@@ -54,6 +54,8 @@ class ScheduleProfileCard extends StatelessWidget {
                 PersonaAvatar(
                   persona: group.personaColor,
                   size: PersonaAvatarSize.small,
+                  avatar: group.profileAvatar,
+                  name: group.profileName,
                 ),
                 const SizedBox(width: AppSizes.spaceMd),
                 Expanded(

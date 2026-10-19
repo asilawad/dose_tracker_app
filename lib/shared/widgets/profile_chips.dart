@@ -96,6 +96,8 @@ class _ProfileChip extends StatelessWidget {
                       PersonaAvatar(
                         persona: profile.personaColor,
                         size: PersonaAvatarSize.small,
+                        avatar: profile.avatar,
+                        name: profile.name,
                       ),
                       const SizedBox(width: AppSizes.spaceSm),
                       Text(

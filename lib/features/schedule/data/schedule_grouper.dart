@@ -1,4 +1,5 @@
 import 'package:dose_tracker/core/theme/persona_palette.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 
 class ScheduleProfileGroup {
@@ -6,12 +7,14 @@ class ScheduleProfileGroup {
     required this.profileId,
     required this.profileName,
     required this.personaColor,
+    this.profileAvatar,
     required this.doses,
   });
 
   final int profileId;
   final String profileName;
   final PersonaColor personaColor;
+  final ProfileAvatar? profileAvatar;
   final List<ScheduledDose> doses;
 }
 
@@ -54,6 +57,7 @@ abstract final class ScheduleGrouper {
             profileId: profileId,
             profileName: firstDose.profileName,
             personaColor: firstDose.personaColor,
+            profileAvatar: firstDose.profileAvatar,
             doses: profileDoses,
           );
         }).toList(),

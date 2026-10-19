@@ -1,6 +1,8 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/features/profiles/controllers/edit_profile_controller.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
+import 'package:dose_tracker/features/profiles/presentation/widgets/avatar_picker.dart';
 import 'package:dose_tracker/features/profiles/presentation/widgets/persona_color_picker.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
@@ -29,14 +31,39 @@ class EditProfileForm extends GetView<EditProfileController> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Center(
-              child: Obx(
-                () => PersonaAvatar(
-                  persona: controller.selectedColor.value,
-                  size: PersonaAvatarSize.extraLarge,
-                ),
+              child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: controller.nameController,
+                builder: (BuildContext context, TextEditingValue value, _) =>
+                    Obx(
+                      () => PersonaAvatar(
+                        persona: controller.selectedColor.value,
+                        size: PersonaAvatarSize.extraLarge,
+                        avatar: controller.avatar.value,
+                        name: value.text,
+                      ),
+                    ),
               ),
             ),
             const SizedBox(height: AppSizes.spaceLg),
+            Text(
+              AppStrings.profileAvatarLabel.tr,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium,
+            ),
+            const SizedBox(height: AppSizes.spaceMd),
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: controller.nameController,
+              builder: (BuildContext context, TextEditingValue value, _) => Obx(
+                () => AvatarPicker(
+                  name: value.text,
+                  persona: controller.selectedColor.value,
+                  selected: controller.avatar.value,
+                  onChanged: (ProfileAvatar? avatar) =>
+                      controller.avatar.value = avatar,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSizes.space2xl),
             Text(
               AppStrings.profilesColorLabel.tr,
               textAlign: TextAlign.center,

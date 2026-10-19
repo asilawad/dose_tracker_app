@@ -5,6 +5,7 @@ import 'package:dose_tracker/core/database/tables/medications_table.dart';
 import 'package:dose_tracker/core/database/tables/profiles_table.dart';
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_status.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
@@ -32,7 +33,7 @@ class AppDatabase extends _$AppDatabase {
   /// Database file name (the platform adds its own extension and folder).
   static const String fileName = 'dose_tracker';
 
-  static const int currentSchemaVersion = 2;
+  static const int currentSchemaVersion = 3;
 
   @override
   int get schemaVersion => currentSchemaVersion;
@@ -51,6 +52,9 @@ class AppDatabase extends _$AppDatabase {
           'WHERE track_inventory = 1 AND stock_total IS NOT NULL',
         );
         await migrator.dropColumn(medications, 'stock_total');
+      }
+      if (from < 3) {
+        await migrator.addColumn(profiles, profiles.avatar);
       }
     },
     beforeOpen: (OpeningDetails details) async {

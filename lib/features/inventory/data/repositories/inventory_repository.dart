@@ -81,6 +81,7 @@ class InventoryRepository {
           medicationId: medication.id,
           profileName: profile.name,
           personaColor: profile.personaColor,
+          profileAvatar: profile.avatar,
           medicationName: medication.name,
           doseAmount: medication.doseAmount,
           doseUnit: medication.doseUnit,

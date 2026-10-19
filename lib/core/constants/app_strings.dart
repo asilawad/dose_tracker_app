@@ -156,6 +156,20 @@ abstract final class AppStrings {
   static const String profilesColorLabel = 'profiles_color_label';
   static const String profilesNameLabel = 'profiles_name_label';
   static const String profilesNameHint = 'profiles_name_hint';
+  static const String profileAvatarLabel = 'profile_avatar_label';
+  static const String profileAvatarFirstLetter = 'profile_avatar_first_letter';
+  static const String profileAvatarMan = 'profile_avatar_man';
+  static const String profileAvatarWoman = 'profile_avatar_woman';
+  static const String profileAvatarBoy = 'profile_avatar_boy';
+  static const String profileAvatarGirl = 'profile_avatar_girl';
+  static const String profileAvatarBaby = 'profile_avatar_baby';
+  static const String profileAvatarGrandfather = 'profile_avatar_grandfather';
+  static const String profileAvatarGrandmother = 'profile_avatar_grandmother';
+  static const String profileAvatarPerson = 'profile_avatar_person';
+  static const String profileAvatarBeard = 'profile_avatar_beard';
+  static const String profileAvatarBlond = 'profile_avatar_blond';
+  static const String profileAvatarCat = 'profile_avatar_cat';
+  static const String profileAvatarDog = 'profile_avatar_dog';
 
   // ---- Medications: Add Medication ----
   static const String medsAddTitle = 'meds_add_title';

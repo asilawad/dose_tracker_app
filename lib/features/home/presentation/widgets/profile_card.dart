@@ -52,7 +52,11 @@ class ProfileCard extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  PersonaAvatar(persona: summary.profile.personaColor),
+                  PersonaAvatar(
+                    persona: summary.profile.personaColor,
+                    avatar: summary.profile.avatar,
+                    name: summary.profile.name,
+                  ),
                   const SizedBox(width: AppSizes.spaceMd),
                   Expanded(
                     child: Column(

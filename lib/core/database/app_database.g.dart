@@ -637,6 +637,15 @@ class $ProfilesTable extends Profiles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   ).withConverter<PersonaColor>($ProfilesTable.$converterpersonaColor);
+  @override
+  late final GeneratedColumnWithTypeConverter<ProfileAvatar?, String> avatar =
+      GeneratedColumn<String>(
+        'avatar',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<ProfileAvatar?>($ProfilesTable.$converteravatarn);
   static const VerificationMeta _remindersEnabledMeta = const VerificationMeta(
     'remindersEnabled',
   );
@@ -670,6 +679,7 @@ class $ProfilesTable extends Profiles
     accountId,
     name,
     personaColor,
+    avatar,
     remindersEnabled,
     createdAt,
   ];
@@ -746,6 +756,12 @@ class $ProfilesTable extends Profiles
           data['${effectivePrefix}persona_color'],
         )!,
       ),
+      avatar: $ProfilesTable.$converteravatarn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}avatar'],
+        ),
+      ),
       remindersEnabled: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}reminders_enabled'],
@@ -766,6 +782,10 @@ class $ProfilesTable extends Profiles
   $converterpersonaColor = const EnumNameConverter<PersonaColor>(
     PersonaColor.values,
   );
+  static JsonTypeConverter2<ProfileAvatar, String, String> $converteravatar =
+      const EnumNameConverter<ProfileAvatar>(ProfileAvatar.values);
+  static JsonTypeConverter2<ProfileAvatar?, String?, String?>
+  $converteravatarn = JsonTypeConverter2.asNullable($converteravatar);
 }
 
 class ProfileRow extends DataClass implements Insertable<ProfileRow> {
@@ -773,6 +793,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
   final int accountId;
   final String name;
   final PersonaColor personaColor;
+  final ProfileAvatar? avatar;
   final bool remindersEnabled;
   final DateTime createdAt;
   const ProfileRow({
@@ -780,6 +801,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     required this.accountId,
     required this.name,
     required this.personaColor,
+    this.avatar,
     required this.remindersEnabled,
     required this.createdAt,
   });
@@ -794,6 +816,11 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
         $ProfilesTable.$converterpersonaColor.toSql(personaColor),
       );
     }
+    if (!nullToAbsent || avatar != null) {
+      map['avatar'] = Variable<String>(
+        $ProfilesTable.$converteravatarn.toSql(avatar),
+      );
+    }
     map['reminders_enabled'] = Variable<bool>(remindersEnabled);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -805,6 +832,9 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       accountId: Value(accountId),
       name: Value(name),
       personaColor: Value(personaColor),
+      avatar: avatar == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatar),
       remindersEnabled: Value(remindersEnabled),
       createdAt: Value(createdAt),
     );
@@ -822,6 +852,9 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       personaColor: $ProfilesTable.$converterpersonaColor.fromJson(
         serializer.fromJson<String>(json['personaColor']),
       ),
+      avatar: $ProfilesTable.$converteravatarn.fromJson(
+        serializer.fromJson<String?>(json['avatar']),
+      ),
       remindersEnabled: serializer.fromJson<bool>(json['remindersEnabled']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -836,6 +869,9 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       'personaColor': serializer.toJson<String>(
         $ProfilesTable.$converterpersonaColor.toJson(personaColor),
       ),
+      'avatar': serializer.toJson<String?>(
+        $ProfilesTable.$converteravatarn.toJson(avatar),
+      ),
       'remindersEnabled': serializer.toJson<bool>(remindersEnabled),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -846,6 +882,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     int? accountId,
     String? name,
     PersonaColor? personaColor,
+    Value<ProfileAvatar?> avatar = const Value.absent(),
     bool? remindersEnabled,
     DateTime? createdAt,
   }) => ProfileRow(
@@ -853,6 +890,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     accountId: accountId ?? this.accountId,
     name: name ?? this.name,
     personaColor: personaColor ?? this.personaColor,
+    avatar: avatar.present ? avatar.value : this.avatar,
     remindersEnabled: remindersEnabled ?? this.remindersEnabled,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -864,6 +902,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       personaColor: data.personaColor.present
           ? data.personaColor.value
           : this.personaColor,
+      avatar: data.avatar.present ? data.avatar.value : this.avatar,
       remindersEnabled: data.remindersEnabled.present
           ? data.remindersEnabled.value
           : this.remindersEnabled,
@@ -878,6 +917,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
           ..write('accountId: $accountId, ')
           ..write('name: $name, ')
           ..write('personaColor: $personaColor, ')
+          ..write('avatar: $avatar, ')
           ..write('remindersEnabled: $remindersEnabled, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -890,6 +930,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     accountId,
     name,
     personaColor,
+    avatar,
     remindersEnabled,
     createdAt,
   );
@@ -901,6 +942,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
           other.accountId == this.accountId &&
           other.name == this.name &&
           other.personaColor == this.personaColor &&
+          other.avatar == this.avatar &&
           other.remindersEnabled == this.remindersEnabled &&
           other.createdAt == this.createdAt);
 }
@@ -910,6 +952,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
   final Value<int> accountId;
   final Value<String> name;
   final Value<PersonaColor> personaColor;
+  final Value<ProfileAvatar?> avatar;
   final Value<bool> remindersEnabled;
   final Value<DateTime> createdAt;
   const ProfilesCompanion({
@@ -917,6 +960,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     this.accountId = const Value.absent(),
     this.name = const Value.absent(),
     this.personaColor = const Value.absent(),
+    this.avatar = const Value.absent(),
     this.remindersEnabled = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
@@ -925,6 +969,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     required int accountId,
     required String name,
     required PersonaColor personaColor,
+    this.avatar = const Value.absent(),
     this.remindersEnabled = const Value.absent(),
     this.createdAt = const Value.absent(),
   }) : accountId = Value(accountId),
@@ -935,6 +980,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     Expression<int>? accountId,
     Expression<String>? name,
     Expression<String>? personaColor,
+    Expression<String>? avatar,
     Expression<bool>? remindersEnabled,
     Expression<DateTime>? createdAt,
   }) {
@@ -943,6 +989,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
       if (accountId != null) 'account_id': accountId,
       if (name != null) 'name': name,
       if (personaColor != null) 'persona_color': personaColor,
+      if (avatar != null) 'avatar': avatar,
       if (remindersEnabled != null) 'reminders_enabled': remindersEnabled,
       if (createdAt != null) 'created_at': createdAt,
     });
@@ -953,6 +1000,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     Value<int>? accountId,
     Value<String>? name,
     Value<PersonaColor>? personaColor,
+    Value<ProfileAvatar?>? avatar,
     Value<bool>? remindersEnabled,
     Value<DateTime>? createdAt,
   }) {
@@ -961,6 +1009,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
       accountId: accountId ?? this.accountId,
       name: name ?? this.name,
       personaColor: personaColor ?? this.personaColor,
+      avatar: avatar ?? this.avatar,
       remindersEnabled: remindersEnabled ?? this.remindersEnabled,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -983,6 +1032,11 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
         $ProfilesTable.$converterpersonaColor.toSql(personaColor.value),
       );
     }
+    if (avatar.present) {
+      map['avatar'] = Variable<String>(
+        $ProfilesTable.$converteravatarn.toSql(avatar.value),
+      );
+    }
     if (remindersEnabled.present) {
       map['reminders_enabled'] = Variable<bool>(remindersEnabled.value);
     }
@@ -999,6 +1053,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
           ..write('accountId: $accountId, ')
           ..write('name: $name, ')
           ..write('personaColor: $personaColor, ')
+          ..write('avatar: $avatar, ')
           ..write('remindersEnabled: $remindersEnabled, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -3580,6 +3635,7 @@ typedef $$ProfilesTableCreateCompanionBuilder =
       required int accountId,
       required String name,
       required PersonaColor personaColor,
+      Value<ProfileAvatar?> avatar,
       Value<bool> remindersEnabled,
       Value<DateTime> createdAt,
     });
@@ -3589,6 +3645,7 @@ typedef $$ProfilesTableUpdateCompanionBuilder =
       Value<int> accountId,
       Value<String> name,
       Value<PersonaColor> personaColor,
+      Value<ProfileAvatar?> avatar,
       Value<bool> remindersEnabled,
       Value<DateTime> createdAt,
     });
@@ -3673,6 +3730,12 @@ class $$ProfilesTableFilterComposer
   ColumnWithTypeConverterFilters<PersonaColor, PersonaColor, String>
   get personaColor => $composableBuilder(
     column: $table.personaColor,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<ProfileAvatar?, ProfileAvatar, String>
+  get avatar => $composableBuilder(
+    column: $table.avatar,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
@@ -3784,6 +3847,11 @@ class $$ProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get avatar => $composableBuilder(
+    column: $table.avatar,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get remindersEnabled => $composableBuilder(
     column: $table.remindersEnabled,
     builder: (column) => ColumnOrderings(column),
@@ -3838,6 +3906,9 @@ class $$ProfilesTableAnnotationComposer
         column: $table.personaColor,
         builder: (column) => column,
       );
+
+  GeneratedColumnWithTypeConverter<ProfileAvatar?, String> get avatar =>
+      $composableBuilder(column: $table.avatar, builder: (column) => column);
 
   GeneratedColumn<bool> get remindersEnabled => $composableBuilder(
     column: $table.remindersEnabled,
@@ -3957,6 +4028,7 @@ class $$ProfilesTableTableManager
                 Value<int> accountId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<PersonaColor> personaColor = const Value.absent(),
+                Value<ProfileAvatar?> avatar = const Value.absent(),
                 Value<bool> remindersEnabled = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProfilesCompanion(
@@ -3964,6 +4036,7 @@ class $$ProfilesTableTableManager
                 accountId: accountId,
                 name: name,
                 personaColor: personaColor,
+                avatar: avatar,
                 remindersEnabled: remindersEnabled,
                 createdAt: createdAt,
               ),
@@ -3973,6 +4046,7 @@ class $$ProfilesTableTableManager
                 required int accountId,
                 required String name,
                 required PersonaColor personaColor,
+                Value<ProfileAvatar?> avatar = const Value.absent(),
                 Value<bool> remindersEnabled = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
               }) => ProfilesCompanion.insert(
@@ -3980,6 +4054,7 @@ class $$ProfilesTableTableManager
                 accountId: accountId,
                 name: name,
                 personaColor: personaColor,
+                avatar: avatar,
                 remindersEnabled: remindersEnabled,
                 createdAt: createdAt,
               ),

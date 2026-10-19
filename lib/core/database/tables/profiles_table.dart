@@ -1,6 +1,7 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/database/tables/accounts_table.dart';
 import 'package:dose_tracker/core/theme/persona_palette.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:drift/drift.dart';
 
 /// Family member profiles (Me, Mom, Dad, anyone).
@@ -23,6 +24,8 @@ class Profiles extends Table {
   )();
 
   TextColumn get personaColor => textEnum<PersonaColor>()();
+
+  TextColumn get avatar => textEnum<ProfileAvatar>().nullable()();
 
   BoolColumn get remindersEnabled =>
       boolean().withDefault(const Constant(true))();

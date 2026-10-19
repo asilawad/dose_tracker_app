@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/database/app_database.dart';
 import 'package:dose_tracker/core/theme/persona_palette.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:drift/drift.dart';
 
 /// Local data source: the class that holds every database query for
@@ -33,6 +34,7 @@ class ProfilesLocalDataSource {
     required int accountId,
     required String name,
     required PersonaColor personaColor,
+    required ProfileAvatar? avatar,
     required bool remindersEnabled,
   }) {
     return _db
@@ -42,6 +44,7 @@ class ProfilesLocalDataSource {
             accountId: accountId,
             name: name,
             personaColor: personaColor,
+            avatar: Value<ProfileAvatar?>(avatar),
             remindersEnabled: Value<bool>(remindersEnabled),
           ),
         );
@@ -53,6 +56,7 @@ class ProfilesLocalDataSource {
     required int id,
     required String name,
     required PersonaColor personaColor,
+    required ProfileAvatar? avatar,
     required bool remindersEnabled,
   }) {
     return (_db.update(
@@ -61,6 +65,7 @@ class ProfilesLocalDataSource {
       ProfilesCompanion(
         name: Value<String>(name),
         personaColor: Value<PersonaColor>(personaColor),
+        avatar: Value<ProfileAvatar?>(avatar),
         remindersEnabled: Value<bool>(remindersEnabled),
       ),
     );

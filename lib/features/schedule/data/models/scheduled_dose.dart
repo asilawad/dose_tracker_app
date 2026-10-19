@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:flutter/foundation.dart';
 
@@ -16,6 +17,7 @@ class ScheduledDose {
     required this.profileId,
     required this.profileName,
     required this.personaColor,
+    this.profileAvatar,
     required this.medicationName,
     required this.doseAmount,
     required this.doseUnit,
@@ -33,6 +35,7 @@ class ScheduledDose {
   final int profileId;
   final String profileName;
   final PersonaColor personaColor;
+  final ProfileAvatar? profileAvatar;
   final String medicationName;
   final double doseAmount;
   final DoseUnit doseUnit;
@@ -57,6 +60,7 @@ class ScheduledDose {
         other.profileId == profileId &&
         other.profileName == profileName &&
         other.personaColor == personaColor &&
+        other.profileAvatar == profileAvatar &&
         other.medicationName == medicationName &&
         other.doseAmount == doseAmount &&
         other.doseUnit == doseUnit &&
@@ -76,6 +80,7 @@ class ScheduledDose {
     profileId,
     profileName,
     personaColor,
+    profileAvatar,
     medicationName,
     doseAmount,
     doseUnit,

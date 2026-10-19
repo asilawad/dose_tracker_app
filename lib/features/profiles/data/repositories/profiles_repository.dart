@@ -3,6 +3,7 @@ import 'package:dose_tracker/core/database/data_sources/profiles_local_data_sour
 import 'package:dose_tracker/core/services/session_service.dart';
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile_results.dart';
 
 /// All profile rules in one place. It always works on the logged-in
@@ -32,6 +33,7 @@ class ProfilesRepository {
   Future<AddProfileResult> addProfile({
     required String name,
     required PersonaColor personaColor,
+    ProfileAvatar? avatar,
     bool remindersEnabled = true,
   }) async {
     final int accountId = _session.requireActiveAccountId();
@@ -40,6 +42,7 @@ class ProfilesRepository {
       accountId: accountId,
       name: trimmedName,
       personaColor: personaColor,
+      avatar: avatar,
       remindersEnabled: remindersEnabled,
     );
     return AddProfileSuccess(
@@ -48,6 +51,7 @@ class ProfilesRepository {
         name: trimmedName,
         personaColor: personaColor,
         remindersEnabled: remindersEnabled,
+        avatar: avatar,
       ),
     );
   }
@@ -68,6 +72,7 @@ class ProfilesRepository {
     required int id,
     required String name,
     required PersonaColor personaColor,
+    required ProfileAvatar? avatar,
   }) async {
     final int accountId = _session.requireActiveAccountId();
     final ProfileRow? row = await _profiles.findById(
@@ -84,6 +89,7 @@ class ProfilesRepository {
       id: id,
       name: trimmedName,
       personaColor: personaColor,
+      avatar: avatar,
       remindersEnabled: row.remindersEnabled,
     );
     return UpdateProfileSuccess(
@@ -92,6 +98,7 @@ class ProfilesRepository {
         name: trimmedName,
         personaColor: personaColor,
         remindersEnabled: row.remindersEnabled,
+        avatar: avatar,
       ),
     );
   }
@@ -114,6 +121,7 @@ class ProfilesRepository {
       name: row.name,
       personaColor: row.personaColor,
       remindersEnabled: row.remindersEnabled,
+      avatar: row.avatar,
     );
   }
 }

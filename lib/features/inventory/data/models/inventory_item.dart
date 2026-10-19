@@ -1,6 +1,7 @@
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/core/utils/stock_policy.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:flutter/foundation.dart';
 
 /// One medication as the inventory screen shows it: its name and dose, who
@@ -15,6 +16,7 @@ class InventoryItem {
     required this.medicationId,
     required this.profileName,
     required this.personaColor,
+    this.profileAvatar,
     required this.medicationName,
     required this.doseAmount,
     required this.doseUnit,
@@ -27,6 +29,7 @@ class InventoryItem {
   final int medicationId;
   final String profileName;
   final PersonaColor personaColor;
+  final ProfileAvatar? profileAvatar;
   final String medicationName;
   final double doseAmount;
   final DoseUnit doseUnit;
@@ -53,6 +56,7 @@ class InventoryItem {
         other.medicationId == medicationId &&
         other.profileName == profileName &&
         other.personaColor == personaColor &&
+        other.profileAvatar == profileAvatar &&
         other.medicationName == medicationName &&
         other.doseAmount == doseAmount &&
         other.doseUnit == doseUnit &&
@@ -67,6 +71,7 @@ class InventoryItem {
     medicationId,
     profileName,
     personaColor,
+    profileAvatar,
     medicationName,
     doseAmount,
     doseUnit,

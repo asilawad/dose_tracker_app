@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile_results.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -20,6 +21,7 @@ class AddProfileController extends GetxController {
   final TextEditingController nameController = TextEditingController();
 
   final Rx<PersonaColor> selectedColor = PersonaColor.values.first.obs;
+  final Rxn<ProfileAvatar> avatar = Rxn<ProfileAvatar>();
   final RxBool isLoading = false.obs;
 
   String? validateName(String? value) => Validators.name(value);
@@ -41,6 +43,7 @@ class AddProfileController extends GetxController {
       final AddProfileResult result = await _profiles.addProfile(
         name: nameController.text,
         personaColor: selectedColor.value,
+        avatar: avatar.value,
       );
       switch (result) {
         case AddProfileSuccess():

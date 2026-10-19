@@ -1,4 +1,5 @@
 import 'package:dose_tracker/core/theme/persona_palette.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile_avatar.dart';
 import 'package:flutter/foundation.dart';
 
 /// The public view of a family profile: only what screens may show.
@@ -12,12 +13,14 @@ class Profile {
     required this.name,
     required this.personaColor,
     required this.remindersEnabled,
+    this.avatar,
   });
 
   final int id;
   final String name;
   final PersonaColor personaColor;
   final bool remindersEnabled;
+  final ProfileAvatar? avatar;
 
   @override
   bool operator ==(Object other) {
@@ -25,9 +28,16 @@ class Profile {
         other.id == id &&
         other.name == name &&
         other.personaColor == personaColor &&
-        other.remindersEnabled == remindersEnabled;
+        other.remindersEnabled == remindersEnabled &&
+        other.avatar == avatar;
   }
 
   @override
-  int get hashCode => Object.hash(id, name, personaColor, remindersEnabled);
+  int get hashCode => Object.hash(
+    id,
+    name,
+    personaColor,
+    remindersEnabled,
+    avatar,
+  );
 }

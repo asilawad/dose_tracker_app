@@ -26,7 +26,11 @@ class MedicationRecipientCard extends GetView<AddMedicationController> {
       return AppCard(
         child: Row(
           children: <Widget>[
-            PersonaAvatar(persona: profile.personaColor),
+            PersonaAvatar(
+              persona: profile.personaColor,
+              avatar: profile.avatar,
+              name: profile.name,
+            ),
             const SizedBox(width: AppSizes.spaceMd),
             Expanded(
               child: Column(
