@@ -12,8 +12,7 @@ import 'package:get/get.dart';
 /// The name and dose card of Add Medication: the medication name, the dose
 /// amount and the unit chips (mg, IU, ml, pills).
 ///
-/// State and validation come from [AddMedicationController]. The dose
-/// field opens a decimal keyboard.
+/// State and validation come from the controller's form fields.
 class MedicationNameDoseCard extends GetView<AddMedicationController> {
   const MedicationNameDoseCard({super.key});
 
@@ -26,20 +25,20 @@ class MedicationNameDoseCard extends GetView<AddMedicationController> {
           AppTextField(
             label: AppStrings.medsNameLabel.tr,
             hint: AppStrings.medsNameHint.tr,
-            controller: controller.nameController,
+            controller: controller.form.nameController,
             prefixIcon: Icons.medication_outlined,
             textInputAction: TextInputAction.next,
-            validator: controller.validateName,
+            validator: controller.form.validateName,
           ),
           const SizedBox(height: AppSizes.space2xl),
           AppTextField(
             label: AppStrings.medsDoseLabel.tr,
             hint: AppStrings.medsDoseHint.tr,
-            controller: controller.doseController,
+            controller: controller.form.doseController,
             prefixIcon: Icons.scale_outlined,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             textInputAction: TextInputAction.done,
-            validator: controller.validateDose,
+            validator: controller.form.validateDose,
           ),
           const SizedBox(height: AppSizes.spaceMd),
           Obx(
@@ -50,8 +49,8 @@ class MedicationNameDoseCard extends GetView<AddMedicationController> {
                 for (final DoseUnit unit in DoseUnit.values)
                   AppChoiceChip(
                     label: unit.labelKey.tr,
-                    selected: unit == controller.doseUnit.value,
-                    onTap: () => controller.selectUnit(unit),
+                    selected: unit == controller.form.doseUnit.value,
+                    onTap: () => controller.form.selectUnit(unit),
                   ),
               ],
             ),

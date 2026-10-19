@@ -203,9 +203,12 @@ abstract final class EnTranslations {
     AppStrings.medsMealAfter: 'After meal',
     AppStrings.medsInventoryTitle: 'Track inventory & stock',
     AppStrings.medsInventorySubtitle: 'Decrease the count on taken doses',
+    AppStrings.medsMoreOptions: 'More options',
     AppStrings.medsStockLabel: 'Current stock',
+    AppStrings.medsThresholdLabel: 'Alert threshold',
     AppStrings.medsStockNote:
-        "You'll get a refill alert when your stock runs low.",
+        "You'll get a refill alert when your stock drops to the threshold or "
+        'below.',
     AppStrings.medsSave: 'Save medication schedule',
     AppStrings.medsSaved: 'Medication added',
     AppStrings.medsErrorProfileNotFound: 'This family member no longer exists.',

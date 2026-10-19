@@ -38,7 +38,7 @@ class _DoseTimeEditorSheetContentState
   @override
   void initState() {
     super.initState();
-    final DoseTimeInput current = _controller.times[widget.index];
+    final DoseTimeInput current = _controller.form.times[widget.index];
     _minuteOfDay = current.minuteOfDay;
     _quantityController = TextEditingController(
       text: DoseFormatter.quantity(current.quantity),
@@ -71,7 +71,7 @@ class _DoseTimeEditorSheetContentState
     if (quantity == null) {
       return;
     }
-    final bool saved = _controller.updateTime(
+    final bool saved = _controller.form.updateTime(
       index: widget.index,
       minuteOfDay: _minuteOfDay,
       quantity: quantity,

@@ -198,9 +198,11 @@ abstract final class ArTranslations {
     AppStrings.medsMealAfter: 'بعد الأكل',
     AppStrings.medsInventoryTitle: 'تتبّع المخزون',
     AppStrings.medsInventorySubtitle: 'ينقص العدد عند تسجيل كل جرعة',
+    AppStrings.medsMoreOptions: 'خيارات إضافية',
     AppStrings.medsStockLabel: 'المخزون الحالي',
+    AppStrings.medsThresholdLabel: 'حد التنبيه (العتبة)',
     AppStrings.medsStockNote:
-        'ستصلك تنبيهات إعادة التعبئة عند انخفاض المخزون.',
+        'ستصلك تنبيهات إعادة التعبئة عندما يصل المخزون إلى العتبة أو أقل.',
     AppStrings.medsSave: 'حفظ جدول الدواء',
     AppStrings.medsSaved: 'تمت إضافة الدواء',
     AppStrings.medsErrorProfileNotFound: 'هذا الفرد لم يعد موجوداً.',

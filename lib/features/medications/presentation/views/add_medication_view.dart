@@ -2,20 +2,17 @@ import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
-import 'package:dose_tracker/features/medications/presentation/widgets/medication_frequency_card.dart';
-import 'package:dose_tracker/features/medications/presentation/widgets/medication_inventory_card.dart';
-import 'package:dose_tracker/features/medications/presentation/widgets/medication_meal_card.dart';
 import 'package:dose_tracker/features/medications/presentation/widgets/medication_name_dose_card.dart';
-import 'package:dose_tracker/features/medications/presentation/widgets/medication_recipient_card.dart';
-import 'package:dose_tracker/features/medications/presentation/widgets/medication_schedule_card.dart';
+import 'package:dose_tracker/features/medications/presentation/widgets/medication_options_section.dart';
+import 'package:dose_tracker/features/medications/presentation/widgets/medication_recipient_row.dart';
+import 'package:dose_tracker/features/medications/presentation/widgets/medication_schedule_section.dart';
 import 'package:dose_tracker/views/widgets/gradient_button.dart';
 import 'package:dose_tracker/views/widgets/screen_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// The Add Medication screen: back arrow, title and the form cards (who it
-/// is for, name and dose, daily frequency, schedule, meal instruction,
-/// inventory) followed by the Save button.
+/// The Add Medication screen: recipient, name and dose, schedule, expandable
+/// options, and the Save button.
 ///
 /// It is opened from a profile's page, which passes the profile id, so the
 /// back arrow (mirrored in RTL) returns there and a successful save closes
@@ -48,17 +45,23 @@ class AddMedicationView extends GetView<AddMedicationController> {
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceLg),
           children: <Widget>[
-            const MedicationRecipientCard(),
-            const SizedBox(height: AppSizes.gutter),
+            Obx(() {
+              if (controller.profile.value == null) {
+                return const SizedBox.shrink();
+              }
+              return const Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  MedicationRecipientRow(),
+                  SizedBox(height: AppSizes.gutter),
+                ],
+              );
+            }),
             const MedicationNameDoseCard(),
             const SizedBox(height: AppSizes.gutter),
-            const MedicationFrequencyCard(),
+            const MedicationScheduleSection(),
             const SizedBox(height: AppSizes.gutter),
-            const MedicationScheduleCard(),
-            const SizedBox(height: AppSizes.gutter),
-            const MedicationMealCard(),
-            const SizedBox(height: AppSizes.gutter),
-            const MedicationInventoryCard(),
+            const MedicationOptionsSection(),
             const SizedBox(height: AppSizes.space2xl),
             Obx(
               () => GradientButton(

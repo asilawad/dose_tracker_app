@@ -198,7 +198,9 @@ abstract final class AppStrings {
   static const String medsMealAfter = 'meds_meal_after';
   static const String medsInventoryTitle = 'meds_inventory_title';
   static const String medsInventorySubtitle = 'meds_inventory_subtitle';
+  static const String medsMoreOptions = 'meds_more_options';
   static const String medsStockLabel = 'meds_stock_label';
+  static const String medsThresholdLabel = 'meds_threshold_label';
   static const String medsStockNote = 'meds_stock_note';
   static const String medsSave = 'meds_save';
   static const String medsSaved = 'meds_saved';

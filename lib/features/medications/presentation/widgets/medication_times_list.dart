@@ -6,19 +6,12 @@ import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
 import 'package:dose_tracker/features/medications/presentation/widgets/dose_time_editor_sheet_content.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_sheet.dart';
-import 'package:dose_tracker/views/widgets/app_card.dart';
 import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// The intake schedule card of Add Medication: one row per dose time with an
-/// edit button (and a remove button while more than one time remains), and
-/// an "add another time" button.
-///
-/// Edit opens a bottom sheet for that time. State comes from
-/// [AddMedicationController]; the add button is disabled at the daily limit.
-class MedicationScheduleCard extends GetView<AddMedicationController> {
-  const MedicationScheduleCard({super.key});
+class MedicationTimesList extends GetView<AddMedicationController> {
+  const MedicationTimesList({super.key});
 
   void _openEditor(int index) {
     AppBottomSheet.show<void>(
@@ -29,43 +22,41 @@ class MedicationScheduleCard extends GetView<AddMedicationController> {
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            AppStrings.medsScheduleTitle.tr,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: AppSizes.spaceMd),
-          Obx(
-            () => Column(
-              children: <Widget>[
-                for (int index = 0; index < controller.times.length; index++)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: AppSizes.spaceSm),
-                    child: _DoseTimeRow(
-                      time: controller.times[index],
-                      canRemove: controller.canDecreaseFrequency,
-                      onEdit: () => _openEditor(index),
-                      onRemove: () => controller.removeTime(index),
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          AppStrings.medsScheduleTitle.tr,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        const SizedBox(height: AppSizes.spaceMd),
+        Obx(
+          () => Column(
+            children: <Widget>[
+              for (int index = 0; index < controller.form.times.length; index++)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSizes.spaceSm),
+                  child: _DoseTimeRow(
+                    time: controller.form.times[index],
+                    canRemove: controller.form.canDecreaseFrequency,
+                    onEdit: () => _openEditor(index),
+                    onRemove: () => controller.form.removeTime(index),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
-          const SizedBox(height: AppSizes.spaceXs),
-          Obx(
-            () => OutlinedActionButton(
-              label: AppStrings.medsAddTime.tr,
-              icon: Icons.add_rounded,
-              onPressed: controller.canIncreaseFrequency
-                  ? controller.addTime
-                  : null,
-            ),
+        ),
+        const SizedBox(height: AppSizes.spaceXs),
+        Obx(
+          () => OutlinedActionButton(
+            label: AppStrings.medsAddTime.tr,
+            icon: Icons.add_rounded,
+            onPressed: controller.form.canIncreaseFrequency
+                ? controller.form.addTime
+                : null,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
