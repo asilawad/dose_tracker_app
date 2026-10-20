@@ -235,6 +235,9 @@ abstract final class ArTranslations {
     AppStrings.scheduleSkipReasonLabel: 'السبب (اختياري)',
     AppStrings.scheduleSkipReasonHint: 'مثال: شعرت بتعب',
     AppStrings.scheduleStateSkipped: 'تم التخطي',
+    AppStrings.scheduleNotYetDue: 'لم يحن موعد هذه الجرعة بعد',
+    AppStrings.scheduleWindowClosed:
+        'حان موعد الجرعة التالية، لذلك سُجّلت هذه الجرعة كفائتة',
     AppStrings.a11yMarkTaken: 'تسجيل الجرعة كمأخوذة',
     AppStrings.a11yUndoTaken: 'التراجع عن الجرعة المأخوذة',
 

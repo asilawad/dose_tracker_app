@@ -44,7 +44,7 @@ class DoseTile extends StatelessWidget {
         (dose.state == DoseState.taken || dose.state == DoseState.takenLate);
 
     return InkWell(
-      onLongPress: onSkip,
+      onLongPress: dose.canRecord ? onSkip : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceSm),
         child: Row(

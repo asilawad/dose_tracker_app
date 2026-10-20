@@ -12,6 +12,7 @@ import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_log_results.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_status.dart';
+import 'package:dose_tracker/features/schedule/data/models/dose_window.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.dart';
 
@@ -23,7 +24,9 @@ import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.da
 /// stock (when stock tracking is on) by the dose quantity rounded up, never
 /// below zero, in the same transaction as the log; changing or undoing a
 /// taken dose gives that amount back. Doses of a day after today cannot be
-/// recorded.
+/// recorded. Taking or skipping is allowed only during the dose's window,
+/// from its scheduled time until the next dose time of that medication (or
+/// midnight for its last dose); undo remains allowed at any time.
 class DoseLogsRepository {
   const DoseLogsRepository({
     required AppDatabase database,
@@ -237,6 +240,22 @@ class DoseLogsRepository {
       }
       if (time == null) {
         return const LogDoseNotFound();
+      }
+
+      final DoseWindow window = DosePlanner.windowAt(
+        date: day,
+        minuteOfDay: minuteOfDay,
+        deadlineMinute: DosePlanner.deadlineMinute(
+          minuteOfDay,
+          times.map((DoseTimeRow candidate) => candidate.minuteOfDay),
+        ),
+        now: now,
+      );
+      if (window == DoseWindow.notYetOpen) {
+        return const LogDoseNotYetDue();
+      }
+      if (window == DoseWindow.closed) {
+        return const LogDoseWindowClosed();
       }
 
       final DoseLogRow? previous = await _doseLogs.findForDose(

@@ -91,13 +91,24 @@ class ProfileDetailController extends GetxController {
       }
       failed = await _doseLogs.undoDose(logId) is! UndoDoseSuccess;
     } else {
-      failed =
-          await _doseLogs.takeDose(
-                medicationId: dose.medicationId,
-                date: dose.date,
-                minuteOfDay: dose.minuteOfDay,
-              )
-              is! LogDoseSuccess;
+      final LogDoseResult result = await _doseLogs.takeDose(
+        medicationId: dose.medicationId,
+        date: dose.date,
+        minuteOfDay: dose.minuteOfDay,
+      );
+      switch (result) {
+        case LogDoseSuccess():
+          failed = false;
+        case LogDoseNotFound():
+        case LogDoseFutureDay():
+          failed = true;
+        case LogDoseNotYetDue():
+          AppSnackbar.error(AppStrings.scheduleNotYetDue.tr);
+          return;
+        case LogDoseWindowClosed():
+          AppSnackbar.error(AppStrings.scheduleWindowClosed.tr);
+          return;
+      }
     }
     if (failed) {
       AppSnackbar.error(AppStrings.stateErrorGeneric.tr);

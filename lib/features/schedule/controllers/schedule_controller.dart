@@ -122,6 +122,10 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       case LogDoseNotFound():
       case LogDoseFutureDay():
         AppSnackbar.error(AppStrings.stateErrorGeneric.tr);
+      case LogDoseNotYetDue():
+        AppSnackbar.error(AppStrings.scheduleNotYetDue.tr);
+      case LogDoseWindowClosed():
+        AppSnackbar.error(AppStrings.scheduleWindowClosed.tr);
     }
   }
 

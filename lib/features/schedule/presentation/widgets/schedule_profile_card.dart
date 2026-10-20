@@ -30,8 +30,7 @@ class ScheduleProfileCard extends StatelessWidget {
   final bool canConfirmAll;
   final bool showProfile;
 
-  bool _canCheck(ScheduledDose dose) =>
-      dose.state == DoseState.pending || dose.state == DoseState.missed;
+  bool _canCheck(ScheduledDose dose) => dose.canRecord;
 
   void _confirmAll() {
     for (final ScheduledDose dose in group.doses) {
@@ -94,13 +93,15 @@ class ScheduleProfileCard extends StatelessWidget {
                   group.doses[index].state == DoseState.taken ||
                   group.doses[index].state == DoseState.takenLate ||
                   isJustChecked(group.doses[index]),
-              onToggle: () =>
+              onToggle:
                   group.doses[index].state == DoseState.taken ||
                       group.doses[index].state == DoseState.takenLate ||
                       isJustChecked(group.doses[index])
-                  ? onUndo(group.doses[index])
-                  : onCheck(group.doses[index]),
-              onSkip: onSkip == null
+                  ? () => onUndo(group.doses[index])
+                  : group.doses[index].canRecord
+                  ? () => onCheck(group.doses[index])
+                  : null,
+              onSkip: onSkip == null || !group.doses[index].canRecord
                   ? null
                   : () => onSkip!(group.doses[index]),
             ),

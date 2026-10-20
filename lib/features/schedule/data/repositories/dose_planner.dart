@@ -5,15 +5,17 @@ import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/dose_status.dart';
+import 'package:dose_tracker/features/schedule/data/models/dose_window.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 
 /// Pure logic that turns medications, dose times and logs into the list of
 /// doses for one day. It touches no database, so it is easy to test.
 ///
 /// A dose with a log shows that log's outcome. A dose without one is
-/// pending, until the next dose time of the same medication (or the end of
-/// the day, whichever comes first) arrives: from then on it shows as missed.
-/// Paused medications and medications of deleted profiles produce no doses.
+/// pending until the next dose time of the same medication (or midnight for
+/// the last dose of the day) arrives: from then on it shows as missed. A dose
+/// can be recorded only while its window is open. Paused medications and
+/// medications of deleted profiles produce no doses.
 /// A dose scheduled earlier than the minute its medication was added is not
 /// created (unless it already has a log), so adding a medication at noon
 /// never creates a missed 8 AM dose.
@@ -21,6 +23,33 @@ abstract final class DosePlanner {
   /// A dose taken more than this many minutes after its time is logged as
   /// taken late instead of taken.
   static const int lateGraceMinutes = 60;
+
+  /// The next dose time after [minuteOfDay], or midnight if it is the last.
+  static int deadlineMinute(int minuteOfDay, Iterable<int> allMinutes) {
+    int deadline = DoseScheduler.minutesPerDay;
+    for (final int minute in allMinutes) {
+      if (minute > minuteOfDay && minute < deadline) {
+        deadline = minute;
+      }
+    }
+    return deadline;
+  }
+
+  /// Returns where [now] falls relative to this dose's recording window.
+  static DoseWindow windowAt({
+    required DateTime date,
+    required int minuteOfDay,
+    required int deadlineMinute,
+    required DateTime now,
+  }) {
+    if (now.isBefore(_at(date, minuteOfDay))) {
+      return DoseWindow.notYetOpen;
+    }
+    if (now.isBefore(_at(date, deadlineMinute))) {
+      return DoseWindow.open;
+    }
+    return DoseWindow.closed;
+  }
 
   /// Local midnight of the day that contains [value].
   static DateTime dayStart(DateTime value) {
@@ -96,6 +125,14 @@ abstract final class DosePlanner {
             state: log != null
                 ? log.status.state
                 : _derivedState(date, deadlineMinute, now),
+            isDue:
+                windowAt(
+                  date: date,
+                  minuteOfDay: time.minuteOfDay,
+                  deadlineMinute: deadlineMinute,
+                  now: now,
+                ) ==
+                DoseWindow.open,
             logId: log?.id,
             takenAt: log?.takenAt,
             skipReason: log?.skipReason,

@@ -242,6 +242,9 @@ abstract final class EnTranslations {
     AppStrings.scheduleSkipReasonLabel: 'Reason (optional)',
     AppStrings.scheduleSkipReasonHint: 'For example: felt unwell',
     AppStrings.scheduleStateSkipped: 'Skipped',
+    AppStrings.scheduleNotYetDue: 'This dose is not due yet',
+    AppStrings.scheduleWindowClosed:
+        'The next dose time has arrived, so this dose is marked as missed',
     AppStrings.a11yMarkTaken: 'Mark dose as taken',
     AppStrings.a11yUndoTaken: 'Undo taken dose',
 

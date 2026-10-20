@@ -22,6 +22,14 @@ final class LogDoseFutureDay extends LogDoseResult {
   const LogDoseFutureDay();
 }
 
+final class LogDoseNotYetDue extends LogDoseResult {
+  const LogDoseNotYetDue();
+}
+
+final class LogDoseWindowClosed extends LogDoseResult {
+  const LogDoseWindowClosed();
+}
+
 /// Typed outcomes of undoing a recorded dose (putting it back to pending).
 sealed class UndoDoseResult {
   const UndoDoseResult();

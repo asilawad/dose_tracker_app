@@ -232,6 +232,8 @@ abstract final class AppStrings {
   static const String scheduleSkipReasonLabel = 'schedule_skip_reason_label';
   static const String scheduleSkipReasonHint = 'schedule_skip_reason_hint';
   static const String scheduleStateSkipped = 'schedule_state_skipped';
+  static const String scheduleNotYetDue = 'schedule_not_yet_due';
+  static const String scheduleWindowClosed = 'schedule_window_closed';
   static const String a11yMarkTaken = 'a11y_mark_taken';
   static const String a11yUndoTaken = 'a11y_undo_taken';
 

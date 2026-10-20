@@ -26,6 +26,7 @@ class ScheduledDose {
     required this.minuteOfDay,
     required this.quantity,
     required this.state,
+    this.isDue = false,
     required this.logId,
     required this.takenAt,
     required this.skipReason,
@@ -44,11 +45,15 @@ class ScheduledDose {
   final int minuteOfDay;
   final double quantity;
   final DoseState state;
+  final bool isDue;
   final int? logId;
   final DateTime? takenAt;
 
   /// The reason the user gave when skipping the dose, if any.
   final String? skipReason;
+
+  /// True when the dose is pending and its recording window is open right now.
+  bool get canRecord => state == DoseState.pending && isDue;
 
   /// Identifies this dose in a list: a medication has one dose per time.
   String get key => '$medicationId-$minuteOfDay';
@@ -69,6 +74,7 @@ class ScheduledDose {
         other.minuteOfDay == minuteOfDay &&
         other.quantity == quantity &&
         other.state == state &&
+        other.isDue == isDue &&
         other.logId == logId &&
         other.takenAt == takenAt &&
         other.skipReason == skipReason;
@@ -89,6 +95,7 @@ class ScheduledDose {
     minuteOfDay,
     quantity,
     state,
+    isDue,
     logId,
     takenAt,
     skipReason,
