@@ -28,6 +28,8 @@ abstract final class AppDurations {
 
   // ---- Feedback and timing ----
   static const Duration snackbarVisible = Duration(seconds: 3);
+  /// How long the "Undo" snackbar stays, long enough to react to a mistaken tap.
+  static const Duration undoSnackbarVisible = Duration(seconds: 8);
   static const Duration inputDebounce = Duration(milliseconds: 300);
 
   /// How often the schedule re-checks which pending doses became missed.

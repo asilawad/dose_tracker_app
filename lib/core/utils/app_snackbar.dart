@@ -28,12 +28,14 @@ abstract final class AppSnackbar {
       },
       child: Text(AppStrings.scheduleUndo.tr),
     ),
+    duration: AppDurations.undoSnackbarVisible,
   );
 
   static void _show(
     String message,
     _SnackbarKind kind, {
     TextButton? action,
+    Duration duration = AppDurations.snackbarVisible,
   }) {
     if (action != null) {
       Get.closeAllSnackbars();
@@ -56,7 +58,7 @@ abstract final class AppSnackbar {
       backgroundColor: background,
       margin: const EdgeInsets.all(AppSizes.spaceLg),
       borderRadius: AppSizes.radiusMd,
-      duration: AppDurations.snackbarVisible,
+      duration: duration,
       animationDuration: AppDurations.normal,
     );
   }
