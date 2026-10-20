@@ -17,7 +17,7 @@ class ScheduleProfileCard extends StatelessWidget {
     required this.onUndo,
     this.onSkip,
     required this.isJustChecked,
-    this.canConfirmAll = false,
+    this.onConfirmAll,
     this.showProfile = true,
     super.key,
   });
@@ -27,18 +27,10 @@ class ScheduleProfileCard extends StatelessWidget {
   final ValueChanged<ScheduledDose> onUndo;
   final ValueChanged<ScheduledDose>? onSkip;
   final bool Function(ScheduledDose) isJustChecked;
-  final bool canConfirmAll;
+  final ValueChanged<List<ScheduledDose>>? onConfirmAll;
   final bool showProfile;
 
   bool _canCheck(ScheduledDose dose) => dose.canRecord;
-
-  void _confirmAll() {
-    for (final ScheduledDose dose in group.doses) {
-      if (_canCheck(dose) && !isJustChecked(dose)) {
-        onCheck(dose);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +58,9 @@ class ScheduleProfileCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                if (canConfirmAll && confirmableCount >= 2)
+                if (onConfirmAll != null && confirmableCount >= 2)
                   TextButton(
-                    onPressed: _confirmAll,
+                    onPressed: () => onConfirmAll!(group.doses),
                     child: Text(AppStrings.scheduleConfirmAll.tr),
                   ),
               ],
@@ -93,10 +85,9 @@ class ScheduleProfileCard extends StatelessWidget {
                   group.doses[index].state == DoseState.taken ||
                   group.doses[index].state == DoseState.takenLate ||
                   isJustChecked(group.doses[index]),
+              isJustChecked: isJustChecked(group.doses[index]),
               onToggle:
-                  group.doses[index].state == DoseState.taken ||
-                      group.doses[index].state == DoseState.takenLate ||
-                      isJustChecked(group.doses[index])
+                  isJustChecked(group.doses[index])
                   ? () => onUndo(group.doses[index])
                   : group.doses[index].canRecord
                   ? () => onCheck(group.doses[index])

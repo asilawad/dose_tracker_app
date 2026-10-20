@@ -59,7 +59,8 @@ class ProfileDetailView extends GetView<ProfileDetailController> {
         if (controller.isLoading.value || summary == null) {
           return const LoadingState();
         }
-        final List<ScheduledDose> doses = controller.doses.toList();
+        final List<ScheduledDose> allDoses = controller.doses.toList();
+        final List<ScheduledDose> doses = controller.actions.visible(allDoses);
         final List<schedule_data.ScheduleTimeGroup> groups =
             schedule_data.ScheduleGrouper.group(doses);
         return ListView(
@@ -72,17 +73,21 @@ class ProfileDetailView extends GetView<ProfileDetailController> {
             const SizedBox(height: AppSizes.space2xl),
             _SectionTitle(AppStrings.profileTodaySection.tr),
             if (groups.isEmpty)
-              const _EmptyLine(AppStrings.homeNoDosesToday),
+              _EmptyLine(
+                allDoses.isEmpty
+                    ? AppStrings.homeNoDosesToday
+                    : AppStrings.scheduleAllDone,
+              ),
             for (final schedule_data.ScheduleTimeGroup group in groups)
               ...<Widget>[
                 ScheduleTimeGroup(
                   key: ValueKey<int>(group.minuteOfDay),
                   group: group,
-                  onCheck: controller.toggleDose,
-                  onUndo: controller.toggleDose,
-                  onSkip: null,
-                  isJustChecked: (_) => false,
-                  canConfirmAll: false,
+                  onCheck: controller.actions.check,
+                  onUndo: controller.actions.undo,
+                  onSkip: controller.actions.skip,
+                  isJustChecked: controller.actions.isJustChecked,
+                  onConfirmAll: controller.actions.checkAll,
                   showProfile: false,
                 ),
                 const SizedBox(height: AppSizes.spaceLg),

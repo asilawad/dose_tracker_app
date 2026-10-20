@@ -20,7 +20,7 @@ class ScheduleTabView extends GetView<ScheduleController> {
       title: AppStrings.scheduleSkipTitle.tr,
       child: SkipDoseSheetContent(
         onConfirm: (String? reason) =>
-            controller.skipDose(dose, reason: reason),
+            controller.actions.skip(dose, reason: reason),
       ),
     );
   }
@@ -46,11 +46,11 @@ class ScheduleTabView extends GetView<ScheduleController> {
     }
     return ScheduleDoseList(
       doses: visible,
-      onCheck: controller.check,
-      onUndo: controller.undo,
+      onCheck: controller.actions.check,
+      onUndo: controller.actions.undo,
       onSkip: _openSkipSheet,
-      isJustChecked: controller.isJustChecked,
-      canConfirmAll: true,
+      isJustChecked: controller.actions.isJustChecked,
+      onConfirmAll: controller.actions.checkAll,
     );
   }
 

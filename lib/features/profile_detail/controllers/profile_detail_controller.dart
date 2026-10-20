@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:dose_tracker/app/routes/app_routes.dart';
-import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/features/home/data/models/profile_summary.dart';
 import 'package:dose_tracker/features/home/data/repositories/profile_summary_builder.dart';
 import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
-import 'package:dose_tracker/features/schedule/data/models/dose_log_results.dart';
-import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
+import 'package:dose_tracker/features/schedule/controllers/dose_actions.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.dart';
@@ -28,11 +25,12 @@ class ProfileDetailController extends GetxController {
     this._medications,
     this._doseLogs,
     this._profileId,
-  );
+  ) : actions = DoseActions(_doseLogs);
 
   final ProfilesRepository _profiles;
   final MedicationsRepository _medications;
   final DoseLogsRepository _doseLogs;
+  final DoseActions actions;
   final int? _profileId;
 
   final Rxn<ProfileSummary> summary = Rxn<ProfileSummary>();
@@ -77,41 +75,6 @@ class ProfileDetailController extends GetxController {
     final int? id = _profileId;
     if (id != null) {
       Get.toNamed<void>(AppRoutes.profileMedications, arguments: id);
-    }
-  }
-
-  Future<void> toggleDose(ScheduledDose dose) async {
-    final bool wasTaken =
-        dose.state == DoseState.taken || dose.state == DoseState.takenLate;
-    bool failed;
-    if (wasTaken) {
-      final int? logId = dose.logId;
-      if (logId == null) {
-        return;
-      }
-      failed = await _doseLogs.undoDose(logId) is! UndoDoseSuccess;
-    } else {
-      final LogDoseResult result = await _doseLogs.takeDose(
-        medicationId: dose.medicationId,
-        date: dose.date,
-        minuteOfDay: dose.minuteOfDay,
-      );
-      switch (result) {
-        case LogDoseSuccess():
-          failed = false;
-        case LogDoseNotFound():
-        case LogDoseFutureDay():
-          failed = true;
-        case LogDoseNotYetDue():
-          AppSnackbar.error(AppStrings.scheduleNotYetDue.tr);
-          return;
-        case LogDoseWindowClosed():
-          AppSnackbar.error(AppStrings.scheduleWindowClosed.tr);
-          return;
-      }
-    }
-    if (failed) {
-      AppSnackbar.error(AppStrings.stateErrorGeneric.tr);
     }
   }
 

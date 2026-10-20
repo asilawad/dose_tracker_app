@@ -18,6 +18,7 @@ class DoseTile extends StatelessWidget {
   const DoseTile({
     required this.dose,
     this.isTaken,
+    this.isJustChecked = false,
     this.onToggle,
     this.onSkip,
     super.key,
@@ -25,6 +26,7 @@ class DoseTile extends StatelessWidget {
 
   final ScheduledDose dose;
   final bool? isTaken;
+  final bool isJustChecked;
   final VoidCallback? onToggle;
   final VoidCallback? onSkip;
 
@@ -93,6 +95,9 @@ class DoseTile extends StatelessWidget {
             ),
             DoseCheck(
               isTaken: checked,
+              isEnabled: dose.canRecord || isJustChecked,
+              isNotYetDue:
+                  dose.state == DoseState.pending && !dose.isDue,
               onTap: onToggle,
             ),
           ],

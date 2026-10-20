@@ -221,6 +221,7 @@ abstract final class AppStrings {
   // ---- Schedule ----
   static const String scheduleToday = 'schedule_today';
   static const String scheduleDoseTaken = 'schedule_dose_taken';
+  static const String scheduleDosesTaken = 'schedule_doses_taken';
   static const String scheduleConfirmAll = 'schedule_confirm_all';
   static const String scheduleUndo = 'schedule_undo';
   static const String scheduleAllDone = 'schedule_all_done';

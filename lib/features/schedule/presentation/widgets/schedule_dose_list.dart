@@ -12,7 +12,7 @@ class ScheduleDoseList extends StatelessWidget {
     required this.onUndo,
     required this.onSkip,
     required this.isJustChecked,
-    required this.canConfirmAll,
+    this.onConfirmAll,
     super.key,
   });
 
@@ -21,7 +21,7 @@ class ScheduleDoseList extends StatelessWidget {
   final ValueChanged<ScheduledDose> onUndo;
   final ValueChanged<ScheduledDose> onSkip;
   final bool Function(ScheduledDose) isJustChecked;
-  final bool canConfirmAll;
+  final ValueChanged<List<ScheduledDose>>? onConfirmAll;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ScheduleDoseList extends StatelessWidget {
         onUndo: onUndo,
         onSkip: onSkip,
         isJustChecked: isJustChecked,
-        canConfirmAll: canConfirmAll,
+        onConfirmAll: onConfirmAll,
       ),
     );
   }
