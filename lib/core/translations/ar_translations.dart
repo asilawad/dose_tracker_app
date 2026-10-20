@@ -175,6 +175,10 @@ abstract final class ArTranslations {
 
     // ---- Medications: Add Medication ----
     AppStrings.medsAddTitle: 'إضافة دواء جديد',
+    AppStrings.medsEditTitle: 'تعديل الدواء',
+    AppStrings.medsSaveChanges: 'حفظ التعديلات',
+    AppStrings.medsUpdated: 'تم حفظ التعديلات',
+    AppStrings.medsErrorMedicationNotFound: 'الدواء غير موجود',
     AppStrings.medsRecipientLabel: 'متلقي الجرعة',
     AppStrings.medsNameLabel: 'اسم الدواء / المكمّل',
     AppStrings.medsNameHint: 'مثال: ميتفورمين',

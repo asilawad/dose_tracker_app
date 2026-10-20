@@ -1,6 +1,6 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
+import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 /// amount and the unit chips (mg, IU, ml, pills).
 ///
 /// State and validation come from the controller's form fields.
-class MedicationNameDoseCard extends GetView<AddMedicationController> {
+class MedicationNameDoseCard extends GetView<MedicationFormController> {
   const MedicationNameDoseCard({super.key});
 
   @override

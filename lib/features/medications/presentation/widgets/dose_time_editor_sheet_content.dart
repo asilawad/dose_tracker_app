@@ -5,7 +5,7 @@ import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
-import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
+import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
 import 'package:dose_tracker/views/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +29,8 @@ class DoseTimeEditorSheetContent extends StatefulWidget {
 
 class _DoseTimeEditorSheetContentState
     extends State<DoseTimeEditorSheetContent> {
-  final AddMedicationController _controller =
-      Get.find<AddMedicationController>();
+  final MedicationFormController _controller =
+      Get.find<MedicationFormController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _quantityController;
   late int _minuteOfDay;

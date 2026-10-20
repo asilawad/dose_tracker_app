@@ -1,11 +1,11 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
-import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
+import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/views/widgets/persona_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MedicationRecipientRow extends GetView<AddMedicationController> {
+class MedicationRecipientRow extends GetView<MedicationFormController> {
   const MedicationRecipientRow({super.key});
 
   @override

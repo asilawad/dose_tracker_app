@@ -34,6 +34,11 @@ class DoseTimesEditor {
     }
   }
 
+  void setTimes(List<DoseTimeInput> value) {
+    times.assignAll(value);
+    _sort();
+  }
+
   /// Adds one time after the latest one, keeping the other times as they are.
   void addTime() {
     if (!canIncrease) {

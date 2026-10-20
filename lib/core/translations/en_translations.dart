@@ -180,6 +180,10 @@ abstract final class EnTranslations {
 
     // ---- Medications: Add Medication ----
     AppStrings.medsAddTitle: 'Add New Medication',
+    AppStrings.medsEditTitle: 'Edit medication',
+    AppStrings.medsSaveChanges: 'Save changes',
+    AppStrings.medsUpdated: 'Changes saved',
+    AppStrings.medsErrorMedicationNotFound: 'Medication not found',
     AppStrings.medsRecipientLabel: 'Dose recipient',
     AppStrings.medsNameLabel: 'Medication / supplement name',
     AppStrings.medsNameHint: 'For example: Metformin',

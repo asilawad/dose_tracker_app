@@ -175,6 +175,11 @@ abstract final class AppStrings {
 
   // ---- Medications: Add Medication ----
   static const String medsAddTitle = 'meds_add_title';
+  static const String medsEditTitle = 'meds_edit_title';
+  static const String medsSaveChanges = 'meds_save_changes';
+  static const String medsUpdated = 'meds_updated';
+  static const String medsErrorMedicationNotFound =
+      'meds_error_medication_not_found';
   static const String medsRecipientLabel = 'meds_recipient_label';
   static const String medsNameLabel = 'meds_name_label';
   static const String medsNameHint = 'meds_name_hint';

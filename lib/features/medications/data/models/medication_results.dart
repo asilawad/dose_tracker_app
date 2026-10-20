@@ -30,6 +30,26 @@ final class AddMedicationInvalidStock extends AddMedicationResult {
   const AddMedicationInvalidStock();
 }
 
+sealed class UpdateMedicationResult {
+  const UpdateMedicationResult();
+}
+
+final class UpdateMedicationSuccess extends UpdateMedicationResult {
+  const UpdateMedicationSuccess();
+}
+
+final class UpdateMedicationNotFound extends UpdateMedicationResult {
+  const UpdateMedicationNotFound();
+}
+
+final class UpdateMedicationInvalidSchedule extends UpdateMedicationResult {
+  const UpdateMedicationInvalidSchedule();
+}
+
+final class UpdateMedicationInvalidStock extends UpdateMedicationResult {
+  const UpdateMedicationInvalidStock();
+}
+
 /// Typed outcomes of recording a refill of a medication's stock.
 sealed class RestockResult {
   const RestockResult();

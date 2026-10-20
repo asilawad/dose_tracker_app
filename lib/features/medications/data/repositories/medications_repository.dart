@@ -39,6 +39,22 @@ class MedicationsRepository {
   final ProfilesLocalDataSource _profiles;
   final SessionService _session;
 
+  Future<Medication?> findMedication(int medicationId) async {
+    final int accountId = _session.requireActiveAccountId();
+    final MedicationRow? row = await _medications.findById(
+      accountId: accountId,
+      id: medicationId,
+    );
+    if (row == null) {
+      return null;
+    }
+    final List<DoseTimeRow> times = await _doseTimes.findByMedication(
+      accountId: accountId,
+      medicationId: medicationId,
+    );
+    return MedicationMapper.combine(<MedicationRow>[row], times).first;
+  }
+
   /// Live list of every medication in the account with its dose times,
   /// oldest first. Emits again when a medication or any dose time changes.
   Stream<List<Medication>> watchMedications() {

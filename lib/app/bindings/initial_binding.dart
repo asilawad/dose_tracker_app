@@ -87,7 +87,9 @@ class InitialBinding extends Bindings {
 
     Get.put<MedicationUpdatesRepository>(
       MedicationUpdatesRepository(
+        database: database,
         medications: medications,
+        doseTimes: doseTimes,
         session: Get.find<SessionService>(),
       ),
       permanent: true,

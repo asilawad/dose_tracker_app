@@ -1,13 +1,13 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
+import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MedicationMealOptions extends GetView<AddMedicationController> {
+class MedicationMealOptions extends GetView<MedicationFormController> {
   const MedicationMealOptions({super.key});
 
   @override

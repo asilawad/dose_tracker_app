@@ -109,6 +109,25 @@ class MedicationsLocalDataSource {
     );
   }
 
+  /// Updates inventory tracking and both stock values together.
+  Future<int> updateInventory({
+    required int accountId,
+    required int id,
+    required bool trackInventory,
+    required int? stockRemaining,
+    required int? stockThreshold,
+  }) {
+    return (_db.update(
+      _db.medications,
+    )..where((t) => t.accountId.equals(accountId) & t.id.equals(id))).write(
+      MedicationsCompanion(
+        trackInventory: Value<bool>(trackInventory),
+        stockRemaining: Value<int?>(trackInventory ? stockRemaining : null),
+        stockThreshold: Value<int?>(trackInventory ? stockThreshold : null),
+      ),
+    );
+  }
+
   /// Pauses or resumes a medication without deleting its history.
   Future<int> setActive({
     required int accountId,

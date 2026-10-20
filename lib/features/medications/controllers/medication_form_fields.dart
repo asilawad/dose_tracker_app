@@ -1,8 +1,10 @@
 import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_source.dart'
     show DoseTimeInput;
+import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/core/utils/stock_policy.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
 import 'package:dose_tracker/features/medications/controllers/dose_times_editor.dart';
+import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -37,6 +39,30 @@ class MedicationFormFields {
   int get stockThreshold =>
       Validators.parsePositiveInt(thresholdController.text) ??
       StockPolicy.defaultThreshold;
+
+  bool get hasOptionsSet =>
+      mealInstruction.value != null || trackInventory.value;
+
+  void loadFrom(Medication medication) {
+    nameController.text = medication.name;
+    doseController.text = DoseFormatter.quantity(medication.doseAmount);
+    doseUnit.value = medication.doseUnit;
+    mealInstruction.value = medication.mealInstruction;
+    trackInventory.value = medication.trackInventory;
+    stockController.text = medication.stockRemaining?.toString() ?? '';
+    thresholdController.text =
+        (medication.stockThreshold ?? StockPolicy.defaultThreshold).toString();
+    _timesEditor.setTimes(
+      medication.doseTimes
+          .map(
+            (time) => (
+              minuteOfDay: time.minuteOfDay,
+              quantity: time.quantity,
+            ),
+          )
+          .toList(),
+    );
+  }
 
   String? validateName(String? value) => Validators.required(value);
 

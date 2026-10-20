@@ -1,3 +1,4 @@
+import 'package:dose_tracker/app/routes/app_routes.dart';
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
@@ -72,6 +73,10 @@ class ProfileMedicationsView extends GetView<ProfileMedicationsController> {
               ProfileMedicationTile(
                 key: ValueKey<int>(medication.id),
                 medication: medication,
+                onTap: () => Get.toNamed<void>(
+                  AppRoutes.editMedication,
+                  arguments: medication.id,
+                ),
               ),
               const SizedBox(height: AppSizes.gutter),
             ],

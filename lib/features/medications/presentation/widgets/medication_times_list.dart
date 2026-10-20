@@ -3,14 +3,14 @@ import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/database/data_sources/dose_times_local_data_source.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/core/utils/dose_formatter.dart';
-import 'package:dose_tracker/features/medications/controllers/add_medication_controller.dart';
+import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
 import 'package:dose_tracker/features/medications/presentation/widgets/dose_time_editor_sheet_content.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_sheet.dart';
 import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MedicationTimesList extends GetView<AddMedicationController> {
+class MedicationTimesList extends GetView<MedicationFormController> {
   const MedicationTimesList({super.key});
 
   void _openEditor(int index) {

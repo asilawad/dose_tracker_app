@@ -15,6 +15,8 @@ abstract final class AppRoutes {
   /// `arguments`.
   static const String addMedication = '/add-medication';
 
+  /// Opens with the medication id (an int) as `arguments`.
+  static const String editMedication = '/edit-medication';
   /// Opens with the profile id (an int) as `arguments`.
   static const String editProfile = '/edit-profile';
   /// Opens with the profile id (an int) as `arguments`.

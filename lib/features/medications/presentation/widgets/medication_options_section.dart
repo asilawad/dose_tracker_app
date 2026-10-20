@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MedicationOptionsSection extends StatelessWidget {
-  const MedicationOptionsSection({super.key});
+  const MedicationOptionsSection({
+    required this.initiallyExpanded,
+    super.key,
+  });
+
+  final bool initiallyExpanded;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class MedicationOptionsSection extends StatelessWidget {
       child: ExpansionTile(
         title: Text(AppStrings.medsMoreOptions.tr),
         maintainState: true,
-        initiallyExpanded: false,
+        initiallyExpanded: initiallyExpanded,
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
         collapsedShape: const Border(),

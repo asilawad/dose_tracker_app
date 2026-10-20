@@ -13,9 +13,14 @@ import 'package:get/get.dart';
 /// One medication on the profile page: name with dose, its daily times, and
 /// a "Paused" badge when it is not active.
 class ProfileMedicationTile extends StatelessWidget {
-  const ProfileMedicationTile({required this.medication, super.key});
+  const ProfileMedicationTile({
+    required this.medication,
+    required this.onTap,
+    super.key,
+  });
 
   final Medication medication;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,7 @@ class ProfileMedicationTile extends StatelessWidget {
         .join(' · ');
 
     return AppCard(
+      onTap: onTap,
       child: Row(
         children: <Widget>[
           Icon(
