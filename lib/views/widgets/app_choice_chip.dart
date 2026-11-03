@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 ///
 /// The chosen chip is filled with the active color; the others are plain.
 /// Set [showCheck] to add a check mark on the chosen chip. [label] must
-/// already be translated. The tap target is at least 48 px high and the
-/// chip announces itself as a selectable button.
+/// already be translated. The chip announces itself as a selectable button.
 class AppChoiceChip extends StatelessWidget {
   const AppChoiceChip({
     required this.label,
@@ -39,7 +38,7 @@ class AppChoiceChip extends StatelessWidget {
           duration: AppDurations.fast,
           curve: AppDurations.standardCurve,
           decoration: BoxDecoration(
-            color: selected ? colors.active : colors.appBackground,
+            color: selected ? colors.active : colors.fieldFill,
             borderRadius: radius,
           ),
           child: Material(
@@ -48,7 +47,7 @@ class AppChoiceChip extends StatelessWidget {
               borderRadius: radius,
               onTap: onTap,
               child: SizedBox(
-                height: AppSizes.minTapTarget,
+                height: AppSizes.chipHeight,
                 child: Center(
                   widthFactor: 1,
                   child: Padding(
@@ -68,9 +67,12 @@ class AppChoiceChip extends StatelessWidget {
                         ],
                         Text(
                           label,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(color: foreground),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontSize: AppSizes.fontChip,
+                                fontWeight: FontWeight.w500,
+                                color: foreground,
+                              ),
                         ),
                       ],
                     ),

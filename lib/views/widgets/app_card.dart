@@ -1,5 +1,6 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
+import 'package:dose_tracker/core/theme/app_shadows.dart';
 import 'package:flutter/material.dart';
 
 /// White rounded surface with a soft shadow, the base of every card.
@@ -27,13 +28,7 @@ class AppCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: radius,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: colors.shadowSoft,
-            blurRadius: AppSizes.shadowBlurSoft,
-            offset: const Offset(0, AppSizes.shadowOffsetYSoft),
-          ),
-        ],
+        boxShadow: AppShadows.soft(colors),
       ),
       child: Material(
         type: MaterialType.transparency,

@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 ///
 /// Forms should put their fields in a scroll view so they stay usable when
 /// the keyboard is open. Set [padding] to `EdgeInsets.zero` for full-bleed
-/// content.
+/// content. [overlays] float above the body at the bottom of the screen,
+/// outside the safe area and the width cap, for example the navigation bar.
 class ScreenScaffold extends StatelessWidget {
   const ScreenScaffold({
     required this.body,
     this.appBar,
     this.floatingActionButton,
-    this.bottomNavigationBar,
+    this.overlays = const <Widget>[],
     this.padding = const EdgeInsets.symmetric(
       horizontal: AppSizes.screenPaddingHorizontal,
     ),
@@ -23,7 +24,7 @@ class ScreenScaffold extends StatelessWidget {
   final Widget body;
   final PreferredSizeWidget? appBar;
   final Widget? floatingActionButton;
-  final Widget? bottomNavigationBar;
+  final List<Widget> overlays;
   final EdgeInsetsGeometry padding;
 
   @override
@@ -31,16 +32,21 @@ class ScreenScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       floatingActionButton: floatingActionButton,
-      bottomNavigationBar: bottomNavigationBar,
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: AppSizes.contentMaxWidth,
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizes.contentMaxWidth,
+                ),
+                child: Padding(padding: padding, child: body),
+              ),
             ),
-            child: Padding(padding: padding, child: body),
           ),
-        ),
+          ...overlays,
+        ],
       ),
     );
   }

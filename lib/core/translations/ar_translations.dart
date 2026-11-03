@@ -116,7 +116,7 @@ abstract final class ArTranslations {
     // ---- Navigation (bottom bar tabs) ----
     AppStrings.navHome: 'الرئيسية',
     AppStrings.navSchedule: 'الجدول',
-    AppStrings.navInventory: 'المخزون',
+    AppStrings.navInventory: 'الخزانة',
     AppStrings.navSettings: 'الإعدادات',
 
     // ---- Home (empty state) and shell ----

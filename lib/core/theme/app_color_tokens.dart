@@ -38,6 +38,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
     required this.shadowSoft,
     required this.shadowActive,
     required this.scrim,
+    required this.activeDeep,
+    required this.fieldFill,
+    required this.borderDashed,
+    required this.switchTrackOff,
+    required this.sheetHandle,
+    required this.radioIdle,
+    required this.textTertiary,
+    required this.shadowHairline,
+    required this.shadowNav,
+    required this.shadowIndicator,
+    required this.headerGlass,
+    required this.appBackgroundClear,
   });
 
   /// Light-mode values. Dark mode will add `AppColorTokens.dark` here.
@@ -71,6 +83,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
     shadowSoft: AppColors.shadowSoft,
     shadowActive: AppColors.shadowActive,
     scrim: AppColors.scrim,
+    activeDeep: AppColors.activeDeep,
+    fieldFill: AppColors.fieldFill,
+    borderDashed: AppColors.borderDashed,
+    switchTrackOff: AppColors.switchTrackOff,
+    sheetHandle: AppColors.sheetHandle,
+    radioIdle: AppColors.radioIdle,
+    textTertiary: AppColors.textTertiary,
+    shadowHairline: AppColors.shadowHairline,
+    shadowNav: AppColors.shadowNav,
+    shadowIndicator: AppColors.shadowIndicator,
+    headerGlass: AppColors.headerGlass,
+    appBackgroundClear: AppColors.appBackgroundClear,
   );
 
   final Color appBackground;
@@ -102,6 +126,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
   final Color shadowSoft;
   final Color shadowActive;
   final Color scrim;
+  final Color activeDeep;
+  final Color fieldFill;
+  final Color borderDashed;
+  final Color switchTrackOff;
+  final Color sheetHandle;
+  final Color radioIdle;
+  final Color textTertiary;
+  final Color shadowHairline;
+  final Color shadowNav;
+  final Color shadowIndicator;
+  final Color headerGlass;
+  final Color appBackgroundClear;
 
   @override
   AppColorTokens copyWith({
@@ -134,6 +170,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
     Color? shadowSoft,
     Color? shadowActive,
     Color? scrim,
+    Color? activeDeep,
+    Color? fieldFill,
+    Color? borderDashed,
+    Color? switchTrackOff,
+    Color? sheetHandle,
+    Color? radioIdle,
+    Color? textTertiary,
+    Color? shadowHairline,
+    Color? shadowNav,
+    Color? shadowIndicator,
+    Color? headerGlass,
+    Color? appBackgroundClear,
   }) {
     return AppColorTokens(
       appBackground: appBackground ?? this.appBackground,
@@ -165,6 +213,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
       shadowSoft: shadowSoft ?? this.shadowSoft,
       shadowActive: shadowActive ?? this.shadowActive,
       scrim: scrim ?? this.scrim,
+      activeDeep: activeDeep ?? this.activeDeep,
+      fieldFill: fieldFill ?? this.fieldFill,
+      borderDashed: borderDashed ?? this.borderDashed,
+      switchTrackOff: switchTrackOff ?? this.switchTrackOff,
+      sheetHandle: sheetHandle ?? this.sheetHandle,
+      radioIdle: radioIdle ?? this.radioIdle,
+      textTertiary: textTertiary ?? this.textTertiary,
+      shadowHairline: shadowHairline ?? this.shadowHairline,
+      shadowNav: shadowNav ?? this.shadowNav,
+      shadowIndicator: shadowIndicator ?? this.shadowIndicator,
+      headerGlass: headerGlass ?? this.headerGlass,
+      appBackgroundClear: appBackgroundClear ?? this.appBackgroundClear,
     );
   }
 
@@ -207,6 +267,18 @@ class AppColorTokens extends ThemeExtension<AppColorTokens> {
       shadowSoft: _mix(shadowSoft, other.shadowSoft, t),
       shadowActive: _mix(shadowActive, other.shadowActive, t),
       scrim: _mix(scrim, other.scrim, t),
+      activeDeep: _mix(activeDeep, other.activeDeep, t),
+      fieldFill: _mix(fieldFill, other.fieldFill, t),
+      borderDashed: _mix(borderDashed, other.borderDashed, t),
+      switchTrackOff: _mix(switchTrackOff, other.switchTrackOff, t),
+      sheetHandle: _mix(sheetHandle, other.sheetHandle, t),
+      radioIdle: _mix(radioIdle, other.radioIdle, t),
+      textTertiary: _mix(textTertiary, other.textTertiary, t),
+      shadowHairline: _mix(shadowHairline, other.shadowHairline, t),
+      shadowNav: _mix(shadowNav, other.shadowNav, t),
+      shadowIndicator: _mix(shadowIndicator, other.shadowIndicator, t),
+      headerGlass: _mix(headerGlass, other.headerGlass, t),
+      appBackgroundClear: _mix(appBackgroundClear, other.appBackgroundClear, t),
     );
   }
 

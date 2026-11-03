@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 ///
 /// Set [isPassword] for the show/hide toggle. [label] and [hint] must already
 /// be translated. Validation messages come from `Validators`, passed through
-/// [validator]. Borders follow the theme tokens: hairline normal, active
-/// color when focused, danger color on error.
+/// [validator]. The field is a soft fill at rest and turns white with an
+/// active border when focused; errors use the danger color.
 class AppTextField extends StatefulWidget {
   const AppTextField({
     required this.label,
@@ -20,7 +20,9 @@ class AppTextField extends StatefulWidget {
     this.keyboardType,
     this.textInputAction,
     this.isPassword = false,
+    this.onChanged,
     this.onSubmitted,
+    this.suffixText,
     this.minLines,
     this.maxLines = 1,
     super.key,
@@ -34,7 +36,11 @@ class AppTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final bool isPassword;
+  final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
+
+  /// Unit shown at the end of the field, for example "pills".
+  final String? suffixText;
 
   /// Lines the field shows at least, and the most it grows to. The default
   /// is a single line; a password field is always a single line.
@@ -45,7 +51,22 @@ class AppTextField extends StatefulWidget {
 }
 
 class _AppTextFieldState extends State<AppTextField> {
+  final FocusNode _focusNode = FocusNode();
   late bool _obscured = widget.isPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChanged() => setState(() {});
 
   void _toggleObscured() => setState(() => _obscured = !_obscured);
 
@@ -66,11 +87,13 @@ class _AppTextFieldState extends State<AppTextField> {
       children: <Widget>[
         Text(
           widget.label,
-          style: textTheme.labelMedium?.copyWith(color: colors.textSecondary),
+          style: textTheme.titleSmall,
         ),
         const SizedBox(height: AppSizes.spaceSm),
         TextFormField(
           controller: widget.controller,
+          focusNode: _focusNode,
+          onChanged: widget.onChanged,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
           minLines: widget.isPassword ? 1 : widget.minLines,
@@ -78,21 +101,28 @@ class _AppTextFieldState extends State<AppTextField> {
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onSubmitted,
           obscureText: _obscured,
-          style: textTheme.bodyLarge,
+          style: textTheme.bodyLarge?.copyWith(
+            fontSize: AppSizes.fontBodyBold,
+          ),
           cursorColor: colors.active,
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: textTheme.bodyMedium,
-            errorStyle: textTheme.bodyMedium?.copyWith(color: colors.danger),
+            hintStyle: textTheme.bodyLarge?.copyWith(
+              fontSize: AppSizes.fontBodyBold,
+              color: colors.textTertiary,
+            ),
+            errorStyle: textTheme.bodySmall?.copyWith(color: colors.danger),
+            suffixText: widget.suffixText,
+            suffixStyle: textTheme.bodyMedium,
             filled: true,
-            fillColor: colors.appBackground,
+            fillColor: _focusNode.hasFocus ? colors.surface : colors.fieldFill,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: AppSizes.spaceLg,
-              vertical: AppSizes.spaceMd,
+              vertical: AppSizes.spaceLg,
             ),
             prefixIcon: widget.prefixIcon == null
                 ? null
-                : Icon(widget.prefixIcon, color: colors.textSecondary),
+                : Icon(widget.prefixIcon, color: colors.textTertiary),
             suffixIcon: widget.isPassword
                 ? IconButton(
                     tooltip: _obscured
@@ -101,19 +131,19 @@ class _AppTextFieldState extends State<AppTextField> {
                     onPressed: _toggleObscured,
                     icon: Icon(
                       _obscured
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                      color: colors.textSecondary,
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      color: colors.textTertiary,
                     ),
                   )
                 : null,
             enabledBorder: _border(
-              colors.borderHairline,
-              AppSizes.borderHairline,
+              colors.fieldFill,
+              AppSizes.borderField,
             ),
-            focusedBorder: _border(colors.active, AppSizes.borderEmphasis),
-            errorBorder: _border(colors.danger, AppSizes.borderHairline),
-            focusedErrorBorder: _border(colors.danger, AppSizes.borderEmphasis),
+            focusedBorder: _border(colors.active, AppSizes.borderField),
+            errorBorder: _border(colors.danger, AppSizes.borderField),
+            focusedErrorBorder: _border(colors.danger, AppSizes.borderField),
           ),
         ),
       ],

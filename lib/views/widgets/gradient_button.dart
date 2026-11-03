@@ -1,8 +1,9 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
+import 'package:dose_tracker/core/theme/app_shadows.dart';
 import 'package:flutter/material.dart';
 
-/// Primary action button: pill shape filled with the logo gradient.
+/// Primary action button filled with the logo gradient.
 ///
 /// States: normal, pressed (ink ripple), disabled (`onPressed` is null) and
 /// loading (spinner replaces the label and taps are ignored). [label] must
@@ -13,6 +14,7 @@ class GradientButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.leadingIcon,
     this.isLoading = false,
     super.key,
   });
@@ -22,34 +24,28 @@ class GradientButton extends StatelessWidget {
 
   /// Optional trailing icon. Directional icons mirror automatically in RTL.
   final IconData? icon;
+
+  /// Optional icon before the label, for example the check on "Save".
+  final IconData? leadingIcon;
   final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     final AppColorTokens colors = context.appColors;
     final bool enabled = onPressed != null && !isLoading;
+    final bool filled = enabled || isLoading;
     final BorderRadius radius = BorderRadius.circular(AppSizes.radiusButton);
-    final Color contentColor = enabled || isLoading
-        ? colors.onActive
-        : colors.textSecondary;
+    final Color contentColor = filled ? colors.onActive : colors.textTertiary;
 
     return SizedBox(
       width: double.infinity,
       height: AppSizes.buttonHeight,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: enabled || isLoading ? colors.actionGradient : null,
-          color: enabled || isLoading ? null : colors.progressTrack,
+          gradient: filled ? colors.actionGradient : null,
+          color: filled ? null : colors.fieldFill,
           borderRadius: radius,
-          boxShadow: enabled
-              ? <BoxShadow>[
-                  BoxShadow(
-                    color: colors.shadowActive,
-                    blurRadius: AppSizes.shadowBlurActive,
-                    offset: const Offset(0, AppSizes.shadowOffsetYActive),
-                  ),
-                ]
-              : null,
+          boxShadow: enabled ? AppShadows.active(colors) : null,
         ),
         child: Material(
           type: MaterialType.transparency,
@@ -69,6 +65,14 @@ class GradientButton extends StatelessWidget {
                   : Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        if (leadingIcon != null) ...<Widget>[
+                          Icon(
+                            leadingIcon,
+                            size: AppSizes.iconMd,
+                            color: contentColor,
+                          ),
+                          const SizedBox(width: AppSizes.spaceSm),
+                        ],
                         Text(
                           label,
                           style: Theme.of(context).textTheme.titleMedium

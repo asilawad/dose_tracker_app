@@ -19,6 +19,10 @@ abstract final class AppDurations {
   static const Duration pageTransition = Duration(milliseconds: 300);
   static const Duration onboardingPage = Duration(milliseconds: 350);
   static const Duration tabSwitch = Duration(milliseconds: 200);
+  static const Duration navHop = Duration(milliseconds: 560);
+  static const Duration navIconRise = Duration(milliseconds: 600);
+  static const Duration navIconDrop = Duration(milliseconds: 380);
+  static const Duration switchToggle = Duration(milliseconds: 250);
 
   // ---- Splash sequence ----
   static const Duration splashLogoEntrance = Duration(milliseconds: 600);
@@ -38,4 +42,15 @@ abstract final class AppDurations {
   static const Curve standardCurve = Curves.easeOutCubic;
   static const Curve emphasizedCurve = Curves.easeInOutCubic;
   static const Curve entranceCurve = Curves.easeOutBack;
+
+  /// Overshoot of the switch thumb, from the design's cubic-bezier.
+  static const Curve switchCurve = Cubic(0.3, 1.4, 0.6, 1);
+
+  /// The active tab icon waits 220 ms for the circle to arrive, then pops up
+  /// with a light elastic settle.
+  static const Curve navIconRiseCurve = Interval(
+    0.367,
+    1,
+    curve: ElasticOutCurve(0.8),
+  );
 }

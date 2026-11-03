@@ -37,8 +37,8 @@ class SettingsTabView extends GetView<SettingsController> {
 
   void _openLogOutSheet() {
     AppBottomSheet.show<void>(
-      title: AppStrings.settingsLogOutTitle.tr,
       child: ConfirmSheetContent(
+        title: AppStrings.settingsLogOutTitle.tr,
         message: AppStrings.settingsLogOutMessage.tr,
         confirmLabel: AppStrings.settingsLogOut.tr,
         icon: Icons.logout_rounded,

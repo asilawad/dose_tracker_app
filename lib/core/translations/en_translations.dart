@@ -120,7 +120,7 @@ abstract final class EnTranslations {
     // ---- Navigation (bottom bar tabs) ----
     AppStrings.navHome: 'Home',
     AppStrings.navSchedule: 'Schedule',
-    AppStrings.navInventory: 'Inventory',
+    AppStrings.navInventory: 'Cabinet',
     AppStrings.navSettings: 'Settings',
 
     // ---- Home (empty state) and shell ----

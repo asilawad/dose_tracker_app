@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 /// for example the daily frequency "2 times".
 ///
 /// Leave [onIncrement] or [onDecrement] null to disable that button at the
-/// limit. [valueLabel] and both tooltips must already be translated. Each
-/// button is a 48 px tap target, and the value is announced when it changes.
+/// limit. [valueLabel] and both tooltips must already be translated. The
+/// value is announced when it changes.
 class AppStepper extends StatelessWidget {
   const AppStepper({
     required this.valueLabel,
@@ -24,44 +24,66 @@ class AppStepper extends StatelessWidget {
   final String incrementTooltip;
   final String decrementTooltip;
 
+  static const BoxConstraints _buttonSize = BoxConstraints.tightFor(
+    width: AppSizes.stepperButtonSize,
+    height: AppSizes.stepperButtonSize,
+  );
+  static const ButtonStyle _buttonStyle = ButtonStyle(
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+  );
+
   @override
   Widget build(BuildContext context) {
     final AppColorTokens colors = context.appColors;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.appBackground,
+        color: colors.fieldFill,
         borderRadius: BorderRadius.circular(AppSizes.radiusFull),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          IconButton(
-            tooltip: decrementTooltip,
-            onPressed: onDecrement,
-            color: colors.active,
-            disabledColor: colors.textSecondary,
-            icon: const Icon(Icons.remove_rounded),
-          ),
-          Semantics(
-            liveRegion: true,
-            label: valueLabel,
-            child: ExcludeSemantics(
-              child: Text(
-                valueLabel,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.spaceXs),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              tooltip: decrementTooltip,
+              onPressed: onDecrement,
+              constraints: _buttonSize,
+              padding: EdgeInsets.zero,
+              style: _buttonStyle,
+              color: colors.activeDeep,
+              disabledColor: colors.textTertiary,
+              icon: const Icon(Icons.remove_rounded),
+            ),
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: AppSizes.stepperValueMinWidth,
+              ),
+              child: Semantics(
+                liveRegion: true,
+                label: valueLabel,
+                child: ExcludeSemantics(
+                  child: Text(
+                    valueLabel,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
               ),
             ),
-          ),
-          IconButton(
-            tooltip: incrementTooltip,
-            onPressed: onIncrement,
-            color: colors.active,
-            disabledColor: colors.textSecondary,
-            icon: const Icon(Icons.add_rounded),
-          ),
-        ],
+            IconButton(
+              tooltip: incrementTooltip,
+              onPressed: onIncrement,
+              constraints: _buttonSize,
+              padding: EdgeInsets.zero,
+              style: _buttonStyle,
+              color: colors.activeDeep,
+              disabledColor: colors.textTertiary,
+              icon: const Icon(Icons.add_rounded),
+            ),
+          ],
+        ),
       ),
     );
   }

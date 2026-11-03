@@ -6,6 +6,7 @@ import 'package:dose_tracker/features/settings/presentation/views/settings_tab_v
 import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_nav_bar.dart';
 import 'package:dose_tracker/views/widgets/bottom_nav_item.dart';
+import 'package:dose_tracker/views/widgets/nav_bar_fade.dart';
 import 'package:dose_tracker/views/widgets/screen_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,13 +32,16 @@ class MainShellView extends GetView<MainShellController> {
           children: <Widget>[for (final _ShellTab tab in _tabs) tab.page],
         ),
       ),
-      bottomNavigationBar: Obx(
-        () => AppBottomNavBar(
-          items: <BottomNavItem>[for (final _ShellTab tab in _tabs) tab.item],
-          currentIndex: controller.currentIndex.value,
-          onTap: controller.selectTab,
+      overlays: <Widget>[
+        const NavBarFade(),
+        Obx(
+          () => AppBottomNavBar(
+            items: <BottomNavItem>[for (final _ShellTab tab in _tabs) tab.item],
+            currentIndex: controller.currentIndex.value,
+            onTap: controller.selectTab,
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -60,8 +64,8 @@ const List<_ShellTab> _tabs = <_ShellTab>[
   ),
   _ShellTab(
     item: BottomNavItem(
-      icon: Icons.calendar_today_outlined,
-      activeIcon: Icons.calendar_today_rounded,
+      icon: Icons.calendar_month_outlined,
+      activeIcon: Icons.calendar_month_rounded,
       labelKey: AppStrings.navSchedule,
     ),
     page: ScheduleTabView(),
