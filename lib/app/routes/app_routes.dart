@@ -11,14 +11,17 @@ abstract final class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String home = '/home';
   static const String addProfile = '/add-profile';
+
   /// Opens with the id (an int) of the profile the medication is for as
   /// `arguments`.
   static const String addMedication = '/add-medication';
 
   /// Opens with the medication id (an int) as `arguments`.
   static const String editMedication = '/edit-medication';
+
   /// Opens with the profile id (an int) as `arguments`.
   static const String editProfile = '/edit-profile';
+
   /// Opens with the profile id (an int) as `arguments`.
   static const String profile = '/profile';
   static const String profileMedications = '/profile-medications';

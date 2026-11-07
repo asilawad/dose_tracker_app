@@ -64,9 +64,7 @@ class OutlinedActionButton extends StatelessWidget {
     final AppColorTokens colors = context.appColors;
     final bool enabled = onPressed != null;
     final BorderRadius radius = BorderRadius.circular(AppSizes.radiusButton);
-    final Color contentColor = enabled
-        ? _content(colors)
-        : colors.textTertiary;
+    final Color contentColor = enabled ? _content(colors) : colors.textTertiary;
 
     return SizedBox(
       width: double.infinity,

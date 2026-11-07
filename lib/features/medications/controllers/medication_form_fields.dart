@@ -55,10 +55,7 @@ class MedicationFormFields {
     _timesEditor.setTimes(
       medication.doseTimes
           .map(
-            (time) => (
-              minuteOfDay: time.minuteOfDay,
-              quantity: time.quantity,
-            ),
+            (time) => (minuteOfDay: time.minuteOfDay, quantity: time.quantity),
           )
           .toList(),
     );

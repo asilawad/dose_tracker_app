@@ -59,9 +59,10 @@ class ProfileMedicationsController extends GetxController {
       _onProfiles,
       onError: (Object _) => _fail(),
     );
-    _medicationsSubscription = _medicationsRepository
-        .watchMedications()
-        .listen(_onMedications, onError: (Object _) => _fail());
+    _medicationsSubscription = _medicationsRepository.watchMedications().listen(
+      _onMedications,
+      onError: (Object _) => _fail(),
+    );
   }
 
   void _onProfiles(List<Profile> profiles) {

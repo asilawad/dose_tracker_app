@@ -91,8 +91,7 @@ void main() {
   group('ScheduledDose.canRecord', () {
     test('requires pending state and an open window', () {
       expect(
-        dose(minuteOfDay: 480, state: DoseState.pending, isDue: true)
-            .canRecord,
+        dose(minuteOfDay: 480, state: DoseState.pending, isDue: true).canRecord,
         isTrue,
       );
       expect(
@@ -100,8 +99,7 @@ void main() {
         isFalse,
       );
       expect(
-        dose(minuteOfDay: 720, state: DoseState.missed, isDue: true)
-            .canRecord,
+        dose(minuteOfDay: 720, state: DoseState.missed, isDue: true).canRecord,
         isFalse,
       );
       expect(

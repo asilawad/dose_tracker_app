@@ -107,7 +107,11 @@ void main() {
     });
 
     test('at 08:00 only the first dose is due', () {
-      expect(due(planAt(DateTime(2026, 10, 15, 8))), <bool>[true, false, false]);
+      expect(due(planAt(DateTime(2026, 10, 15, 8))), <bool>[
+        true,
+        false,
+        false,
+      ]);
     });
 
     test('at 13:00 the 08:00 dose is missed and locked, 12:00 is due', () {

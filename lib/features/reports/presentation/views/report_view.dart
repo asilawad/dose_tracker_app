@@ -1,6 +1,5 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
-import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/reports/controllers/report_controller.dart';
 import 'package:dose_tracker/features/reports/data/models/doctor_report.dart';
 import 'package:dose_tracker/features/reports/presentation/widgets/report_interval_card.dart';
@@ -11,11 +10,14 @@ import 'package:dose_tracker/features/reports/presentation/widgets/report_notes_
 import 'package:dose_tracker/features/reports/presentation/widgets/report_overview_card.dart';
 import 'package:dose_tracker/shared/widgets/profile_chips.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
+import 'package:dose_tracker/views/widgets/app_inner_header.dart';
 import 'package:dose_tracker/views/widgets/empty_state.dart';
 import 'package:dose_tracker/views/widgets/error_state.dart';
 import 'package:dose_tracker/views/widgets/gradient_button.dart';
 import 'package:dose_tracker/views/widgets/loading_state.dart';
 import 'package:dose_tracker/views/widgets/screen_scaffold.dart';
+import 'package:dose_tracker/views/widgets/section_header.dart';
+import 'package:dose_tracker/views/widgets/sticky_cta.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,93 +33,106 @@ import 'package:get/get.dart';
 class ReportView extends GetView<ReportController> {
   const ReportView({super.key});
 
+  bool get _hasData {
+    final DoctorReport? report = controller.report;
+    return !controller.isLoading.value &&
+        !controller.hasError.value &&
+        controller.profiles.isNotEmpty &&
+        report != null &&
+        !report.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final AppColorTokens colors = context.appColors;
-
     return ScreenScaffold(
-      appBar: AppBar(
-        backgroundColor: colors.appBackground,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          tooltip: AppStrings.actionBack.tr,
-          onPressed: () => Get.back<void>(),
-          icon: const Icon(Icons.arrow_back_rounded),
+      padding: EdgeInsets.zero,
+      overlays: <Widget>[
+        Obx(
+          () => _hasData
+              ? StickyCta(
+                  child: GradientButton(
+                    label: AppStrings.reportGenerate.tr,
+                    icon: Icons.picture_as_pdf_rounded,
+                    isLoading: controller.isGenerating.value,
+                    onPressed: controller.generate,
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
-        title: Text(
-          AppStrings.reportTitle.tr,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-      ),
+      ],
       body: Obx(() {
+        final Widget body;
         if (controller.isLoading.value) {
-          return const LoadingState();
-        }
-        if (controller.hasError.value) {
-          return ErrorState(onRetry: controller.retry);
-        }
-        if (controller.profiles.isEmpty) {
-          return EmptyState(
-            icon: Icons.description_outlined,
-            title: AppStrings.calendarEmptyTitle.tr,
-            message: AppStrings.calendarEmptyMessage.tr,
+          body = const SliverFillRemaining(child: LoadingState());
+        } else if (controller.hasError.value) {
+          body = SliverFillRemaining(
+            child: ErrorState(onRetry: controller.retry),
           );
-        }
-
-        final DoctorReport? report = controller.report;
-        final bool hasData = report != null && !report.isEmpty;
-
-        return ListView(
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.spaceLg),
-          children: <Widget>[
-            ProfileChips(
-              profiles: controller.profiles.toList(),
-              selectedId: controller.selectedProfileId.value,
-              onSelect: controller.selectProfile,
+        } else if (controller.profiles.isEmpty) {
+          body = SliverFillRemaining(
+            hasScrollBody: false,
+            child: EmptyState(
+              icon: Icons.description_rounded,
+              title: AppStrings.calendarEmptyTitle.tr,
+              message: AppStrings.calendarEmptyMessage.tr,
             ),
-            const SizedBox(height: AppSizes.gutter),
-            const ReportIntervalCard(),
-            const SizedBox(height: AppSizes.gutter),
-            const ReportMedicationFilterCard(),
-            const SizedBox(height: AppSizes.gutter),
-            if (!hasData)
-              _EmptyRange(
-                title: AppStrings.reportEmptyTitle.tr,
-                message: AppStrings.reportEmptyMessage.tr,
-              )
-            else ...<Widget>[
-              ReportOverviewCard(report: report),
-              const SizedBox(height: AppSizes.space2xl),
-              Text(
-                AppStrings.reportDetailsTitle.tr,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: AppSizes.spaceMd),
-              for (final MedicationReportLine line in report.lines)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSizes.gutter),
-                  child: ReportLineCard(line: line),
-                ),
-              const SizedBox(height: AppSizes.spaceSm),
-              ReportMissedCard(entries: report.missed),
-              const SizedBox(height: AppSizes.gutter),
-              const ReportNotesCard(),
-              const SizedBox(height: AppSizes.space2xl),
-              Obx(
-                () => GradientButton(
-                  label: AppStrings.reportGenerate.tr,
-                  icon: Icons.picture_as_pdf_outlined,
-                  isLoading: controller.isGenerating.value,
-                  onPressed: controller.generate,
-                ),
-              ),
-            ],
-            const SizedBox(height: AppSizes.space2xl),
+          );
+        } else {
+          body = _content();
+        }
+        return CustomScrollView(
+          slivers: <Widget>[
+            AppInnerHeader(title: AppStrings.reportTitle.tr),
+            body,
           ],
         );
       }),
+    );
+  }
+
+  Widget _content() {
+    final DoctorReport? report = controller.report;
+    final bool hasData = report != null && !report.isEmpty;
+
+    return SliverPadding(
+      padding: EdgeInsetsDirectional.fromSTEB(
+        AppSizes.screenPaddingHorizontal,
+        0,
+        AppSizes.screenPaddingHorizontal,
+        hasData ? StickyCta.clearance : AppSizes.space2xl,
+      ),
+      sliver: SliverList.list(
+        children: <Widget>[
+          ProfileChips(
+            profiles: controller.profiles.toList(),
+            selectedId: controller.selectedProfileId.value,
+            onSelect: controller.selectProfile,
+          ),
+          const SizedBox(height: AppSizes.spaceLg),
+          const ReportIntervalCard(),
+          const SizedBox(height: AppSizes.gutter),
+          const ReportMedicationFilterCard(),
+          const SizedBox(height: AppSizes.gutter),
+          if (!hasData)
+            _EmptyRange(
+              title: AppStrings.reportEmptyTitle.tr,
+              message: AppStrings.reportEmptyMessage.tr,
+            )
+          else ...<Widget>[
+            ReportOverviewCard(report: report),
+            SectionHeader(title: AppStrings.reportDetailsTitle.tr),
+            for (final MedicationReportLine line in report.lines)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSizes.gutter),
+                child: ReportLineCard(line: line),
+              ),
+            const SizedBox(height: AppSizes.spaceSm),
+            ReportMissedCard(entries: report.missed),
+            const SizedBox(height: AppSizes.gutter),
+            const ReportNotesCard(),
+          ],
+        ],
+      ),
     );
   }
 }

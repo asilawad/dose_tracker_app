@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dose Tracker Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   DESIGN TOKENS  (map 1:1 to lib/core/constants + theme)
+   Colors kept from the current app.
+   ========================================================= */
+:root{
+  --bg:#F5F2EC;        /* scaffold background (kept) */
+  --surface:#FFFFFF;   /* cards */
+  --field:#F1EDE6;     /* inputs / chips idle (kept) */
+  --line:#ECE6DC;
+  --ink:#2B2742;       /* primary text */
+  --ink2:#6B6780;      /* secondary text */
+  --ink3:#A6A2B4;      /* hints, disabled */
+
+  --violet:#9B7FE0;    /* primary (kept) */
+  --violetD:#7A5BD5;   /* pressed / text on soft */
+  --violetS:#EFE9FC;   /* soft fill */
+  --grad:linear-gradient(115deg,#F98CA0 0%,#9B7FE0 52%,#5FA8E8 100%); /* logo gradient, primary action (kept) */
+
+  /* persona colors (kept, 5 options) */
+  --teal:#2F9C8A;  --tealS:#DCF1EC;
+  --coral:#E5607A; --coralS:#FCE3E8;
+  --orange:#E08A26;--orangeS:#FDEBD5;
+  --purple:#8E6BD8;--purpleS:#ECE5FA;
+  --blue:#3F86D6;  --blueS:#E0EDFB;
+
+  /* status */
+  --green:#2E9E64; --greenS:#DDF3E6;
+  --red:#DC4F4F;   --redS:#FBE4E2;
+  --amber:#E08A26; --amberS:#FDEBD5;
+
+  --r-xl:28px; --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --shadow:0 1px 2px rgba(43,39,66,.04),0 8px 24px rgba(43,39,66,.06);
+  --font:'Readex Pro',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#E9E5DD;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,textarea{font:inherit;color:inherit;border:0;outline:0;background:none}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:22px;line-height:1;display:inline-block;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';font-variation-settings:'FILL' 0,'wght' 450,'opsz' 24;user-select:none}
+.ms.fill{font-variation-settings:'FILL' 1,'wght' 500,'opsz' 24}
+
+/* ---------- page layout (preview only) ---------- */
+.stage{min-height:100vh;display:flex;gap:40px;justify-content:center;align-items:flex-start;padding:32px 16px}
+.index{width:300px;position:sticky;top:32px;display:flex;flex-direction:column;gap:14px}
+.index h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.index p{font-size:13px;color:var(--ink2);line-height:1.6}
+.idx-group{background:var(--surface);border-radius:var(--r-lg);padding:8px;box-shadow:var(--shadow)}
+.idx-group h2{font-size:12px;color:var(--ink3);font-weight:500;padding:8px 10px 4px}
+.idx-btn{display:flex;width:100%;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;font-size:14px;text-align:start}
+.idx-btn:hover{background:var(--field)}
+.idx-btn.on{background:var(--violetS);color:var(--violetD);font-weight:500}
+.idx-row{display:flex;gap:8px}
+.idx-row button{flex:1;background:var(--surface);box-shadow:var(--shadow);border-radius:14px;padding:10px;font-size:13px;font-weight:500}
+.idx-row button.on{background:var(--ink);color:#fff}
+@media (max-width:820px){.index{display:none}.stage{padding:0}.phone{border-radius:0!important;border:0!important;width:100vw!important;height:100vh!important}}
+
+/* ---------- phone ---------- */
+.phone{width:390px;height:844px;border-radius:48px;border:10px solid #23202F;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 30px 80px rgba(43,39,66,.25)}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 20px 150px;display:none;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.active{display:block;animation:screenIn .32s cubic-bezier(.2,.8,.2,1)}
+.screen.no-nav{padding-bottom:120px}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen.active{animation:none}}
+
+/* ---------- type scale ---------- */
+.t-display{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.t-title{font-size:20px;font-weight:600;letter-spacing:-.01em}
+.t-head{font-size:17px;font-weight:600}
+.t-body{font-size:15px;font-weight:400}
+.t-sub{font-size:13px;color:var(--ink2)}
+.t-cap{font-size:12px;color:var(--ink3)}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;margin:28px 2px 12px}
+.section-h h3{font-size:17px;font-weight:600}
+.section-h span{font-size:13px;color:var(--ink2)}
+
+/* ---------- app bar ---------- */
+.appbar{position:sticky;top:0;z-index:8;display:flex;align-items:center;gap:12px;margin:0 -20px 14px;padding:48px 16px 10px;background:rgba(245,242,236,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:border-color .2s}
+.screen.scrolled .appbar{border-bottom-color:var(--line)}
+/* large-title header for tab screens; collapses on scroll */
+.hdr{position:sticky;top:0;z-index:8;margin:0 -20px 10px;padding:54px 20px 14px;background:rgba(245,242,236,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:padding .25s,border-color .25s}
+.hdr-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--ink2);height:30px;max-height:30px;padding:0 12px 0 10px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;transition:max-height .25s,margin .25s,opacity .2s}
+.hdr-eyebrow .ms{font-size:16px;color:var(--violet)}
+.hdr-row{display:flex;align-items:center;gap:12px}
+.hdr-title{flex:1;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;transition:font-size .25s}
+.screen.scrolled .hdr{padding-top:48px;padding-bottom:10px;border-bottom-color:var(--line)}
+.screen.scrolled .hdr-eyebrow{max-height:0;margin-bottom:0;opacity:0}
+.screen.scrolled .hdr-title{font-size:22px}
+.nav-fade{position:absolute;inset-inline:0;bottom:0;height:140px;background:linear-gradient(to top,var(--bg) 50%,rgba(245,242,236,0));pointer-events:none;z-index:9;transition:opacity .25s}
+.nav-fade.hidden{opacity:0}
+/* time slot list (replaces side timeline) */
+.slot{margin-top:18px}
+.slot-h{display:flex;align-items:center;gap:8px;margin:0 4px 8px}
+.slot-h b{font-size:15px;font-weight:600}
+.slot-h .cnt{font-size:12px;color:var(--ink3);margin-inline-start:auto;display:flex;align-items:center;gap:4px}
+.slot-h .cnt .ms{font-size:16px}
+.slot-h .now{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--violet);color:#fff}
+.slot .card{padding:2px 14px}
+.slot.done .dose .name{color:var(--ink2)}
+.pill-tile{position:relative}
+.who{position:absolute;bottom:-4px;inset-inline-end:-4px;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:600;border:2px solid var(--surface);display:grid;place-items:center}
+/* home hero */
+.hero{background:var(--grad);border-radius:var(--r-xl);padding:20px;color:#fff;box-shadow:0 16px 32px rgba(155,127,224,.32);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.13);top:-70px;inset-inline-end:-60px;pointer-events:none}
+.hero .big{font-size:46px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.segs{display:flex;gap:4px;margin-top:16px}
+.segs i{flex:1;height:6px;border-radius:9px;background:rgba(255,255,255,.3)}
+.segs i.on{background:#fff}
+.hero-next{margin-top:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.2);border-radius:16px;padding:10px 12px;width:100%;color:#fff;text-align:start;position:relative;z-index:1}
+.glass-pill{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.22)}
+.appbar h2{flex:1;font-size:18px;font-weight:600;text-align:center}
+.icon-btn{width:44px;height:44px;border-radius:50%;background:var(--surface);display:grid;place-items:center;box-shadow:var(--shadow);flex:none}
+.icon-btn.ghost{background:transparent;box-shadow:none}
+.icon-btn.danger{color:var(--red)}
+[dir=rtl] .flip{transform:scaleX(-1)}
+.spacer44{width:44px;flex:none}
+
+/* ---------- cards ---------- */
+.card{background:var(--surface);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow)}
+.card+.card{margin-top:12px}
+.stack{display:flex;flex-direction:column;gap:12px}
+
+/* ---------- avatar + progress ring ---------- */
+.avatar{border-radius:50%;display:grid;place-items:center;flex:none;font-weight:600}
+.av-40{width:40px;height:40px;font-size:20px}
+.av-28{width:28px;height:28px;font-size:14px}
+.av-48{width:48px;height:48px;font-size:24px}
+.av-96{width:96px;height:96px;font-size:46px}
+.p-teal{background:var(--tealS);color:var(--teal)}
+.p-coral{background:var(--coralS);color:var(--coral)}
+.p-orange{background:var(--orangeS);color:var(--orange)}
+.p-purple{background:var(--purpleS);color:var(--purple)}
+.p-blue{background:var(--blueS);color:var(--blue)}
+.ring{position:relative;display:grid;place-items:center;flex:none}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring .track{stroke:var(--line)}
+.ring circle{fill:none;stroke-linecap:round}
+
+/* ---------- buttons ---------- */
+.btn{height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;width:100%}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 10px 24px rgba(155,127,224,.35)}
+.btn-primary:disabled{background:var(--field);color:var(--ink3);box-shadow:none;cursor:not-allowed}
+.btn-soft{background:var(--violetS);color:var(--violetD)}
+.btn-outline{border:1.5px dashed #CFC4EE;color:var(--violetD);background:transparent}
+.btn-danger{color:var(--red);background:var(--redS)}
+.btn-text-danger{color:var(--red);height:48px;font-size:15px;font-weight:500;display:flex;gap:6px;align-items:center;justify-content:center;width:100%}
+.sticky-cta{position:absolute;inset-inline:0;bottom:0;padding:16px 20px 26px;background:linear-gradient(to top,var(--bg) 70%,rgba(245,242,236,0));z-index:5}
+
+/* ---------- chips / segmented ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px}
+.chip{height:40px;padding:0 16px;border-radius:999px;background:var(--field);font-size:14px;font-weight:500;color:var(--ink2);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;transition:background .2s,color .2s}
+.chip.on{background:var(--violet);color:#fff}
+.chip .avatar{margin-inline-start:-10px}
+.seg{display:flex;background:var(--field);border-radius:16px;padding:4px;gap:4px}
+.seg button{flex:1;height:40px;border-radius:12px;font-size:14px;font-weight:500;color:var(--ink2);transition:background .2s,color .2s}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 8px rgba(43,39,66,.08)}
+
+/* ---------- fields ---------- */
+.label{font-size:13px;font-weight:500;color:var(--ink2);margin:0 2px 8px;display:block}
+.field{height:54px;border-radius:var(--r-md);background:var(--field);display:flex;align-items:center;gap:10px;padding:0 16px;border:1.5px solid transparent;transition:border-color .2s,background .2s}
+.field:focus-within{border-color:var(--violet);background:var(--surface)}
+.field input{flex:1;font-size:16px;min-width:0}
+.field input::placeholder{color:var(--ink3)}
+.field .ms{color:var(--ink3)}
+.field.error{border-color:var(--red)}
+.helper{font-size:12px;color:var(--ink3);margin:6px 2px 0}
+.helper.err{color:var(--red)}
+textarea.area{width:100%;min-height:96px;border-radius:var(--r-md);background:var(--field);padding:14px 16px;font-size:15px;resize:none;border:1.5px solid transparent}
+textarea.area:focus{border-color:var(--violet);background:var(--surface)}
+
+/* stepper */
+.stepper{display:flex;align-items:center;background:var(--field);border-radius:999px;padding:4px;gap:2px}
+.stepper button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--violetD)}
+.stepper button:hover{background:var(--surface)}
+.stepper button:disabled{color:var(--ink3);cursor:not-allowed}
+.stepper b{min-width:28px;text-align:center;font-size:16px;font-weight:600}
+
+/* switch */
+.switch{width:52px;height:32px;border-radius:999px;background:#DCD6CC;position:relative;flex:none;transition:background .25s}
+.switch::after{content:"";position:absolute;top:4px;inset-inline-start:4px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:inset-inline-start .25s cubic-bezier(.3,1.4,.6,1)}
+.switch.on{background:var(--violet)}
+.switch.on::after{inset-inline-start:24px}
+
+/* ---------- dose row ---------- */
+.dose{display:flex;align-items:center;gap:12px;padding:10px 0}
+.dose+.dose{border-top:1px solid var(--line)}
+.pill-tile{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
+.dose .info{flex:1;min-width:0}
+.dose .name{font-size:15px;font-weight:600;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
+.dose .meta{font-size:13px;color:var(--ink2);margin-top:2px}
+.dose.taken .name{color:var(--ink2)}
+.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:3px}
+.tag.missed{background:var(--redS);color:var(--red)}
+.tag.late{background:var(--amberS);color:var(--amber)}
+.tag.low{background:var(--redS);color:var(--red)}
+.tag.ok{background:var(--greenS);color:var(--green)}
+.check{width:40px;height:40px;border-radius:50%;border:2px solid #D8D2E6;display:grid;place-items:center;flex:none;color:transparent;transition:all .25s cubic-bezier(.3,1.5,.6,1)}
+.check:hover{border-color:var(--violet)}
+.check.on{background:var(--green);border-color:var(--green);color:#fff;transform:scale(1.04)}
+.check.locked{border-style:dashed;border-color:#E2DDD4;cursor:not-allowed;color:var(--ink3)}
+.check.locked .ms{font-size:16px}
+
+/* ---------- timeline ---------- */
+.tl{position:relative;padding-inline-start:64px}
+.tl::before{content:"";position:absolute;inset-inline-start:27px;top:8px;bottom:8px;width:2px;background:repeating-linear-gradient(to bottom,#DCD5EC 0 4px,transparent 4px 9px)}
+.tl-slot{position:relative;margin-bottom:14px}
+.tl-time{position:absolute;inset-inline-start:-64px;top:14px;width:56px;text-align:center}
+.tl-time b{display:block;font-size:14px;font-weight:600}
+.tl-time small{font-size:11px;color:var(--ink3)}
+.tl-dot{position:absolute;inset-inline-start:-42px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid #CFC4EE}
+.tl-slot.now .tl-dot{background:var(--violet);border-color:var(--violet);box-shadow:0 0 0 6px rgba(155,127,224,.18)}
+.tl-slot.done .tl-dot{background:var(--green);border-color:var(--green)}
+.tl-slot .card{padding:6px 14px}
+.person-h{display:flex;align-items:center;gap:8px;padding:10px 0 4px;font-size:13px;font-weight:600;color:var(--ink2)}
+
+/* ---------- list rows ---------- */
+.row{display:flex;align-items:center;gap:14px;padding:14px 4px;width:100%;text-align:start}
+.row+.row{border-top:1px solid var(--line)}
+.row .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--violetS);color:var(--violetD);flex:none}
+.row .tx{flex:1}
+.row .tx b{font-size:15px;font-weight:500;display:block}
+.row .tx small{font-size:12px;color:var(--ink3)}
+.row .val{font-size:14px;color:var(--ink2)}
+.row.disabled{opacity:.55;cursor:default}
+.row .chev{color:var(--ink3)}
+
+/* ---------- FAB ---------- */
+.fab{position:absolute;inset-inline-end:20px;bottom:28px;height:56px;padding:0 22px 0 18px;border-radius:20px;background:var(--grad);color:#fff;display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;box-shadow:0 12px 26px rgba(155,127,224,.42);z-index:6}
+.fab.with-nav{bottom:118px}
+
+/* =========================================================
+   NAV BAR — circular indicator that hops between tabs
+   ========================================================= */
+.nav{position:absolute;inset-inline:16px;bottom:18px;height:74px;background:var(--surface);border-radius:30px;box-shadow:0 14px 40px rgba(43,39,66,.14);display:flex;align-items:stretch;z-index:10;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.nav.hidden{transform:translateY(130%);opacity:0;pointer-events:none}
+.nav-ind{position:absolute;left:0;top:-18px;width:56px;height:56px;border-radius:50%;background:var(--grad);box-shadow:0 10px 22px rgba(155,127,224,.45),0 0 0 6px var(--bg);will-change:transform;pointer-events:none}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:12px;gap:4px;position:relative;z-index:1;color:var(--ink3)}
+.nav-item .ms{font-size:24px;transition:transform .38s cubic-bezier(.3,1.6,.5,1),color .2s;transition-delay:0s}
+.nav-item span.lb{font-size:11px;font-weight:500;transition:color .2s}
+.nav-item.on .ms{transform:translateY(-27px);color:#fff;font-variation-settings:'FILL' 1,'wght' 500,'opsz' 24;transition-delay:.22s}
+.nav-item.on span.lb{color:var(--violetD);font-weight:600}
+
+/* ---------- bottom sheet ---------- */
+.scrim{position:absolute;inset:0;background:rgba(43,39,66,.38);opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;inset-inline:0;bottom:0;background:var(--surface);border-radius:30px 30px 0 0;padding:10px 20px 28px;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.9,.25,1);z-index:21;max-height:85%;overflow:auto}
+.sheet.on{transform:none}
+.grabber{width:40px;height:5px;border-radius:9px;background:#E0DBD2;margin:0 auto 18px}
+.sheet h3{font-size:20px;font-weight:600;margin-bottom:4px}
+.sheet .t-sub{margin-bottom:18px}
+.radio-row{display:flex;align-items:center;gap:14px;width:100%;padding:16px 6px;font-size:16px;text-align:start}
+.radio-row+.radio-row{border-top:1px solid var(--line)}
+.radio{width:24px;height:24px;border-radius:50%;border:2px solid #D3CDE0;margin-inline-start:auto;display:grid;place-items:center}
+.radio-row.on .radio{border-color:var(--violet)}
+.radio-row.on .radio::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--violet)}
+.danger-ic{width:64px;height:64px;border-radius:50%;background:var(--redS);color:var(--red);display:grid;place-items:center;margin:4px auto 14px}
+.danger-ic .ms{font-size:30px}
+
+/* ---------- misc ---------- */
+.empty{text-align:center;padding:40px 20px}
+.empty .ms{font-size:40px;color:var(--violet)}
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px;background:var(--grad)}
+.bar.red i{background:var(--red)}.bar.amber i{background:var(--amber)}.bar.green i{background:var(--green)}
+.time-chip{font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:var(--violetS);color:var(--violetD)}
+.notes{display:none}
+.bidi{unicode-bidi:isolate}
+
+/* notes panel (preview only) */
+.np{position:fixed;inset:0;background:rgba(43,39,66,.4);display:none;z-index:100;align-items:center;justify-content:center;padding:20px}
+.np.on{display:flex}
+.np-box{background:var(--surface);border-radius:28px;max-width:760px;width:100%;max-height:88vh;overflow:auto;padding:28px 30px;direction:rtl;text-align:right;line-height:1.75;font-size:14.5px}
+.np-box h2{font-size:20px;margin:18px 0 8px}
+.np-box h2:first-child{margin-top:0}
+.np-box ol,.np-box ul{padding-inline-start:22px}
+.np-box li{margin:4px 0}
+.np-box code{background:var(--field);padding:1px 6px;border-radius:6px;font-size:13px;direction:ltr;unicode-bidi:isolate}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;direction:ltr;text-align:left}
+.sw{border-radius:14px;padding:10px;font-size:12px;border:1px solid var(--line)}
+.sw i{display:block;height:36px;border-radius:10px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ================= PREVIEW INDEX (not part of the app) ================= -->
+  <aside class="index">
+    <h1>Dose Tracker</h1>
+    <p>Every screen redesigned. Tap through the phone or jump from here. Colors are the current app colors.</p>
+    <div class="idx-row">
+      <button id="btnLtr" class="on" onclick="setDir('ltr')">English (LTR)</button>
+      <button id="btnRtl" onclick="setDir('rtl')">RTL preview</button>
+    </div>
+    <div class="idx-group" id="idx"></div>
+    <div class="idx-row"><button onclick="toggleNotes(true)" style="background:var(--grad);color:#fff">ملاحظات التصميم واللوجيك</button></div>
+  </aside>
+
+  <!-- ================= PHONE ================= -->
+  <div class="phone" id="phone">
+
+    <!-- ===================== HOME ===================== -->
+    <section class="screen" data-screen="home" data-tab="0" data-title="Home" data-group="Tabs">
+      <header class="hdr">
+        <span class="hdr-eyebrow"><span class="ms">calendar_today</span>Tuesday, 3 November</span>
+        <div class="hdr-row"><h1 class="hdr-title">Home</h1>
+          <button class="icon-btn" onclick="go('profile-form')" aria-label="Add family member"><span class="ms">person_add</span></button></div>
+      </header>
+
+      <!-- today overview: same numbers the Schedule tab shows -->
+      <div class="hero">
+        <div style="display:flex;align-items:flex-end;gap:8px;position:relative;z-index:1">
+          <div style="flex:1">
+            <div style="font-size:14px;opacity:.9">Doses taken today</div>
+            <div style="margin-top:6px"><span class="big">3</span><span style="font-size:20px;opacity:.8"> / 12</span></div>
+          </div>
+          <span class="glass-pill">1 missed</span>
+        </div>
+        <div class="segs"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="hero-next" onclick="tab(1)">
+          <span class="ms">schedule</span>
+          <span style="flex:1;font-size:14px">Next: <b class="bidi">فامودين</b> for Mama</span>
+          <b style="font-size:14px">12:00 PM</b>
+        </button>
+      </div>
+
+      <div class="section-h"><h3>Up next</h3><button style="font-size:13px;color:var(--violetD);font-weight:500" onclick="tab(1)">See schedule</button></div>
+      <div class="card" style="padding:2px 14px">
+        <button class="dose" style="width:100%;text-align:start" onclick="tab(1)"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name bidi">فامودين</div><div class="meta">Mama · 2 pills</div></div><span class="time-chip">12:00 PM</span></button>
+        <button class="dose" style="width:100%;text-align:start" onclick="tab(1)"><div class="pill-tile p-orange"><span class="ms">pill</span><span class="who p-orange">A</span></div><div class="info"><div class="name bidi">Omega 3</div><div class="meta">Ahmad · 1 pill</div></div><span class="time-chip">1:00 PM</span></button>
+        <button class="dose" style="width:100%;text-align:start" onclick="tab(1)"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name bidi">Panadol</div><div class="meta">Mama · 1 pill</div></div><span class="time-chip">2:00 PM</span></button>
+      </div>
+
+      <div class="section-h"><h3>Family</h3><span>2 members</span></div>
+      <div class="stack">
+        <button class="card" style="display:flex;align-items:center;gap:14px;text-align:start" onclick="go('member')">
+          <div class="ring" style="width:60px;height:60px">
+            <svg viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="27" stroke-width="4"/><circle cx="30" cy="30" r="27" stroke-width="4" stroke="var(--teal)" stroke-dasharray="169.6" stroke-dashoffset="127.2"/></svg>
+            <div class="avatar av-48 p-teal" style="width:44px;height:44px">👩</div>
+          </div>
+          <div style="flex:1"><div class="t-head">Mama</div><div class="t-sub">3 medications · 2 of 8 today</div></div>
+          <span class="ms flip" style="color:var(--ink3)">chevron_right</span>
+        </button>
+        <button class="card" style="display:flex;align-items:center;gap:14px;text-align:start" onclick="go('member')">
+          <div class="ring" style="width:60px;height:60px">
+            <svg viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="27" stroke-width="4"/><circle cx="30" cy="30" r="27" stroke-width="4" stroke="var(--orange)" stroke-dasharray="169.6" stroke-dashoffset="127.2"/></svg>
+            <div class="avatar av-48 p-orange" style="width:44px;height:44px">A</div>
+          </div>
+          <div style="flex:1"><div class="t-head">Ahmad</div><div class="t-sub">2 medications · 1 of 4 today</div></div>
+          <span class="ms flip" style="color:var(--ink3)">chevron_right</span>
+        </button>
+      </div>
+
+      <!-- same data as the Cabinet refill reminder -->
+      <button class="card" style="display:flex;align-items:center;gap:12px;margin-top:12px;background:var(--amberS);box-shadow:none;width:100%;text-align:start" onclick="tab(2)">
+        <div class="pill-tile" style="background:#fff;color:var(--amber)"><span class="ms fill">notifications_active</span></div>
+        <div style="flex:1"><div class="t-head" style="font-size:15px">2 medications running low</div><div class="t-sub">Open the cabinet to refill</div></div>
+        <span class="ms flip" style="color:var(--amber)">chevron_right</span>
+      </button>
+    </section>
+
+    <!-- ===================== MEMBER (profile detail) ===================== -->
+    <section class="screen" data-screen="member" data-title="Family member" data-group="Family">
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()" aria-label="Back"><span class="ms flip">arrow_back</span></button>
+        <h2></h2>
+        <button class="icon-btn" onclick="go('profile-form')" aria-label="Edit profile"><span class="ms">edit</span></button>
+      </div>
+
+      <div style="text-align:center">
+        <div class="ring" style="width:116px;height:116px;margin:0 auto">
+          <svg viewBox="0 0 116 116"><circle class="track" cx="58" cy="58" r="53" stroke-width="6"/><circle cx="58" cy="58" r="53" stroke-width="6" stroke="var(--teal)" stroke-dasharray="333" stroke-dashoffset="250"/></svg>
+          <div class="avatar av-96 p-teal">👩</div>
+        </div>
+        <h1 class="t-title" style="margin-top:12px;font-size:24px">Mama</h1>
+        <p class="t-sub" style="margin-top:2px">2 of 8 doses taken today</p>
+      </div>
+
+      <button class="card row" style="margin-top:20px;padding:12px 14px" onclick="go('member-meds')">
+        <div class="ic" style="background:var(--tealS);color:var(--teal)"><span class="ms">medication</span></div>
+        <div class="tx"><b>All medications</b><small>3 active</small></div>
+        <span class="ms chev flip">chevron_right</span>
+      </button>
+
+      <div class="section-h"><h3>Today</h3><span>8 doses</span></div>
+      <div class="slot done">
+        <div class="slot-h"><b>8:00 AM</b><span class="cnt" style="color:var(--green)"><span class="ms">check_circle</span>All taken</span></div>
+        <div class="card"><div class="dose taken"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">1 pill · Before meal</div></div><button class="check on" onclick="tick(this)" aria-label="Taken"><span class="ms">check</span></button></div><div class="dose taken"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">2 pills · Before meal</div></div><button class="check on" onclick="tick(this)" aria-label="Taken"><span class="ms">check</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>9:00 AM</b><span class="cnt" style="color:var(--red)"><span class="ms">error</span>1 missed</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">water_drop</span></div><div class="info"><div class="name"><span class="bidi">Vitamin D</span> <span class="tag missed">Missed</span></div><div class="meta">1000 IU</div></div><button class="check" onclick="tick(this)" aria-label="Mark taken"><span class="ms">check</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>12:00 PM</b> <span class="now">Next</span><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>2:00 PM</b><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">1 pill · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>4:00 PM</b><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>8:00 PM</b><span class="cnt">2 doses</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">1 pill · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+
+      <button class="fab" onclick="go('med-form')"><span class="ms">add</span>Medication</button>
+    </section>
+
+    <!-- ===================== MEMBER MEDICATIONS ===================== -->
+    <section class="screen" data-screen="member-meds" data-title="Medications list" data-group="Family">
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()"><span class="ms flip">arrow_back</span></button>
+        <h2>Mama's medications</h2>
+        <span class="spacer44"></span>
+      </div>
+
+      <div class="stack">
+        <button class="card" style="text-align:start" onclick="go('med-form')">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="pill-tile p-teal"><span class="ms">pill</span></div>
+            <div style="flex:1"><div class="t-head bidi">Panadol</div><div class="t-sub">1 pill · Before meal</div></div>
+            <span class="ms" style="color:var(--ink3)">edit</span>
+          </div>
+          <div class="chips" style="margin-top:12px;gap:6px">
+            <span class="time-chip">8:00 AM</span><span class="time-chip">2:00 PM</span><span class="time-chip">8:00 PM</span>
+          </div>
+        </button>
+        <button class="card" style="text-align:start" onclick="go('med-form')">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="pill-tile p-teal"><span class="ms">pill</span></div>
+            <div style="flex:1"><div class="t-head bidi">فامودين</div><div class="t-sub">2 pills · Before meal</div></div>
+            <span class="ms" style="color:var(--ink3)">edit</span>
+          </div>
+          <div class="chips" style="margin-top:12px;gap:6px">
+            <span class="time-chip">8:00 AM</span><span class="time-chip">12:00 PM</span><span class="time-chip">4:00 PM</span><span class="time-chip">8:00 PM</span>
+          </div>
+        </button>
+        <button class="card" style="text-align:start" onclick="go('med-form')">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="pill-tile p-teal"><span class="ms">water_drop</span></div>
+            <div style="flex:1"><div class="t-head bidi">Vitamin D</div><div class="t-sub">1000 IU</div></div>
+            <span class="ms" style="color:var(--ink3)">edit</span>
+          </div>
+          <div class="chips" style="margin-top:12px;gap:6px"><span class="time-chip">9:00 AM</span></div>
+        </button>
+      </div>
+      <button class="fab" onclick="go('med-form')"><span class="ms">add</span>Medication</button>
+    </section>
+
+    <!-- ===================== PROFILE FORM (add / edit) ===================== -->
+    <section class="screen no-nav" data-screen="profile-form" data-title="Add / Edit profile" data-group="Family">
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()"><span class="ms flip">arrow_back</span></button>
+        <h2>Edit profile</h2>
+        <span class="spacer44"></span>
+      </div>
+
+      <div style="text-align:center">
+        <div class="avatar av-96 p-teal" id="pfPreview" style="margin:0 auto;box-shadow:0 0 0 6px var(--surface),var(--shadow)">👩</div>
+        <p class="t-sub" style="margin-top:12px" id="pfName">Mama</p>
+      </div>
+
+      <div class="card" style="margin-top:22px">
+        <span class="label">Avatar</span>
+        <div id="avatarGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px">
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label">Profile color</span>
+        <div id="colorRow" style="display:flex;gap:12px;justify-content:space-between">
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="label" for="pfInput">Full name</label>
+        <div class="field"><span class="ms">badge</span><input id="pfInput" value="Mama" oninput="document.getElementById('pfName').textContent=this.value||'Name'"></div>
+      </div>
+
+      <button class="btn-text-danger" style="margin-top:14px" onclick="openSheet('sheet-del-profile')"><span class="ms">delete</span>Delete profile</button>
+
+      <div class="sticky-cta"><button class="btn btn-primary" onclick="back()">Save</button></div>
+    </section>
+
+    <!-- ===================== MEDICATION FORM (add / edit) ===================== -->
+    <section class="screen no-nav" data-screen="med-form" data-title="Add / Edit medication" data-group="Medication">
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()"><span class="ms flip">arrow_back</span></button>
+        <h2 id="mfTitle">Edit medication</h2>
+        <span class="spacer44"></span>
+      </div>
+
+      <!-- mode switch is preview-only -->
+      <div class="seg" style="margin-bottom:14px" id="modeSeg">
+        <button onclick="setMode('add')">Preview: Add</button>
+        <button class="on" onclick="setMode('edit')">Preview: Edit</button>
+      </div>
+
+      <div class="chip" style="height:44px;background:var(--surface);box-shadow:var(--shadow);padding-inline-start:6px">
+        <div class="avatar av-28 p-teal" style="margin:0">👩</div><span style="color:var(--ink)">For Mama</span>
+      </div>
+
+      <!-- name -->
+      <div class="card" style="margin-top:14px">
+        <label class="label" for="mfName">Medication name</label>
+        <div class="field" id="mfNameField"><span class="ms">medication</span><input id="mfName" placeholder="e.g. Panadol" value="Panadol" oninput="validate()"></div>
+        <p class="helper err" id="mfNameErr" style="display:none">Enter the medication name</p>
+      </div>
+
+      <!-- dose -->
+      <div class="card">
+        <span class="label">Each dose</span>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="field" style="width:110px;flex:none"><input id="mfAmount" inputmode="decimal" value="1" style="text-align:center;font-weight:600" oninput="syncAmount()"></div>
+          <div class="seg" style="flex:1" id="unitSeg">
+            <button>mg</button><button>IU</button><button>ml</button><button class="on">pill</button>
+          </div>
+        </div>
+        <p class="helper" id="dosePreview">Each dose is 1 pill</p>
+      </div>
+
+      <!-- schedule -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1"><div class="t-head">Times per day</div><div class="t-cap" style="margin-top:2px">Spread evenly across the day</div></div>
+          <div class="stepper"><button id="freqMinus" onclick="changeFreq(-1)" aria-label="Fewer"><span class="ms">remove</span></button><b id="freqVal">3</b><button id="freqPlus" onclick="changeFreq(1)" aria-label="More"><span class="ms">add</span></button></div>
+        </div>
+        <div id="timeList" style="margin-top:14px;display:flex;flex-direction:column;gap:8px"></div>
+        <button class="btn btn-outline" style="height:48px;margin-top:10px;font-size:15px" onclick="changeFreq(1)"><span class="ms">add</span>Add a time</button>
+      </div>
+
+      <!-- meal -->
+      <div class="card">
+        <div style="display:flex;align-items:baseline;justify-content:space-between"><span class="label">Meal instruction</span><span class="t-cap">Optional</span></div>
+        <div class="seg" id="mealSeg"><button class="on">Before meal</button><button>With meal</button><button>After meal</button></div>
+      </div>
+
+      <!-- inventory -->
+      <div class="card">
+        <button style="display:flex;align-items:center;gap:12px;width:100%;text-align:start" onclick="toggleStock()">
+          <div class="pill-tile" style="background:var(--violetS);color:var(--violetD);width:40px;height:40px;border-radius:12px"><span class="ms">inventory_2</span></div>
+          <div style="flex:1"><div class="t-head" style="font-size:15px">Track stock</div><div class="t-cap">Count goes down when a dose is taken</div></div>
+          <span class="switch on" id="stockSwitch"></span>
+        </button>
+        <div id="stockBox" style="margin-top:14px">
+          <label class="label" for="mfStock">In stock now</label>
+          <div class="field"><span class="ms">tag</span><input id="mfStock" inputmode="numeric" value="18"><span class="t-sub" id="stockUnit">pills</span></div>
+        </div>
+      </div>
+
+      <div id="deleteWrap">
+        <button class="btn-text-danger" style="margin-top:14px" onclick="openSheet('sheet-del-med')"><span class="ms">delete</span>Delete medication</button>
+      </div>
+
+      <div class="sticky-cta"><button class="btn btn-primary" id="mfSave" onclick="back()"><span class="ms">check_circle</span><span id="mfSaveTx">Save changes</span></button></div>
+    </section>
+
+    <!-- ===================== SCHEDULE ===================== -->
+    <section class="screen" data-screen="schedule" data-tab="1" data-title="Schedule" data-group="Tabs">
+      <header class="hdr">
+        <span class="hdr-eyebrow"><span class="ms">calendar_today</span>Tuesday, 3 November</span>
+        <div class="hdr-row"><h1 class="hdr-title">Today</h1>
+          <div class="ring" style="width:52px;height:52px">
+            <svg viewBox="0 0 52 52"><circle class="track" cx="26" cy="26" r="22" stroke-width="5"/><circle cx="26" cy="26" r="22" stroke-width="5" stroke="var(--violet)" stroke-dasharray="138.2" stroke-dashoffset="103.7"/></svg>
+            <b style="font-size:13px">3/12</b>
+          </div></div>
+      </header>
+
+      <div class="slot done">
+        <div class="slot-h"><b>8:00 AM</b><span class="cnt" style="color:var(--green)"><span class="ms">check_circle</span>All taken</span></div>
+        <div class="card"><div class="dose taken"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">Mama · 1 pill · Before meal</div></div><button class="check on" onclick="tick(this)" aria-label="Taken"><span class="ms">check</span></button></div><div class="dose taken"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">Mama · 2 pills · Before meal</div></div><button class="check on" onclick="tick(this)" aria-label="Taken"><span class="ms">check</span></button></div><div class="dose taken"><div class="pill-tile p-orange"><span class="ms">water_drop</span><span class="who p-orange">A</span></div><div class="info"><div class="name"><span class="bidi">Amoxicillin</span></div><div class="meta">Ahmad · 5 ml</div></div><button class="check on" onclick="tick(this)" aria-label="Taken"><span class="ms">check</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>9:00 AM</b><span class="cnt" style="color:var(--red)"><span class="ms">error</span>1 missed</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">water_drop</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">Vitamin D</span> <span class="tag missed">Missed</span></div><div class="meta">Mama · 1000 IU</div></div><button class="check" onclick="tick(this)" aria-label="Mark taken"><span class="ms">check</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>12:00 PM</b> <span class="now">Next</span><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">Mama · 2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>1:00 PM</b><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-orange"><span class="ms">pill</span><span class="who p-orange">A</span></div><div class="info"><div class="name"><span class="bidi">Omega 3</span></div><div class="meta">Ahmad · 1 pill · With meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>2:00 PM</b><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">Mama · 1 pill · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>4:00 PM</b><span class="cnt">2 doses</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">Mama · 2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div><div class="dose"><div class="pill-tile p-orange"><span class="ms">water_drop</span><span class="who p-orange">A</span></div><div class="info"><div class="name"><span class="bidi">Amoxicillin</span></div><div class="meta">Ahmad · 5 ml</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>8:00 PM</b><span class="cnt">2 doses</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">Panadol</span></div><div class="meta">Mama · 1 pill · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div><div class="dose"><div class="pill-tile p-teal"><span class="ms">pill</span><span class="who p-teal">👩</span></div><div class="info"><div class="name"><span class="bidi">فامودين</span></div><div class="meta">Mama · 2 pills · Before meal</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+      <div class="slot">
+        <div class="slot-h"><b>10:00 PM</b><span class="cnt">1 dose</span></div>
+        <div class="card"><div class="dose"><div class="pill-tile p-orange"><span class="ms">water_drop</span><span class="who p-orange">A</span></div><div class="info"><div class="name"><span class="bidi">Amoxicillin</span></div><div class="meta">Ahmad · 5 ml</div></div><button class="check locked" title="This dose is not due yet" aria-label="Not due yet"><span class="ms">schedule</span></button></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== INVENTORY ===================== -->
+    <section class="screen" data-screen="inventory" data-tab="2" data-title="Medicine cabinet" data-group="Tabs">
+      <header class="hdr">
+        <span class="hdr-eyebrow"><span class="ms">inventory_2</span>5 medications</span>
+        <div class="hdr-row"><h1 class="hdr-title">Medicine cabinet</h1></div>
+      </header>
+
+      <button class="card" id="lowBanner" style="display:flex;align-items:center;gap:12px;margin-top:18px;background:var(--amberS);box-shadow:none;width:100%;text-align:start" onclick="setInvFilter(1)">
+        <div class="pill-tile" style="background:#fff;color:var(--amber)"><span class="ms fill">notifications_active</span></div>
+        <div style="flex:1"><div class="t-head" style="font-size:15px">2 running low</div><div class="t-sub">Refill soon to keep doses on track</div></div>
+        <span class="ms flip" style="color:var(--amber)">chevron_right</span>
+      </button>
+
+      <div class="seg" style="margin-top:16px" id="invSeg">
+        <button class="on" onclick="setInvFilter(0)">All · 5</button>
+        <button onclick="setInvFilter(1)">Low stock · 2</button>
+      </div>
+
+      <div class="stack" style="margin-top:14px" id="invList">
+        <div class="card inv low">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar av-40 p-teal">👩</div>
+            <div style="flex:1;min-width:0"><div class="t-head"><span class="bidi">فامودين</span> <span class="t-sub" style="font-weight:400">2 pills</span></div><div class="t-cap">Mama</div></div>
+            <span class="switch on" onclick="this.classList.toggle('on')" title="Track stock"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="flex:1"><span style="font-size:24px;font-weight:600;color:var(--red)">0</span> <span class="t-sub">left</span> <span class="tag low" style="margin-inline-start:6px"><span class="ms" style="font-size:13px">warning</span>Low stock</span></div>
+            <button class="chip on" style="height:40px" onclick="openSheet('sheet-refill')"><span class="ms" style="font-size:18px">add_circle</span>Refill</button>
+          </div>
+        </div>
+
+        <div class="card inv low">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar av-40 p-orange">A</div>
+            <div style="flex:1;min-width:0"><div class="t-head"><span class="bidi">Omega 3</span> <span class="t-sub" style="font-weight:400">1 pill</span></div><div class="t-cap">Ahmad</div></div>
+            <span class="switch on" onclick="this.classList.toggle('on')"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="flex:1"><span style="font-size:24px;font-weight:600;color:var(--red)">3</span> <span class="t-sub">left</span> <span class="tag low" style="margin-inline-start:6px"><span class="ms" style="font-size:13px">warning</span>Low stock</span></div>
+            <button class="chip on" onclick="openSheet('sheet-refill')"><span class="ms" style="font-size:18px">add_circle</span>Refill</button>
+          </div>
+        </div>
+
+        <div class="card inv">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar av-40 p-teal">👩</div>
+            <div style="flex:1;min-width:0"><div class="t-head"><span class="bidi">Panadol</span> <span class="t-sub" style="font-weight:400">1 pill</span></div><div class="t-cap">Mama</div></div>
+            <span class="switch on" onclick="this.classList.toggle('on')"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="flex:1"><span style="font-size:24px;font-weight:600">18</span> <span class="t-sub">left</span></div>
+            <button class="chip" onclick="openSheet('sheet-refill')"><span class="ms" style="font-size:18px">add_circle</span>Refill</button>
+          </div>
+        </div>
+
+        <div class="card inv">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar av-40 p-orange">A</div>
+            <div style="flex:1;min-width:0"><div class="t-head"><span class="bidi">Amoxicillin</span> <span class="t-sub" style="font-weight:400">5 ml</span></div><div class="t-cap">Ahmad</div></div>
+            <span class="switch on" onclick="this.classList.toggle('on')"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="flex:1"><span style="font-size:24px;font-weight:600">120</span> <span class="t-sub">ml left</span></div>
+            <button class="chip" onclick="openSheet('sheet-refill')"><span class="ms" style="font-size:18px">add_circle</span>Refill</button>
+          </div>
+        </div>
+
+        <div class="card inv">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar av-40 p-teal">👩</div>
+            <div style="flex:1;min-width:0"><div class="t-head"><span class="bidi">Vitamin D</span> <span class="t-sub" style="font-weight:400">1000 IU</span></div><div class="t-cap">Mama</div></div>
+            <span class="switch" onclick="this.classList.toggle('on')"></span>
+          </div>
+          <p class="t-sub" style="margin-top:12px;display:flex;align-items:center;gap:6px"><span class="ms" style="font-size:18px;color:var(--ink3)">visibility_off</span>Stock tracking is off</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SETTINGS ===================== -->
+    <section class="screen" data-screen="settings" data-tab="3" data-title="Settings" data-group="Tabs">
+      <header class="hdr">
+        <div class="hdr-row"><h1 class="hdr-title">Settings</h1></div>
+      </header>
+
+      <div class="card" style="margin-top:8px;padding:4px 14px">
+        <button class="row" onclick="go('notifications-dummy')"><div class="ic"><span class="ms">notifications</span></div><div class="tx"><b>Notifications</b></div><span class="val">On</span><span class="ms chev flip">chevron_right</span></button>
+        <button class="row" onclick="openSheet('sheet-lang')"><div class="ic"><span class="ms">language</span></div><div class="tx"><b>Language</b></div><span class="val">English</span><span class="ms chev flip">chevron_right</span></button>
+        <div class="row disabled"><div class="ic" style="background:var(--field);color:var(--ink3)"><span class="ms">palette</span></div><div class="tx"><b>Appearance</b></div><span class="time-chip" style="background:var(--field);color:var(--ink2)">Coming soon</span></div>
+      </div>
+
+      <div class="card" style="padding:4px 14px">
+        <button class="row" onclick="go('report')"><div class="ic" style="background:var(--blueS);color:var(--blue)"><span class="ms">clinical_notes</span></div><div class="tx"><b>Doctor's report</b><small>Adherence summary as a PDF</small></div><span class="ms chev flip">chevron_right</span></button>
+      </div>
+
+      <button class="btn btn-danger" style="margin-top:22px"><span class="ms">logout</span>Log out</button>
+    </section>
+
+    <!-- ===================== DOCTOR'S REPORT ===================== -->
+    <section class="screen no-nav" data-screen="report" data-title="Doctor's report" data-group="Settings">
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()"><span class="ms flip">arrow_back</span></button>
+        <h2>Doctor's report</h2>
+        <span class="spacer44"></span>
+      </div>
+
+      <span class="label">Family member</span>
+      <div class="chips scroll" id="repPeople">
+        <button class="chip on" style="padding-inline-start:16px"><span class="avatar av-28 p-teal" style="margin-inline-start:-10px">👩</span>Mama</button>
+        <button class="chip" style="padding-inline-start:16px"><span class="avatar av-28 p-orange" style="margin-inline-start:-10px">A</span>Ahmad</button>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="label">Period</span><span class="t-cap">5 Oct – 3 Nov 2026</span></div>
+        <div class="seg" id="repRange"><button>7 days</button><button class="on">30 days</button><button>Custom</button></div>
+        <span class="label" style="margin-top:16px">Medication</span>
+        <div class="chips" id="repMeds"><button class="chip on">All</button><button class="chip bidi">Panadol</button><button class="chip bidi">فامودين</button><button class="chip bidi">Vitamin D</button></div>
+      </div>
+
+      <div class="card" style="display:flex;gap:16px;align-items:center">
+        <div class="ring" style="width:96px;height:96px">
+          <svg viewBox="0 0 96 96"><circle class="track" cx="48" cy="48" r="41" stroke-width="10"/><circle cx="48" cy="48" r="41" stroke-width="10" stroke="var(--amber)" stroke-dasharray="257.6" stroke-dashoffset="97.9"/></svg>
+          <b style="font-size:22px">62%</b>
+        </div>
+        <div style="flex:1">
+          <div class="t-head">Adherence</div>
+          <div class="t-sub" style="margin-top:2px">148 of 240 doses taken</div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <span class="tag missed" style="font-size:12px;padding:5px 10px">92 missed</span>
+            <span class="tag late" style="font-size:12px;padding:5px 10px">11 late</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-h"><h3>By medication</h3></div>
+      <div class="card" style="padding:6px 16px">
+        <div style="padding:12px 0">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><b class="bidi" style="font-weight:600">Panadol</b> <span class="t-sub">1 pill · Before meal</span></div><b style="color:var(--amber)">71%</b></div>
+          <div class="bar amber" style="margin-top:8px"><i style="width:71%"></i></div>
+          <p class="t-cap" style="margin-top:6px">64 taken · 26 missed · 90 prescribed</p>
+        </div>
+        <div style="padding:12px 0;border-top:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><b class="bidi" style="font-weight:600">فامودين</b> <span class="t-sub">2 pills · Before meal</span></div><b style="color:var(--amber)">55%</b></div>
+          <div class="bar amber" style="margin-top:8px"><i style="width:55%"></i></div>
+          <p class="t-cap" style="margin-top:6px">66 taken · 54 missed · 120 prescribed</p>
+        </div>
+        <div style="padding:12px 0;border-top:1px solid var(--line)">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><b class="bidi" style="font-weight:600">Vitamin D</b> <span class="t-sub">1000 IU</span></div><b style="color:var(--amber)">60%</b></div>
+          <div class="bar amber" style="margin-top:8px"><i style="width:60%"></i></div>
+          <p class="t-cap" style="margin-top:6px">18 taken · 12 missed · 30 prescribed</p>
+        </div>
+      </div>
+
+      <div class="section-h"><h3>Doses not taken</h3><span>92</span></div>
+      <div class="card" style="padding:4px 16px">
+        <div class="dose"><div class="pill-tile" style="background:var(--redS);color:var(--red);width:36px;height:36px;border-radius:10px"><span class="ms" style="font-size:18px">close</span></div><div class="info"><div class="name bidi" style="font-size:14px">Vitamin D</div><div class="meta">3 Nov · 9:00 AM</div></div><span class="tag missed">Missed</span></div>
+        <div class="dose"><div class="pill-tile" style="background:var(--redS);color:var(--red);width:36px;height:36px;border-radius:10px"><span class="ms" style="font-size:18px">close</span></div><div class="info"><div class="name bidi" style="font-size:14px">فامودين</div><div class="meta">2 Nov · 8:00 PM</div></div><span class="tag missed">Missed</span></div>
+        <div class="dose"><div class="pill-tile" style="background:var(--redS);color:var(--red);width:36px;height:36px;border-radius:10px"><span class="ms" style="font-size:18px">close</span></div><div class="info"><div class="name bidi" style="font-size:14px">Panadol</div><div class="meta">2 Nov · 2:00 PM</div></div><span class="tag missed">Missed</span></div>
+        <button class="row" style="justify-content:center;color:var(--violetD);font-weight:500;font-size:14px">Show all 92</button>
+      </div>
+
+      <div class="card">
+        <label class="label" for="repNotes">Notes for the doctor</label>
+        <textarea class="area" id="repNotes" placeholder="Side effects, observations or questions"></textarea>
+      </div>
+
+      <div class="sticky-cta"><button class="btn btn-primary"><span class="ms">picture_as_pdf</span>Generate PDF report</button></div>
+    </section>
+
+    <!-- ===================== NAV BAR ===================== -->
+    <div class="nav-fade" id="navFade"></div>
+    <nav class="nav" id="nav" aria-label="Main">
+      <span class="nav-ind" id="navInd"></span>
+      <button class="nav-item" onclick="tab(0)"><span class="ms">home</span><span class="lb">Home</span></button>
+      <button class="nav-item" onclick="tab(1)"><span class="ms">calendar_month</span><span class="lb">Schedule</span></button>
+      <button class="nav-item" onclick="tab(2)"><span class="ms">inventory_2</span><span class="lb">Cabinet</span></button>
+      <button class="nav-item" onclick="tab(3)"><span class="ms">settings</span><span class="lb">Settings</span></button>
+    </nav>
+
+    <!-- ===================== SHEETS ===================== -->
+    <div class="scrim" id="scrim" onclick="closeSheets()"></div>
+
+    <div class="sheet" id="sheet-refill">
+      <div class="grabber"></div>
+      <h3>Refill <span class="bidi">فامودين</span></h3>
+      <p class="t-sub">Mama · 0 pills left now</p>
+      <label class="label" for="refillIn">Count after refill</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="field" style="flex:1"><span class="ms">tag</span><input id="refillIn" inputmode="numeric" value="30" style="font-weight:600"><span class="t-sub">pills</span></div>
+      </div>
+      <div class="chips" style="margin-top:12px"><button class="chip" onclick="refillIn.value=+refillIn.value+10">+10</button><button class="chip" onclick="refillIn.value=+refillIn.value+20">+20</button><button class="chip" onclick="refillIn.value=+refillIn.value+30">+30</button></div>
+      <button class="btn btn-primary" style="margin-top:22px" onclick="closeSheets()">Save stock</button>
+    </div>
+
+    <div class="sheet" id="sheet-lang">
+      <div class="grabber"></div>
+      <h3>Language</h3>
+      <p class="t-sub">The app layout follows the language direction</p>
+      <button class="radio-row on" onclick="pickRadio(this)">English<span class="radio"></span></button>
+      <button class="radio-row" onclick="pickRadio(this)">العربية<span class="radio"></span></button>
+    </div>
+
+    <div class="sheet" id="sheet-time">
+      <div class="grabber"></div>
+      <h3>Dose time</h3>
+      <p class="t-sub">Tap the time to change it</p>
+      <button class="field" style="width:100%;height:72px;justify-content:center;font-size:30px;font-weight:600" id="sheetTimeVal">8:00 AM</button>
+      <div style="display:flex;align-items:center;margin-top:18px">
+        <div style="flex:1"><div class="t-head" style="font-size:15px">Amount at this time</div><div class="t-cap" id="sheetTimeUnit">pills</div></div>
+        <div class="stepper"><button onclick="sheetAmt(-1)"><span class="ms">remove</span></button><b id="sheetAmt">1</b><button onclick="sheetAmt(1)"><span class="ms">add</span></button></div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:22px" onclick="closeSheets()">Done</button>
+    </div>
+
+    <div class="sheet" id="sheet-del-med">
+      <div class="grabber"></div>
+      <div class="danger-ic"><span class="ms">delete</span></div>
+      <h3 style="text-align:center">Delete Panadol?</h3>
+      <p class="t-sub" style="text-align:center">Its reminders stop and it leaves Mama's schedule. This can't be undone.</p>
+      <button class="btn" style="background:var(--red);color:#fff" onclick="closeSheets();back()">Delete medication</button>
+      <button class="btn" style="margin-top:8px;color:var(--ink2)" onclick="closeSheets()">Keep it</button>
+    </div>
+
+    <div class="sheet" id="sheet-del-profile">
+      <div class="grabber"></div>
+      <div class="danger-ic"><span class="ms">person_remove</span></div>
+      <h3 style="text-align:center">Delete Mama?</h3>
+      <p class="t-sub" style="text-align:center">Her 3 medications and their reminders are deleted too. This can't be undone.</p>
+      <button class="btn" style="background:var(--red);color:#fff" onclick="closeSheets();go('home')">Delete profile</button>
+      <button class="btn" style="margin-top:8px;color:var(--ink2)" onclick="closeSheets()">Keep profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= NOTES PANEL (Arabic, for the developer) ================= -->
+<div class="np" id="np" onclick="if(event.target===this)toggleNotes(false)">
+  <div class="np-box">
+    <h2>شو اللي تغيّر بالتصميم</h2>
+    <ul>
+      <li>نفس الألوان بالضبط: خلفية كريمي <code>#F5F2EC</code>، البنفسجي <code>#9B7FE0</code>، تدرّج اللوجو (وردي ← بنفسجي ← أزرق) لأزرار الحفظ فقط، وألوان البروفايلات الخمسة.</li>
+      <li>خط واحد <code>Readex Pro</code> بيدعم عربي وإنجليزي (موجود بـ google_fonts) وأيقونات Material Symbols Rounded = <code>Icons.*_rounded</code> بفلاتر.</li>
+      <li>الجرعات صارت Timeline: الوقت على الجنب، والحالة واضحة: ✓ أخضر = اتاخدت، Missed أحمر = فاتت (لسا بتقدر تعلمها متأخرة)، دائرة منقطة بساعة = لسا وقتها ما إجا.</li>
+      <li>تقدم اليوم صار حلقة حوالين الأفاتار بدل الشريط.</li>
+      <li>أزرار الحفظ ثابتة تحت الشاشة (sticky) عشان ما تضيع بالسكرول.</li>
+    </ul>
+
+    <h2>أشياء جديدة أو متغيرة (للتوضيح)</h2>
+    <ol>
+      <li><b>الهوم:</b> كرت "Doses taken today" + "Up next" + تنبيه المخزون. كلها بيانات موجودة أصلاً (من الجدول والخزانة)، ما في ميزة جديدة، بس عرض.</li>
+      <li><b>الهيدر:</b> عنوان كبير بيصغر لما تعمل سكرول، وخلفيته blur ثابتة فوق. بفلاتر: <code>SliverAppBar.large</code> أو <code>CustomScrollView</code> مع <code>SliverPersistentHeader</code>.</li>
+      <li><b>الجدول:</b> شلت عنوان الشخص من داخل كل كرت، وصار في أفاتار صغير على أيقونة الدواء. والمحتوى بيختفي تدريجياً تحت الناف بار (fade).</li>
+      <li><b>حذف الدواء</b> بوضع التعديل + شيت تأكيد (طلبتها).</li>
+      <li><b>شيت تأكيد</b> لحذف البروفايل (إذا عندك تأكيد أصلاً تجاهلها).</li>
+      <li><b>حقل "In stock now"</b> بيظهر لما تفعّل Track stock بصفحة الدواء — بدونه رقم "x left" ما بيبدأ صح. إذا الرقم بيتدخل بمكان تاني عندك، احذفه.</li>
+      <li><b>فلتر All / Low stock</b> بالخزانة بدل كرت Refill reminder اللي تحت (نفس الوظيفة، بس فوق وواضحة). البانر البرتقالي بيظهر بس لو في أدوية ناقصة.</li>
+      <li><b>أزرار +10/+20/+30</b> بشيت Refill (اختصارات للحقل نفسه، اختيارية).</li>
+      <li><b>"Show all 92"</b> بقائمة الجرعات الفائتة بالتقرير بدل ما تعرض كل الـ234 مرة وحدة.</li>
+      <li><b>شيت "Dose time"</b> بيجمع تعديل الوقت + الكمية بدل أيقونة القلم؛ والحذف صار × على كل وقت.</li>
+      <li>زر Edit profile صار أيقونة قلم بالـ AppBar، وAll medications صار سطر فوق الـ Timeline.</li>
+    </ol>
+
+    <h2>إصلاح اللوجيك — صفحة الدواء (إضافة/تعديل)</h2>
+    <ol>
+      <li><b>مصدر واحد للحقيقة:</b> قائمة <code>times</code> هي الأساس، و"Times per day" = <code>times.length</code>. لا تخزن العدد بمتغير منفصل (هيك بيصير اختلاف بين الرقم والقائمة).</li>
+      <li><b>التوزيع التلقائي غير متناسق عندك:</b> 4 مرات بتبدأ 2:00 AM و6 مرات بتبدأ 7:00 AM. وحّدها: توزيع بالتساوي بين وقتين ثابتين (مثلاً 8:00 → 22:00). القرار إلك بالأوقات.</li>
+      <li><b>+ / −:</b> إذا المستخدم ما عدّل أي وقت يدوياً → أعد التوزيع. إذا عدّل → + بيضيف وقت بعد آخر وقت، و− بيحذف آخر وقت. الحد الأدنى وقت واحد (زر − والحذف يتعطلوا عند 1).</li>
+      <li>رتّب الأوقات تصاعدياً دائماً، وامنع تكرار نفس الوقت.</li>
+      <li>لما تتغير كمية الجرعة الأساسية، حدّث كمية كل وقت كانت مساوية للقيمة القديمة.</li>
+      <li><b>Validation:</b> الاسم مطلوب، الكمية &gt; 0، لو التتبع مفعّل لازم رقم مخزون ≥ 0. زر الحفظ معطّل لحد ما الفورم يكون صالح (جرّب امسح الاسم بالبروفيو).</li>
+      <li><b>التعديل:</b> update على نفس الـ id (مش insert جديد)، وألغِ إشعارات الأوقات القديمة وجدول الجديدة. لا تمسح سجل الجرعات القديم لأنه التقرير معتمد عليه.</li>
+      <li><b>المفرد والجمع:</b> <code>1 pill</code> / <code>2 pills</code> (هلا بيطلع "1 pills").</li>
+      <li><b>مشكلة الاتجاه:</b> "1 نن mg" بتطلع مقلوبة لأنك بتدمج الاسم والجرعة بنص واحد. اعرضهم بـ Text منفصلين (أو <code>Text.rich</code> مع <code>\u2068…\u2069</code>).</li>
+    </ol>
+
+    <h2>ملاحظة على الخزانة</h2>
+    <p>بالسكرينات السويتش شغّال بس مكتوب "Stock tracking is off" — تناقض. صممته على إنه سويتش <b>Track stock</b> نفسه اللي بصفحة الدواء. لو كان إله وظيفة تانية قلّي.</p>
+
+    <h2>Nav bar — مواصفات الأنيميشن</h2>
+    <ul>
+      <li>بار أبيض عائم: ارتفاع 74، radius 30، margin 16.</li>
+      <li>دائرة بالتدرّج 56×56 مرفوعة 18 فوق البار، حواليها حلقة 6px بلون الخلفية.</li>
+      <li>الانتقال 560ms: X بيتحرك بـ <code>Curves.easeInOutCubic</code>، وY بـ <code>TweenSequence</code>: 0 → −26 (45%) → +3 (78%) → 0، وscale: 1 → 0.86 → (1.14, 0.86) هبطة → 1.</li>
+      <li>الأيقونة النشطة بتطلع لفوق 27px وبتصير بيضاء Filled بتأخير 220ms (بعد ما الدائرة تقرب توصل) بمنحنى <code>Curves.elasticOut</code> خفيف.</li>
+      <li>بفلاتر: <code>Stack</code> + <code>AnimatedBuilder</code> للدائرة، و<code>AnimatedSlide</code> للأيقونة. كل جزء widget class لحاله.</li>
+    </ul>
+
+    <h2>Tokens</h2>
+    <div class="sw-grid" id="swatches"></div>
+    <ul style="margin-top:12px">
+      <li>Radius: كروت 22، حقول 16، أزرار 20، شيت 30، chips دائرية.</li>
+      <li>الخطوط: Display 30/600، Title 20/600، Head 17/600، Body 15/400، Sub 13، Caption 12.</li>
+      <li>Padding الشاشة 20، المسافة بين الكروت 12، ارتفاع الأزرار 56، الحقول 54، أهداف اللمس ≥ 40.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+/* ---------------- router (preview) ---------------- */
+const screens=[...document.querySelectorAll('.screen')];
+const nav=document.getElementById('nav'),ind=document.getElementById('navInd');
+const navItems=[...nav.querySelectorAll('.nav-item')];
+let stack=['home'],curTab=0;
+
+function show(id){
+  const s=screens.find(x=>x.dataset.screen===id); if(!s) return;
+  screens.forEach(x=>x.classList.remove('active'));
+  s.classList.add('active'); s.scrollTop=0; s.classList.remove('scrolled');
+  const t=s.dataset.tab;
+  nav.classList.toggle('hidden',t===undefined);
+  document.getElementById('navFade').classList.toggle('hidden',t===undefined);
+  if(t!==undefined) setTab(+t,true);
+  document.querySelectorAll('.idx-btn').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+  closeSheets();
+}
+function go(id){ if(!screens.find(x=>x.dataset.screen===id)) return; stack.push(id); show(id); }
+function back(){ if(stack.length>1) stack.pop(); show(stack[stack.length-1]); }
+function tab(i){ const id=screens.find(x=>x.dataset.tab==String(i)).dataset.screen; stack=[id]; show(id); }
+
+screens.forEach(x=>x.addEventListener('scroll',()=>x.classList.toggle('scrolled',x.scrollTop>10),{passive:true}));
+
+/* ---------------- nav hop animation ---------------- */
+let indX=null;
+function setTab(i,animate){
+  const it=navItems[i];
+  const x=it.offsetLeft+it.offsetWidth/2-28;
+  navItems.forEach((n,k)=>n.classList.toggle('on',k===i));
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(indX===null||!animate||reduce||i===curTab){ind.style.transform=`translate(${x}px,0)`;indX=x;curTab=i;return;}
+  const from=indX, mid=(from+x)/2;
+  ind.animate([
+    {transform:`translate(${from}px,0) scale(1)`},
+    {transform:`translate(${mid}px,-26px) scale(.86)`,offset:.45},
+    {transform:`translate(${x}px,3px) scale(1.14,.86)`,offset:.78},
+    {transform:`translate(${x}px,0) scale(1)`}
+  ],{duration:560,easing:'cubic-bezier(.45,0,.25,1)'});
+  ind.style.transform=`translate(${x}px,0)`; indX=x; curTab=i;
+}
+window.addEventListener('resize',()=>setTab(curTab,false));
+
+/* ---------------- sheets ---------------- */
+function openSheet(id){document.getElementById('scrim').classList.add('on');document.getElementById(id).classList.add('on')}
+function closeSheets(){document.getElementById('scrim').classList.remove('on');document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('on'))}
+function pickRadio(el){el.parentElement.querySelectorAll('.radio-row').forEach(r=>r.classList.remove('on'));el.classList.add('on')}
+
+/* ---------------- dose check ---------------- */
+function tick(b){
+  b.classList.toggle('on');
+  const row=b.closest('.dose'); row.classList.toggle('taken',b.classList.contains('on'));
+  const tag=row.querySelector('.tag.missed'); if(tag&&b.classList.contains('on')){tag.className='tag late';tag.textContent='Taken late'}
+}
+
+/* ---------------- segmented controls ---------------- */
+document.querySelectorAll('.seg').forEach(seg=>{
+  if(seg.id==='modeSeg'||seg.id==='invSeg') return;
+  seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    if(seg.id==='mealSeg'&&b.classList.contains('on')){b.classList.remove('on');return;} // meal is optional
+    seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    if(seg.id==='unitSeg') syncAmount();
+  }));
+});
+document.querySelectorAll('#repMeds .chip,#repPeople .chip').forEach(c=>c.addEventListener('click',()=>{
+  c.parentElement.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+}));
+
+/* ---------------- profile form ---------------- */
+const avatars=['M','👨','👩','🧑','👧','👶','👴','👵','👦','🧔','👱','🐱','🐶','🧕'];
+const colors=['teal','coral','orange','purple','blue'];
+let pfAv='👩',pfCol='teal';
+function renderProfile(){
+  const g=document.getElementById('avatarGrid');
+  g.innerHTML=avatars.map(a=>`<button class="avatar p-${pfCol}" style="width:100%;aspect-ratio:1;font-size:20px;${a===pfAv?'box-shadow:0 0 0 2.5px var(--'+pfCol+')':'opacity:.85'}" onclick="pfAv='${a}';renderProfile()">${a}</button>`).join('');
+  document.getElementById('colorRow').innerHTML=colors.map(c=>`<button aria-label="${c}" style="width:44px;height:44px;border-radius:50%;background:var(--${c});display:grid;place-items:center;color:#fff;${c===pfCol?'box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--'+c+')':''}" onclick="pfCol='${c}';renderProfile()">${c===pfCol?'<span class=ms>check</span>':''}</button>`).join('');
+  const p=document.getElementById('pfPreview'); p.className='avatar av-96 p-'+pfCol; p.textContent=pfAv;
+}
+renderProfile();
+
+/* ---------------- medication form logic (reference for Flutter controller) ---------------- */
+// times = single source of truth; frequency = times.length
+let times=[{m:8*60,a:1},{m:14*60,a:1},{m:20*60,a:1}];
+let manuallyEdited=false, doseAmt=1, stockOn=true;
+const DAY_START=8*60, DAY_END=22*60, MAX_TIMES=8;
+const fmt=m=>{let h=Math.floor(m/60)%24,mm=m%60,ap=h<12?'AM':'PM';h=h%12||12;return `${h}:${String(mm).padStart(2,'0')} ${ap}`};
+const unit=()=>document.querySelector('#unitSeg .on')?.textContent||'';
+const unitLabel=n=>{const u=unit();return u==='pill'?(n==1?'pill':'pills'):u};
+function distribute(n){
+  if(n===1) return [{m:DAY_START,a:doseAmt}];
+  const step=(DAY_END-DAY_START)/(n-1);
+  return Array.from({length:n},(_,i)=>({m:Math.round((DAY_START+step*i)/30)*30,a:doseAmt}));
+}
+function changeFreq(d){
+  const n=times.length+d; if(n<1||n>MAX_TIMES) return;
+  if(!manuallyEdited) times=distribute(n);
+  else if(d>0){const last=times[times.length-1].m;let m=Math.min(last+60,23*60+30);while(times.some(t=>t.m===m))m-=30;times.push({m,a:doseAmt})}
+  else times.pop();
+  renderTimes();
+}
+function removeTime(i){ if(times.length<=1) return; times.splice(i,1); manuallyEdited=true; renderTimes(); }
+function editTime(i){
+  document.getElementById('sheetTimeVal').textContent=fmt(times[i].m);
+  document.getElementById('sheetAmt').textContent=times[i].a;
+  document.getElementById('sheetTimeUnit').textContent=unitLabel(times[i].a);
+  window._editIdx=i; manuallyEdited=true; openSheet('sheet-time');
+}
+function sheetAmt(d){const i=window._editIdx;times[i].a=Math.max(1,times[i].a+d);document.getElementById('sheetAmt').textContent=times[i].a;renderTimes()}
+function renderTimes(){
+  times.sort((a,b)=>a.m-b.m);
+  document.getElementById('freqVal').textContent=times.length;
+  document.getElementById('freqMinus').disabled=times.length<=1;
+  document.getElementById('freqPlus').disabled=times.length>=MAX_TIMES;
+  const single=times.length<=1;
+  document.getElementById('timeList').innerHTML=times.map((t,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;background:var(--field);border-radius:14px;padding:6px 6px 6px 14px">
+      <button style="flex:1;display:flex;align-items:center;gap:12px;text-align:start;padding:6px 0" onclick="editTime(${i})">
+        <span class="ms" style="color:var(--violet)">schedule</span>
+        <span style="font-size:16px;font-weight:600">${fmt(t.m)}</span>
+        <span class="t-sub" style="margin-inline-start:auto">${t.a} ${unitLabel(t.a)}</span>
+      </button>
+      <button class="icon-btn ghost" style="width:36px;height:36px;color:${single?'var(--ink3)':'var(--ink2)'}" ${single?'disabled title="At least one time is needed"':''} onclick="removeTime(${i})" aria-label="Remove time"><span class="ms" style="font-size:20px">close</span></button>
+    </div>`).join('');
+  validate();
+}
+function syncAmount(){
+  const v=parseFloat(document.getElementById('mfAmount').value);
+  if(v>0){ times.forEach(t=>{if(t.a===doseAmt)t.a=v}); doseAmt=v; }
+  document.getElementById('dosePreview').textContent=v>0?`Each dose is ${v} ${unitLabel(v)}`:'Enter an amount above 0';
+  document.getElementById('dosePreview').className='helper'+(v>0?'':' err');
+  document.getElementById('stockUnit').textContent=unit()==='pill'?'pills':unit();
+  renderTimes();
+}
+function toggleStock(){stockOn=!stockOn;document.getElementById('stockSwitch').classList.toggle('on',stockOn);document.getElementById('stockBox').style.display=stockOn?'block':'none';validate()}
+function validate(){
+  const name=document.getElementById('mfName').value.trim();
+  const amt=parseFloat(document.getElementById('mfAmount').value);
+  const stock=document.getElementById('mfStock').value;
+  document.getElementById('mfNameErr').style.display=name?'none':'block';
+  document.getElementById('mfNameField').classList.toggle('error',!name);
+  const ok=name&&amt>0&&times.length>0&&(!stockOn||(stock!==''&&+stock>=0));
+  document.getElementById('mfSave').disabled=!ok;
+}
+function setMode(m){
+  document.querySelectorAll('#modeSeg button').forEach((b,i)=>b.classList.toggle('on',(i===0)===(m==='add')));
+  const add=m==='add';
+  document.getElementById('mfTitle').textContent=add?'Add medication':'Edit medication';
+  document.getElementById('mfSaveTx').textContent=add?'Add medication':'Save changes';
+  document.getElementById('deleteWrap').style.display=add?'none':'block';
+  if(add){document.getElementById('mfName').value='';times=distribute(1);manuallyEdited=false;}
+  else{document.getElementById('mfName').value='Panadol';times=[{m:480,a:1},{m:840,a:1},{m:1200,a:1}];}
+  renderTimes();
+}
+document.getElementById('mfStock').addEventListener('input',validate);
+renderTimes();
+
+/* ---------------- inventory filter ---------------- */
+function setInvFilter(i){
+  document.querySelectorAll('#invSeg button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  document.querySelectorAll('#invList .inv').forEach(c=>c.style.display=(i===1&&!c.classList.contains('low'))?'none':'');
+  document.getElementById('lowBanner').style.display=i===1?'none':'flex';
+}
+
+/* ---------------- preview helpers ---------------- */
+function setDir(d){
+  document.documentElement.dir=d;
+  document.getElementById('btnLtr').classList.toggle('on',d==='ltr');
+  document.getElementById('btnRtl').classList.toggle('on',d==='rtl');
+  setTab(curTab,false);
+}
+function toggleNotes(on){document.getElementById('np').classList.toggle('on',on)}
+(function buildIndex(){
+  const groups={};
+  screens.forEach(s=>{(groups[s.dataset.group]??=[]).push(s)});
+  const extra=[['Refill sheet',"go('inventory');setTimeout(()=>openSheet('sheet-refill'),50)"],['Language sheet',"go('settings');setTimeout(()=>openSheet('sheet-lang'),50)"],['Dose time sheet',"go('med-form');setTimeout(()=>editTime(0),50)"],['Delete medication',"go('med-form');setTimeout(()=>openSheet('sheet-del-med'),50)"],['Delete profile',"go('profile-form');setTimeout(()=>openSheet('sheet-del-profile'),50)"]];
+  let h='';
+  for(const g in groups){h+=`<h2>${g}</h2>`+groups[g].map(s=>`<button class="idx-btn" data-id="${s.dataset.screen}" onclick="${s.dataset.tab!==undefined?`tab(${s.dataset.tab})`:`go('${s.dataset.screen}')`}">${s.dataset.title}</button>`).join('')}
+  h+='<h2>Sheets</h2>'+extra.map(([t,f])=>`<button class="idx-btn" onclick="${f}">${t}</button>`).join('');
+  document.getElementById('idx').innerHTML=h;
+  const sw=[['bg','#F5F2EC'],['surface','#FFFFFF'],['field','#F1EDE6'],['ink','#2B2742'],['ink2','#6B6780'],['violet','#9B7FE0'],['violetD','#7A5BD5'],['violetS','#EFE9FC'],['teal','#2F9C8A'],['coral','#E5607A'],['orange','#E08A26'],['purple','#8E6BD8'],['blue','#3F86D6'],['green','#2E9E64'],['red','#DC4F4F']];
+  document.getElementById('swatches').innerHTML='<div class="sw"><i style="background:var(--grad)"></i>gradient<br>F98CA0 → 9B7FE0 → 5FA8E8</div>'+sw.map(([n,c])=>`<div class="sw"><i style="background:${c}"></i>${n}<br>${c}</div>`).join('');
+})();
+show('home');
+</script>
+</body>
+</html>

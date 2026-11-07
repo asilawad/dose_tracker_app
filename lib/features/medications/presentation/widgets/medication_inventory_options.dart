@@ -3,6 +3,7 @@ import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/medications/controllers/medication_form_controller.dart';
+import 'package:dose_tracker/views/widgets/app_switch.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,12 +26,12 @@ class MedicationInventoryOptions extends GetView<MedicationFormController> {
               height: AppSizes.avatarSm,
               decoration: BoxDecoration(
                 color: colors.activeTint,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(AppSizes.radiusMd),
               ),
               child: Icon(
-                Icons.inventory_2_outlined,
+                Icons.inventory_2_rounded,
                 size: AppSizes.iconMd,
-                color: colors.active,
+                color: colors.activeDeep,
               ),
             ),
             const SizedBox(width: AppSizes.spaceMd),
@@ -40,24 +41,20 @@ class MedicationInventoryOptions extends GetView<MedicationFormController> {
                 children: <Widget>[
                   Text(
                     AppStrings.medsInventoryTitle.tr,
-                    style: textTheme.titleMedium,
+                    style: textTheme.titleMedium?.copyWith(fontSize: 15),
                   ),
                   Text(
                     AppStrings.medsInventorySubtitle.tr,
-                    style: textTheme.bodyMedium,
+                    style: textTheme.bodySmall,
                   ),
                 ],
               ),
             ),
             Obx(
-              () => Semantics(
-                label: AppStrings.medsInventoryTitle.tr,
-                child: Switch(
-                  value: controller.form.trackInventory.value,
-                  onChanged: controller.form.setTrackInventory,
-                  activeTrackColor: colors.active,
-                  activeThumbColor: colors.onActive,
-                ),
+              () => AppSwitch(
+                value: controller.form.trackInventory.value,
+                onChanged: controller.form.setTrackInventory,
+                semanticLabel: AppStrings.medsInventoryTitle.tr,
               ),
             ),
           ],
@@ -91,10 +88,7 @@ class MedicationInventoryOptions extends GetView<MedicationFormController> {
                           validator: controller.form.validateThreshold,
                         ),
                         const SizedBox(height: AppSizes.spaceMd),
-                        _StockNote(
-                          textTheme: textTheme,
-                          colors: colors,
-                        ),
+                        _StockNote(textTheme: textTheme, colors: colors),
                       ],
                     ),
                   )

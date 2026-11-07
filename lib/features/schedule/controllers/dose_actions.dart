@@ -24,8 +24,7 @@ class DoseActions {
     return doses
         .where(
           (ScheduledDose dose) =>
-              dose.state == DoseState.pending ||
-              justChecked.contains(dose.key),
+              dose.state == DoseState.pending || justChecked.contains(dose.key),
         )
         .toList();
   }

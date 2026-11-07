@@ -44,10 +44,7 @@ class InventoryItem {
   /// True when the stock is tracked and at or below the refill alert level.
   bool get isLowStock {
     return trackInventory &&
-        StockPolicy.isLow(
-          remaining: stockRemaining,
-          threshold: stockThreshold,
-        );
+        StockPolicy.isLow(remaining: stockRemaining, threshold: stockThreshold);
   }
 
   @override

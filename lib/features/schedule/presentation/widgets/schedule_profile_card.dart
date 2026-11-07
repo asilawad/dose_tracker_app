@@ -6,7 +6,6 @@ import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/schedule_grouper.dart';
 import 'package:dose_tracker/features/schedule/presentation/widgets/dose_tile.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
-import 'package:dose_tracker/views/widgets/persona_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,42 +36,12 @@ class ScheduleProfileCard extends StatelessWidget {
     final AppColorTokens colors = context.appColors;
     final int confirmableCount = group.doses.where(_canCheck).length;
     final Widget card = AppCard(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          if (showProfile) ...<Widget>[
-            Row(
-              children: <Widget>[
-                PersonaAvatar(
-                  persona: group.personaColor,
-                  size: PersonaAvatarSize.small,
-                  avatar: group.profileAvatar,
-                  name: group.profileName,
-                ),
-                const SizedBox(width: AppSizes.spaceMd),
-                Expanded(
-                  child: Text(
-                    group.profileName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                if (onConfirmAll != null && confirmableCount >= 2)
-                  TextButton(
-                    onPressed: () => onConfirmAll!(group.doses),
-                    child: Text(AppStrings.scheduleConfirmAll.tr),
-                  ),
-              ],
-            ),
-            Divider(
-              height: AppSizes.spaceLg,
-              thickness: AppSizes.borderHairline,
-              color: colors.borderHairline,
-            ),
-          ],
           for (int index = 0; index < group.doses.length; index++) ...<Widget>[
-            if (showProfile && index > 0)
+            if (index > 0)
               Divider(
                 height: AppSizes.borderHairline,
                 thickness: AppSizes.borderHairline,
@@ -81,13 +50,13 @@ class ScheduleProfileCard extends StatelessWidget {
             DoseTile(
               key: ValueKey<String>(group.doses[index].key),
               dose: group.doses[index],
+              showProfile: showProfile,
               isTaken:
                   group.doses[index].state == DoseState.taken ||
                   group.doses[index].state == DoseState.takenLate ||
                   isJustChecked(group.doses[index]),
               isJustChecked: isJustChecked(group.doses[index]),
-              onToggle:
-                  isJustChecked(group.doses[index])
+              onToggle: isJustChecked(group.doses[index])
                   ? () => onUndo(group.doses[index])
                   : group.doses[index].canRecord
                   ? () => onCheck(group.doses[index])
@@ -95,6 +64,24 @@ class ScheduleProfileCard extends StatelessWidget {
               onSkip: onSkip == null || !group.doses[index].canRecord
                   ? null
                   : () => onSkip!(group.doses[index]),
+            ),
+          ],
+          if (showProfile &&
+              onConfirmAll != null &&
+              confirmableCount >= 2) ...<Widget>[
+            Divider(
+              height: AppSizes.borderHairline,
+              thickness: AppSizes.borderHairline,
+              color: colors.borderHairline,
+            ),
+            TextButton.icon(
+              onPressed: () => onConfirmAll!(group.doses),
+              icon: const Icon(Icons.done_all_rounded, size: AppSizes.iconMd),
+              label: Text(AppStrings.scheduleConfirmAll.tr),
+              style: TextButton.styleFrom(
+                foregroundColor: colors.activeDeep,
+                minimumSize: const Size.fromHeight(AppSizes.minTapTarget),
+              ),
             ),
           ],
         ],

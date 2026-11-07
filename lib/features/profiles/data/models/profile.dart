@@ -33,11 +33,6 @@ class Profile {
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    name,
-    personaColor,
-    remindersEnabled,
-    avatar,
-  );
+  int get hashCode =>
+      Object.hash(id, name, personaColor, remindersEnabled, avatar);
 }

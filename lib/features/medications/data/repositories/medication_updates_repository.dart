@@ -7,8 +7,8 @@ import 'package:dose_tracker/features/medications/data/models/medication_enums.d
 import 'package:dose_tracker/features/medications/data/models/medication_results.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medication_mapper.dart';
 
-/// Changes to a medication that already exists: refilling its stock and
-/// pausing or resuming it. Creating and reading medications stays in
+/// Changes to a medication that already exists: editing it, refilling its
+/// stock, pausing or resuming it, and deleting it. Creating and reading medications stays in
 /// `MedicationsRepository`.
 ///
 /// It always works on the logged-in account (the id comes from the session)
@@ -134,5 +134,17 @@ class MedicationUpdatesRepository {
       isActive: isActive,
     );
     return const SetActiveSuccess();
+  }
+
+  /// Deletes a medication with its dose times and history. Returns false
+  /// when it no longer exists. Its reminders are dropped by the reminder
+  /// scheduler, which follows the medication list.
+  Future<bool> deleteMedication(int medicationId) async {
+    final int accountId = _session.requireActiveAccountId();
+    final int deleted = await _medications.deleteById(
+      accountId: accountId,
+      id: medicationId,
+    );
+    return deleted > 0;
   }
 }

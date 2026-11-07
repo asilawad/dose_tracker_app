@@ -81,6 +81,9 @@ class DoseLogsRepository {
     List<DoseLogRow>? logs;
 
     void emit() {
+      if (controller.isClosed) {
+        return;
+      }
       final List<Medication>? currentMedications = medications;
       final List<Profile>? currentProfiles = profiles;
       final List<DoseLogRow>? currentLogs = logs;
@@ -144,6 +147,7 @@ class DoseLogsRepository {
         for (final StreamSubscription<Object?> subscription in subscriptions) {
           await subscription.cancel();
         }
+        await controller.close();
       },
     );
     return controller.stream;

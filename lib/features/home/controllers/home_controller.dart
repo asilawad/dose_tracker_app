@@ -1,19 +1,23 @@
 import 'dart:async';
 
 import 'package:dose_tracker/app/routes/app_routes.dart';
+import 'package:dose_tracker/core/utils/stock_policy.dart';
 import 'package:dose_tracker/features/home/data/models/profile_summary.dart';
 import 'package:dose_tracker/features/home/data/repositories/profile_summary_builder.dart';
 import 'package:dose_tracker/features/medications/data/models/medication.dart';
 import 'package:dose_tracker/features/medications/data/repositories/medications_repository.dart';
 import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/features/profiles/data/repositories/profiles_repository.dart';
+import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_logs_repository.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.dart';
+import 'package:dose_tracker/features/shell/controllers/main_shell_controller.dart';
 import 'package:get/get.dart';
 
 /// State of the Home tab: one live summary per profile (medication count and
-/// today's progress), the loading flag and the error flag.
+/// today's progress), today's next doses, the low-stock count, the loading
+/// flag and the error flag.
 ///
 /// It listens to three streams (profiles, medications, today's doses) and
 /// rebuilds the list when any of them emits, but only after all three have
@@ -27,6 +31,15 @@ class HomeController extends GetxController {
   final DoseLogsRepository _doseLogs;
 
   final RxList<ProfileSummary> summaries = <ProfileSummary>[].obs;
+
+  /// Today's next doses still to take, soonest first, at most [upNextLimit].
+  final RxList<ScheduledDose> upNext = <ScheduledDose>[].obs;
+
+  /// Active medications whose tracked stock is at or below the alert level,
+  /// counted the same way as the cabinet's refill reminder.
+  final RxInt lowStockCount = 0.obs;
+
+  static const int upNextLimit = 3;
   final RxBool isLoading = true.obs;
   final RxBool hasError = false.obs;
 
@@ -54,6 +67,14 @@ class HomeController extends GetxController {
 
   void openProfile(int profileId) {
     Get.toNamed<void>(AppRoutes.profile, arguments: profileId);
+  }
+
+  void openSchedule() {
+    Get.find<MainShellController>().selectTab(MainShellController.scheduleTab);
+  }
+
+  void openInventory() {
+    Get.find<MainShellController>().selectTab(MainShellController.inventoryTab);
   }
 
   void _listen() {
@@ -98,6 +119,26 @@ class HomeController extends GetxController {
         doses: doses,
       ),
     );
+    final List<ScheduledDose> pending =
+        doses
+            .where((ScheduledDose dose) => dose.state == DoseState.pending)
+            .toList()
+          ..sort(
+            (ScheduledDose a, ScheduledDose b) =>
+                a.minuteOfDay.compareTo(b.minuteOfDay),
+          );
+    upNext.assignAll(pending.take(upNextLimit));
+    lowStockCount.value = medications
+        .where(
+          (Medication medication) =>
+              medication.isActive &&
+              medication.trackInventory &&
+              StockPolicy.isLow(
+                remaining: medication.stockRemaining,
+                threshold: medication.stockThreshold,
+              ),
+        )
+        .length;
     hasError.value = false;
     isLoading.value = false;
   }

@@ -32,9 +32,7 @@ class AppSegmentButton extends StatelessWidget {
             duration: AppDurations.tabSwitch,
             height: AppSizes.segmentHeight,
             alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.spaceXs,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.spaceXs),
             decoration: BoxDecoration(
               color: selected ? colors.surface : colors.fieldFill,
               borderRadius: BorderRadius.circular(AppSizes.radiusSegment),
@@ -43,10 +41,7 @@ class AppSegmentButton extends StatelessWidget {
                       BoxShadow(
                         color: colors.shadowSoft,
                         blurRadius: AppSizes.shadowBlurSegment,
-                        offset: const Offset(
-                          0,
-                          AppSizes.shadowOffsetYSegment,
-                        ),
+                        offset: const Offset(0, AppSizes.shadowOffsetYSegment),
                       ),
                     ]
                   : null,

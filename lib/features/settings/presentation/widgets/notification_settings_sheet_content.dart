@@ -5,6 +5,7 @@ import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/notifications/data/models/reminder_settings.dart';
 import 'package:dose_tracker/features/settings/controllers/settings_controller.dart';
 import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
+import 'package:dose_tracker/views/widgets/app_switch.dart';
 import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,15 +62,12 @@ class NotificationSettingsSheetContent extends GetView<SettingsController> {
                   ],
                 ),
               ),
-              Semantics(
-                label: AppStrings.notifEnableLabel.tr,
-                child: Switch(
-                  value: settings.enabled,
-                  onChanged: (bool value) =>
-                      controller.setRemindersEnabled(enabled: value),
-                  activeTrackColor: colors.active,
-                  activeThumbColor: colors.onActive,
-                ),
+              const SizedBox(width: AppSizes.spaceMd),
+              AppSwitch(
+                value: settings.enabled,
+                semanticLabel: AppStrings.notifEnableLabel.tr,
+                onChanged: (bool value) =>
+                    controller.setRemindersEnabled(enabled: value),
               ),
             ],
           ),

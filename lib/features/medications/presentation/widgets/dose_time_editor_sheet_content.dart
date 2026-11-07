@@ -100,9 +100,9 @@ class _DoseTimeEditorSheetContentState
             label: DoseFormatter.minuteOfDay(_minuteOfDay),
             onTap: _pickTime,
           ),
-          const SizedBox(height: AppSizes.spaceLg),
+          const SizedBox(height: AppSizes.spaceXl),
           AppTextField(
-            label: AppStrings.medsQuantityLabel.tr,
+            label: AppStrings.medsAmountAtTime.tr,
             controller: _quantityController,
             prefixIcon: Icons.medication_liquid_outlined,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -110,14 +110,15 @@ class _DoseTimeEditorSheetContentState
             validator: Validators.positiveNumber,
             onSubmitted: (_) => _save(),
           ),
-          const SizedBox(height: AppSizes.space2xl),
-          GradientButton(label: AppStrings.actionSave.tr, onPressed: _save),
+          const SizedBox(height: AppSizes.spaceXl),
+          GradientButton(label: AppStrings.actionDone.tr, onPressed: _save),
         ],
       ),
     );
   }
 }
 
+/// The large time display; tapping it opens the time picker.
 class _TimeButton extends StatelessWidget {
   const _TimeButton({required this.label, required this.onTap});
 
@@ -133,36 +134,20 @@ class _TimeButton extends StatelessWidget {
       button: true,
       label: label,
       child: ExcludeSemantics(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: colors.appBackground,
+        child: Material(
+          color: colors.fieldFill,
+          borderRadius: radius,
+          child: InkWell(
             borderRadius: radius,
-            border: Border.all(
-              color: colors.borderHairline,
-              width: AppSizes.borderHairline,
-            ),
-          ),
-          child: Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              borderRadius: radius,
-              onTap: onTap,
-              child: SizedBox(
-                height: AppSizes.inputHeight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.spaceLg,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.access_time_rounded,
-                        size: AppSizes.iconLg,
-                        color: colors.textSecondary,
-                      ),
-                      const SizedBox(width: AppSizes.spaceMd),
-                      Text(label, style: Theme.of(context).textTheme.bodyLarge),
-                    ],
+            onTap: onTap,
+            child: SizedBox(
+              height: AppSizes.timeFieldHeight,
+              child: Center(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    fontSize: AppSizes.timeFieldFontSize,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

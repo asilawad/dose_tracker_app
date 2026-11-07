@@ -28,15 +28,16 @@ class RefillReminderBanner extends StatelessWidget {
     final AppColorTokens colors = context.appColors;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final BorderRadius radius = BorderRadius.circular(AppSizes.radiusCard);
+    final String title = AppStrings.inventoryRunningLow.trParams(
+      <String, String>{'count': DoseFormatter.quantity(count.toDouble())},
+    );
     final String message = isFiltered
         ? AppStrings.inventoryRefillShowAll.tr
-        : AppStrings.inventoryRefillMessage.trParams(<String, String>{
-            'count': DoseFormatter.quantity(count.toDouble()),
-          });
+        : AppStrings.inventoryRefillSoon.tr;
 
     return Semantics(
       button: true,
-      label: '${AppStrings.inventoryRefillTitle.tr}. $message',
+      label: '$title. $message',
       child: ExcludeSemantics(
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -57,14 +58,16 @@ class RefillReminderBanner extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Container(
-                        width: AppSizes.avatarSm,
-                        height: AppSizes.avatarSm,
+                        width: AppSizes.pillTileSize,
+                        height: AppSizes.pillTileSize,
                         decoration: BoxDecoration(
                           color: colors.surface,
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(
+                            AppSizes.pillTileRadius,
+                          ),
                         ),
                         child: Icon(
-                          Icons.notifications_active_outlined,
+                          Icons.notifications_active_rounded,
                           size: AppSizes.iconMd,
                           color: colors.warning,
                         ),
@@ -75,22 +78,19 @@ class RefillReminderBanner extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              AppStrings.inventoryRefillTitle.tr,
-                              style: textTheme.titleMedium,
-                            ),
-                            Text(
-                              message,
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: colors.textPrimary,
+                              title,
+                              style: textTheme.titleMedium?.copyWith(
+                                fontSize: 15,
                               ),
                             ),
+                            Text(message, style: textTheme.bodyMedium),
                           ],
                         ),
                       ),
                       Icon(
-                        Icons.chevron_right,
+                        Icons.chevron_right_rounded,
                         size: AppSizes.iconLg,
-                        color: colors.textSecondary,
+                        color: colors.warning,
                       ),
                     ],
                   ),

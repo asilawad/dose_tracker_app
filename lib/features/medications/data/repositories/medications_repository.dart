@@ -67,6 +67,9 @@ class MedicationsRepository {
     List<DoseTimeRow>? latestTimes;
 
     void emit() {
+      if (controller.isClosed) {
+        return;
+      }
       final List<MedicationRow>? medications = latestMedications;
       final List<DoseTimeRow>? times = latestTimes;
       if (medications == null || times == null) {
@@ -94,6 +97,7 @@ class MedicationsRepository {
       onCancel: () async {
         await medicationsSubscription?.cancel();
         await timesSubscription?.cancel();
+        await controller.close();
       },
     );
     return controller.stream;

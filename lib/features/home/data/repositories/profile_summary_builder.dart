@@ -28,8 +28,7 @@ abstract final class ProfileSummaryBuilder {
         .where((ScheduledDose dose) => dose.profileId == profile.id)
         .toList();
     final int taken = own.where((ScheduledDose dose) {
-      return dose.state == DoseState.taken ||
-          dose.state == DoseState.takenLate;
+      return dose.state == DoseState.taken || dose.state == DoseState.takenLate;
     }).length;
     final int count = medications.where((Medication medication) {
       return medication.profileId == profile.id && medication.isActive;

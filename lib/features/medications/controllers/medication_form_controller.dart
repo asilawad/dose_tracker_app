@@ -131,6 +131,28 @@ class MedicationFormController extends GetxController {
     }
   }
 
+  /// Deletes the medication being edited and closes the screen. The screen
+  /// asks the user to confirm before calling this.
+  Future<bool> delete() async {
+    final int? id = _medicationId;
+    if (id == null || isLoading.value) {
+      return false;
+    }
+    isLoading.value = true;
+    try {
+      final bool deleted = await _updates.deleteMedication(id);
+      if (!deleted) {
+        AppSnackbar.error(AppStrings.medsErrorMedicationNotFound.tr);
+        return false;
+      }
+      Get.back<void>();
+      AppSnackbar.success(AppStrings.medsDeleted.tr);
+      return true;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onClose() {
     _profileSubscription?.cancel();

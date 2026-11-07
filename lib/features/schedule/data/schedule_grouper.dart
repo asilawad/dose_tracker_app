@@ -19,10 +19,7 @@ class ScheduleProfileGroup {
 }
 
 class ScheduleTimeGroup {
-  const ScheduleTimeGroup({
-    required this.minuteOfDay,
-    required this.profiles,
-  });
+  const ScheduleTimeGroup({required this.minuteOfDay, required this.profiles});
 
   final int minuteOfDay;
   final List<ScheduleProfileGroup> profiles;

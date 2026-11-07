@@ -5,7 +5,7 @@ import 'package:dose_tracker/core/utils/dose_formatter.dart';
 import 'package:dose_tracker/features/reports/data/models/doctor_report.dart';
 import 'package:dose_tracker/features/reports/presentation/report_rate.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
-import 'package:dose_tracker/views/widgets/stock_progress_bar.dart';
+import 'package:dose_tracker/views/widgets/progress_ring.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,6 +32,17 @@ class ReportOverviewCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
+              ProgressRing(
+                value: rate,
+                color: ReportRate.colorOf(rate, colors),
+                size: 96,
+                strokeWidth: 10,
+                child: Text(
+                  DoseFormatter.percent(rate),
+                  style: textTheme.titleLarge?.copyWith(fontSize: 22),
+                ),
+              ),
+              const SizedBox(width: AppSizes.spaceLg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,17 +67,8 @@ class ReportOverviewCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: AppSizes.spaceMd),
-              Text(
-                DoseFormatter.percent(rate),
-                style: textTheme.headlineLarge?.copyWith(
-                  color: ReportRate.colorOf(rate, colors),
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: AppSizes.spaceMd),
-          StockProgressBar(fraction: rate, isLow: ReportRate.isPoor(rate)),
           const SizedBox(height: AppSizes.spaceLg),
           Row(
             children: <Widget>[

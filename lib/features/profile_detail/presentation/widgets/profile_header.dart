@@ -1,31 +1,20 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/theme/app_color_tokens.dart';
+import 'package:dose_tracker/core/theme/persona_palette.dart';
 import 'package:dose_tracker/features/home/data/models/profile_summary.dart';
-import 'package:dose_tracker/views/widgets/app_card.dart';
+import 'package:dose_tracker/features/profiles/data/models/profile.dart';
 import 'package:dose_tracker/views/widgets/persona_avatar.dart';
-import 'package:dose_tracker/views/widgets/persona_progress_bar.dart';
+import 'package:dose_tracker/views/widgets/progress_ring.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// Centered ring avatar, name and today's progress at the top of a family
+/// member's page (design "member" screen).
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({
-    required this.summary,
-    required this.onEdit,
-    super.key,
-  });
+  const ProfileHeader({required this.summary, super.key});
 
   final ProfileSummary summary;
-  final VoidCallback onEdit;
-
-  String get _medicationsText {
-    if (summary.medicationCount == 0) {
-      return AppStrings.homeNoMedications.tr;
-    }
-    return AppStrings.homeMedicationCount.trParams(<String, String>{
-      'count': '${summary.medicationCount}',
-    });
-  }
 
   String get _progressText {
     if (summary.totalToday == 0) {
@@ -39,49 +28,42 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = summary.profile;
+    final Profile profile = summary.profile;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppColorTokens colors = context.appColors;
+
     return Semantics(
+      container: true,
       label: profile.name,
-      child: AppCard(
+      value: _progressText,
+      child: ExcludeSemantics(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            PersonaAvatar(
-              persona: profile.personaColor,
-              avatar: profile.avatar,
-              name: profile.name,
-              size: PersonaAvatarSize.extraLarge,
+            ProgressRing(
+              value: summary.progress,
+              color: profile.personaColor.resolve(colors).main,
+              size: 116,
+              strokeWidth: 6,
+              child: PersonaAvatar(
+                persona: profile.personaColor,
+                avatar: profile.avatar,
+                name: profile.name,
+                size: PersonaAvatarSize.extraLarge,
+              ),
             ),
-            const SizedBox(height: AppSizes.spaceMd),
+            const SizedBox(height: AppSizes.gutter),
             Text(
               profile.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: textTheme.headlineSmall,
+              style: textTheme.headlineMedium?.copyWith(fontSize: 24),
             ),
-            Text(
-              _medicationsText,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium,
-            ),
-            TextButton.icon(
-              onPressed: onEdit,
-              icon: const Icon(Icons.edit_rounded),
-              label: Text(AppStrings.profileEditAction.tr),
-              style: TextButton.styleFrom(foregroundColor: colors.active),
-            ),
-            PersonaProgressBar(
-              value: summary.progress,
-              persona: profile.personaColor,
-            ),
-            const SizedBox(height: AppSizes.spaceSm),
+            const SizedBox(height: 2),
             Text(
               _progressText,
               textAlign: TextAlign.center,
-              style: textTheme.bodySmall,
+              style: textTheme.bodyMedium,
             ),
           ],
         ),

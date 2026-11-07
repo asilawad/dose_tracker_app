@@ -129,6 +129,14 @@ abstract final class AppStrings {
   static const String homeMedicationCount = 'home_medication_count';
   static const String homeNoDosesToday = 'home_no_doses_today';
   static const String homeDosesProgress = 'home_doses_progress';
+  static const String homeTakenToday = 'home_taken_today';
+  static const String homeNextDose = 'home_next_dose';
+  static const String homeUpNext = 'home_up_next';
+  static const String homeSeeSchedule = 'home_see_schedule';
+  static const String homeLowStockTitle = 'home_low_stock_title';
+  static const String homeLowStockMessage = 'home_low_stock_message';
+  static const String homeFamily = 'home_family';
+  static const String homeMemberCount = 'home_member_count';
   static const String a11yAddMedication = 'a11y_add_medication';
   static const String profileDetailTitle = 'profile_detail_title';
   static const String profileEditAction = 'profile_edit_action';
@@ -138,6 +146,7 @@ abstract final class AppStrings {
 
   // ---- Settings ----
   static const String settingsLanguage = 'settings_language';
+  static const String settingsLanguageSubtitle = 'settings_language_subtitle';
   static const String settingsAppearance = 'settings_appearance';
   static const String settingsComingSoon = 'settings_coming_soon';
   static const String settingsLogOut = 'settings_log_out';
@@ -177,6 +186,11 @@ abstract final class AppStrings {
   static const String medsAddTitle = 'meds_add_title';
   static const String medsEditTitle = 'meds_edit_title';
   static const String medsSaveChanges = 'meds_save_changes';
+  static const String medsDeleteAction = 'meds_delete_action';
+  static const String medsDeleteTitle = 'meds_delete_title';
+  static const String medsDeleteMessage = 'meds_delete_message';
+  static const String medsDeleteKeep = 'meds_delete_keep';
+  static const String medsDeleted = 'meds_deleted';
   static const String medsUpdated = 'meds_updated';
   static const String medsErrorMedicationNotFound =
       'meds_error_medication_not_found';
@@ -195,6 +209,8 @@ abstract final class AppStrings {
   static const String medsScheduleTitle = 'meds_schedule_title';
   static const String medsAddTime = 'meds_add_time';
   static const String medsEditTimeTitle = 'meds_edit_time_title';
+  static const String medsEditTimeSubtitle = 'meds_edit_time_subtitle';
+  static const String medsAmountAtTime = 'meds_amount_at_time';
   static const String medsQuantityLabel = 'meds_quantity_label';
   static const String medsQuantitySummary = 'meds_quantity_summary';
   static const String medsMealTitle = 'meds_meal_title';
@@ -220,6 +236,11 @@ abstract final class AppStrings {
 
   // ---- Schedule ----
   static const String scheduleToday = 'schedule_today';
+  static const String scheduleSlotAllTaken = 'schedule_slot_all_taken';
+  static const String scheduleSlotMissed = 'schedule_slot_missed';
+  static const String scheduleSlotOneDose = 'schedule_slot_one_dose';
+  static const String scheduleSlotDoses = 'schedule_slot_doses';
+  static const String scheduleSlotNext = 'schedule_slot_next';
   static const String scheduleDoseTaken = 'schedule_dose_taken';
   static const String scheduleDosesTaken = 'schedule_doses_taken';
   static const String scheduleConfirmAll = 'schedule_confirm_all';
@@ -248,6 +269,12 @@ abstract final class AppStrings {
   static const String inventoryNotTracked = 'inventory_not_tracked';
   static const String inventoryPaused = 'inventory_paused';
   static const String inventoryLowStock = 'inventory_low_stock';
+  static const String inventoryCount = 'inventory_count';
+  static const String inventoryFilterAll = 'inventory_filter_all';
+  static const String inventoryFilterLow = 'inventory_filter_low';
+  static const String inventoryRunningLow = 'inventory_running_low';
+  static const String inventoryRefillSoon = 'inventory_refill_soon';
+  static const String inventoryRefillAction = 'inventory_refill_action';
   static const String inventoryRefillTitle = 'inventory_refill_title';
   static const String inventoryRefillMessage = 'inventory_refill_message';
   static const String inventoryRefillShowAll = 'inventory_refill_show_all';
@@ -255,6 +282,8 @@ abstract final class AppStrings {
   static const String inventoryEmptyMessage = 'inventory_empty_message';
   static const String inventoryRestockTitle = 'inventory_restock_title';
   static const String inventoryRestockLabel = 'inventory_restock_label';
+  static const String inventoryRestockSave = 'inventory_restock_save';
+  static const String inventoryRestockFor = 'inventory_restock_for';
   static const String inventoryRestocked = 'inventory_restocked';
 
   // ---- Notifications ----
@@ -298,6 +327,8 @@ abstract final class AppStrings {
   // ---- Doctor's report ----
   static const String reportTitle = 'report_title';
   static const String reportSettingsRowTitle = 'report_settings_row_title';
+  static const String reportSettingsRowSubtitle =
+      'report_settings_row_subtitle';
   static const String reportPatientLabel = 'report_patient_label';
   static const String reportIntervalTitle = 'report_interval_title';
   static const String reportLast7 = 'report_last_7';

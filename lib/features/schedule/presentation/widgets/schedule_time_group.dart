@@ -16,6 +16,7 @@ class ScheduleTimeGroup extends StatelessWidget {
     required this.isJustChecked,
     this.onConfirmAll,
     this.showProfile = true,
+    this.isNext = false,
     super.key,
   });
 
@@ -27,6 +28,9 @@ class ScheduleTimeGroup extends StatelessWidget {
   final ValueChanged<List<ScheduledDose>>? onConfirmAll;
   final bool showProfile;
 
+  /// Marks this slot as the next one due.
+  final bool isNext;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
@@ -36,10 +40,22 @@ class ScheduleTimeGroup extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          DoseTimeHeader(minuteOfDay: group.minuteOfDay),
-          const SizedBox(height: AppSizes.spaceMd),
-          for (int index = 0; index < group.profiles.length; index++) ...<Widget>[
-            if (index > 0) const SizedBox(height: AppSizes.spaceMd),
+          DoseTimeHeader(
+            minuteOfDay: group.minuteOfDay,
+            isNext: isNext,
+            doses: <ScheduledDose>[
+              for (final schedule_data.ScheduleProfileGroup profile
+                  in group.profiles)
+                ...profile.doses,
+            ],
+          ),
+          const SizedBox(height: AppSizes.spaceSm),
+          for (
+            int index = 0;
+            index < group.profiles.length;
+            index++
+          ) ...<Widget>[
+            if (index > 0) const SizedBox(height: AppSizes.gutter),
             ScheduleProfileCard(
               key: ValueKey<int>(group.profiles[index].profileId),
               group: group.profiles[index],

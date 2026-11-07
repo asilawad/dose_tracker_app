@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 /// Preset avatar sizes. Each maps to an avatar diameter and a matching icon
 /// size from [AppSizes], so call sites never pass raw numbers.
 enum PersonaAvatarSize {
+  badge(AppSizes.avatarBadge, AppSizes.fontBadge),
+  extraSmall(AppSizes.avatarXs, AppSizes.fontTimeSlot),
   small(AppSizes.avatarSm, AppSizes.iconMd),
   medium(AppSizes.avatarMd, AppSizes.iconLg),
   large(AppSizes.avatarLg, AppSizes.iconXl),

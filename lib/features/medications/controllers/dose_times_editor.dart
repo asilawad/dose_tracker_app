@@ -173,10 +173,7 @@ class DoseTimesEditor {
     if (!usable) {
       minute = _firstFreeMinute(minutes);
     }
-    times.add((
-      minuteOfDay: minute,
-      quantity: DoseScheduler.defaultQuantity,
-    ));
+    times.add((minuteOfDay: minute, quantity: DoseScheduler.defaultQuantity));
     times.assignAll(_sorted(times.toList()));
   }
 

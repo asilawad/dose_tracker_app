@@ -43,9 +43,7 @@ class AppCollapsingHeaderContent extends StatelessWidget {
       borderOpacity: progress,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: AppSizes.contentMaxWidth,
-          ),
+          constraints: const BoxConstraints(maxWidth: AppSizes.contentMaxWidth),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.screenPaddingHorizontal,

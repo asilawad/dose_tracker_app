@@ -32,6 +32,9 @@ class InventoryRepository {
     List<Profile>? latestProfiles;
 
     void emit() {
+      if (controller.isClosed) {
+        return;
+      }
       final List<Medication>? medications = latestMedications;
       final List<Profile>? profiles = latestProfiles;
       if (medications == null || profiles == null) {
@@ -58,6 +61,7 @@ class InventoryRepository {
       onCancel: () async {
         await medicationsSubscription?.cancel();
         await profilesSubscription?.cancel();
+        await controller.close();
       },
     );
     return controller.stream;

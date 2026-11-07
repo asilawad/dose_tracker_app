@@ -11,6 +11,7 @@ abstract final class DateFormatter {
   static const String _timeSkeleton = 'jm';
   static const String _dayMonthYearSkeleton = 'yMMMd';
   static const String _fullDateSkeleton = 'yMMMMEEEEd';
+  static const String _weekdayDayMonthSkeleton = 'MMMMEEEEd';
   static const String _monthYearSkeleton = 'yMMMM';
   static const String _weekdayShortSkeleton = 'E';
   static const String _dayNumberSkeleton = 'd';
@@ -35,6 +36,10 @@ abstract final class DateFormatter {
       DateFormat(_dayMonthYearSkeleton, _locale).format(value);
 
   /// For example Wednesday, August 26, 2026.
+  /// Weekday, day and month, for example "Tuesday, November 3".
+  static String weekdayDayMonth(DateTime value) =>
+      DateFormat(_weekdayDayMonthSkeleton, _locale).format(value);
+
   static String fullDate(DateTime value) =>
       DateFormat(_fullDateSkeleton, _locale).format(value);
 

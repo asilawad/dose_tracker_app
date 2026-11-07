@@ -3,7 +3,7 @@ import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// Meaning of a badge. Colors are status colors, never decoration.
-enum BadgeTone { success, warning, danger, active }
+enum BadgeTone { success, warning, danger, active, neutral }
 
 /// Small pill label, for example "Low stock", "Taken" or "Missed".
 ///
@@ -26,9 +26,10 @@ class StatusBadge extends StatelessWidget {
     final AppColorTokens colors = context.appColors;
     final (Color background, Color foreground) = switch (tone) {
       BadgeTone.success => (colors.successTint, colors.success),
-      BadgeTone.warning => (colors.warningTint, colors.textPrimary),
+      BadgeTone.warning => (colors.warningTint, colors.warning),
       BadgeTone.danger => (colors.dangerTint, colors.danger),
-      BadgeTone.active => (colors.activeTint, colors.active),
+      BadgeTone.active => (colors.activeTint, colors.activeDeep),
+      BadgeTone.neutral => (colors.fieldFill, colors.textSecondary),
     };
 
     return DecoratedBox(

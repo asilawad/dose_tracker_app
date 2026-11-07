@@ -6,7 +6,12 @@ import 'package:get/get.dart';
 /// shell keeps every tab alive in an `IndexedStack`, so switching tabs only
 /// changes this index and never reloads a screen.
 class MainShellController extends GetxController {
-  final RxInt currentIndex = 0.obs;
+  static const int homeTab = 0;
+  static const int scheduleTab = 1;
+  static const int inventoryTab = 2;
+  static const int settingsTab = 3;
+
+  final RxInt currentIndex = homeTab.obs;
 
   void selectTab(int index) {
     if (index == currentIndex.value) {

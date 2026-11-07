@@ -85,10 +85,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          widget.label,
-          style: textTheme.titleSmall,
-        ),
+        Text(widget.label, style: textTheme.titleSmall),
         const SizedBox(height: AppSizes.spaceSm),
         TextFormField(
           controller: widget.controller,
@@ -101,9 +98,7 @@ class _AppTextFieldState extends State<AppTextField> {
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onSubmitted,
           obscureText: _obscured,
-          style: textTheme.bodyLarge?.copyWith(
-            fontSize: AppSizes.fontBodyBold,
-          ),
+          style: textTheme.bodyLarge?.copyWith(fontSize: AppSizes.fontBodyBold),
           cursorColor: colors.active,
           decoration: InputDecoration(
             hintText: widget.hint,
@@ -137,10 +132,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     ),
                   )
                 : null,
-            enabledBorder: _border(
-              colors.fieldFill,
-              AppSizes.borderField,
-            ),
+            enabledBorder: _border(colors.fieldFill, AppSizes.borderField),
             focusedBorder: _border(colors.active, AppSizes.borderField),
             errorBorder: _border(colors.danger, AppSizes.borderField),
             focusedErrorBorder: _border(colors.danger, AppSizes.borderField),

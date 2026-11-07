@@ -2,13 +2,15 @@ import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
 import 'package:dose_tracker/core/utils/app_snackbar.dart';
 import 'package:dose_tracker/core/utils/validators.dart';
+import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
 import 'package:dose_tracker/views/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// The form inside the "refill stock" bottom sheet: the count on hand after
-/// refilling, and a Save button.
+/// refilling, +10 / +20 / +30 shortcuts that add to the typed count, and a
+/// Save button.
 ///
 /// [onSave] gets the entered count and returns true when it was saved. The
 /// sheet then closes and shows a success message; on failure it stays open
@@ -27,6 +29,18 @@ class _RestockSheetContentState extends State<RestockSheetContent> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _stockController = TextEditingController();
   bool _isSaving = false;
+
+  static const List<int> _quickAdds = <int>[10, 20, 30];
+
+  void _add(int amount) {
+    final int current = int.tryParse(_stockController.text.trim()) ?? 0;
+    final String next = '${current + amount}';
+    _stockController.value = TextEditingValue(
+      text: next,
+      selection: TextSelection.collapsed(offset: next.length),
+    );
+    _formKey.currentState?.validate();
+  }
 
   Future<void> _save() async {
     if (_isSaving || !(_formKey.currentState?.validate() ?? false)) {
@@ -65,15 +79,28 @@ class _RestockSheetContentState extends State<RestockSheetContent> {
           AppTextField(
             label: AppStrings.inventoryRestockLabel.tr,
             controller: _stockController,
-            prefixIcon: Icons.numbers_rounded,
+            prefixIcon: Icons.tag_rounded,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.done,
             validator: Validators.positiveInteger,
             onSubmitted: (_) => _save(),
           ),
-          const SizedBox(height: AppSizes.space2xl),
+          const SizedBox(height: AppSizes.spaceMd),
+          Wrap(
+            spacing: AppSizes.spaceSm,
+            runSpacing: AppSizes.spaceSm,
+            children: <Widget>[
+              for (final int amount in _quickAdds)
+                AppChoiceChip(
+                  label: '+$amount',
+                  selected: false,
+                  onTap: () => _add(amount),
+                ),
+            ],
+          ),
+          const SizedBox(height: AppSizes.spaceXl),
           GradientButton(
-            label: AppStrings.actionSave.tr,
+            label: AppStrings.inventoryRestockSave.tr,
             isLoading: _isSaving,
             onPressed: _save,
           ),

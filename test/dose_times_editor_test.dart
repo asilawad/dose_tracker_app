@@ -43,7 +43,10 @@ void main() {
   group('editing a time', () {
     test('the later times follow the edit', () {
       final DoseTimesEditor editor = _three();
-      expect(editor.updateTime(index: 0, minuteOfDay: 600, quantity: 1), isTrue);
+      expect(
+        editor.updateTime(index: 0, minuteOfDay: 600, quantity: 1),
+        isTrue,
+      );
       expect(_minutes(editor), <int>[600, 960, 1320]);
     });
 

@@ -63,7 +63,8 @@ class ReportLineCard extends StatelessWidget {
                   BadgeTone.success => Icons.check_circle_outline_rounded,
                   BadgeTone.warning => Icons.error_outline_rounded,
                   BadgeTone.danger ||
-                  BadgeTone.active => Icons.warning_amber_rounded,
+                  BadgeTone.active ||
+                  BadgeTone.neutral => Icons.warning_amber_rounded,
                 },
               ),
             ],

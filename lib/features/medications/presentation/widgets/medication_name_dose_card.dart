@@ -4,7 +4,8 @@ import 'package:dose_tracker/features/medications/controllers/medication_form_co
 import 'package:dose_tracker/features/medications/data/models/medication_enums.dart';
 import 'package:dose_tracker/features/medications/presentation/medication_labels.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
-import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
+import 'package:dose_tracker/views/widgets/app_segment_option.dart';
+import 'package:dose_tracker/views/widgets/app_segmented_control.dart';
 import 'package:dose_tracker/views/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,33 +27,32 @@ class MedicationNameDoseCard extends GetView<MedicationFormController> {
             label: AppStrings.medsNameLabel.tr,
             hint: AppStrings.medsNameHint.tr,
             controller: controller.form.nameController,
-            prefixIcon: Icons.medication_outlined,
+            prefixIcon: Icons.medication_rounded,
             textInputAction: TextInputAction.next,
             validator: controller.form.validateName,
           ),
-          const SizedBox(height: AppSizes.space2xl),
+          const SizedBox(height: AppSizes.spaceLg),
           AppTextField(
             label: AppStrings.medsDoseLabel.tr,
             hint: AppStrings.medsDoseHint.tr,
             controller: controller.form.doseController,
-            prefixIcon: Icons.scale_outlined,
+            prefixIcon: Icons.scale_rounded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             textInputAction: TextInputAction.done,
             validator: controller.form.validateDose,
           ),
           const SizedBox(height: AppSizes.spaceMd),
           Obx(
-            () => Wrap(
-              spacing: AppSizes.spaceSm,
-              runSpacing: AppSizes.spaceSm,
-              children: <Widget>[
+            () => AppSegmentedControl<DoseUnit>(
+              options: <AppSegmentOption<DoseUnit>>[
                 for (final DoseUnit unit in DoseUnit.values)
-                  AppChoiceChip(
+                  AppSegmentOption<DoseUnit>(
+                    value: unit,
                     label: unit.labelKey.tr,
-                    selected: unit == controller.form.doseUnit.value,
-                    onTap: () => controller.form.selectUnit(unit),
                   ),
               ],
+              selected: controller.form.doseUnit.value,
+              onChanged: controller.form.selectUnit,
             ),
           ),
         ],

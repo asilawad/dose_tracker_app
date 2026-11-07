@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:dose_tracker/core/constants/app_sizes.dart';
 import 'package:dose_tracker/core/constants/app_strings.dart';
+import 'package:dose_tracker/core/theme/app_color_tokens.dart';
 import 'package:dose_tracker/features/settings/controllers/settings_controller.dart';
 import 'package:dose_tracker/features/settings/presentation/widgets/language_sheet_content.dart';
 import 'package:dose_tracker/features/settings/presentation/widgets/notification_settings_sheet_content.dart';
-import 'package:dose_tracker/features/settings/presentation/widgets/settings_row.dart';
 import 'package:dose_tracker/views/widgets/app_bottom_sheet.dart';
+import 'package:dose_tracker/views/widgets/app_collapsing_header.dart';
+import 'package:dose_tracker/views/widgets/app_list_row.dart';
 import 'package:dose_tracker/views/widgets/confirm_sheet_content.dart';
 import 'package:dose_tracker/views/widgets/outlined_action_button.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class SettingsTabView extends GetView<SettingsController> {
   void _openLanguageSheet() {
     AppBottomSheet.show<void>(
       title: AppStrings.settingsLanguage.tr,
+      subtitle: AppStrings.settingsLanguageSubtitle.tr,
       child: const LanguageSheetContent(),
     );
   }
@@ -49,54 +52,71 @@ class SettingsTabView extends GetView<SettingsController> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.screenPaddingHorizontal,
-        vertical: AppSizes.space2xl,
-      ),
-      children: <Widget>[
-        Text(
-          AppStrings.navSettings.tr,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const SizedBox(height: AppSizes.space2xl),
-        Obx(
-          () => SettingsRow(
-            icon: Icons.notifications_active_outlined,
-            title: AppStrings.notifSettingsRowTitle.tr,
-            value: controller.reminderSettings.value.enabled
-                ? AppStrings.notifStateOn.tr
-                : AppStrings.notifStateOff.tr,
-            onTap: _openNotificationsSheet,
+    final AppColorTokens colors = context.appColors;
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        AppCollapsingHeader(title: AppStrings.navSettings.tr),
+        SliverPadding(
+          padding: const EdgeInsetsDirectional.fromSTEB(
+            AppSizes.screenPaddingHorizontal,
+            AppSizes.spaceSm,
+            AppSizes.screenPaddingHorizontal,
+            AppSizes.space2xl + AppSizes.bottomOverlayClearance,
           ),
-        ),
-        const SizedBox(height: AppSizes.gutter),
-        SettingsRow(
-          icon: Icons.description_outlined,
-          title: AppStrings.reportSettingsRowTitle.tr,
-          onTap: controller.openReport,
-        ),
-        const SizedBox(height: AppSizes.gutter),
-        Obx(
-          () => SettingsRow(
-            icon: Icons.language_rounded,
-            title: AppStrings.settingsLanguage.tr,
-            value: controller.languageName(controller.currentLocale.value),
-            onTap: _openLanguageSheet,
+          sliver: SliverList.list(
+            children: <Widget>[
+              AppListGroup(
+                children: <Widget>[
+                  Obx(
+                    () => AppListRow(
+                      icon: Icons.notifications_rounded,
+                      title: AppStrings.notifSettingsRowTitle.tr,
+                      value: controller.reminderSettings.value.enabled
+                          ? AppStrings.notifStateOn.tr
+                          : AppStrings.notifStateOff.tr,
+                      onTap: _openNotificationsSheet,
+                    ),
+                  ),
+                  Obx(
+                    () => AppListRow(
+                      icon: Icons.language_rounded,
+                      title: AppStrings.settingsLanguage.tr,
+                      value: controller.languageName(
+                        controller.currentLocale.value,
+                      ),
+                      onTap: _openLanguageSheet,
+                    ),
+                  ),
+                  AppListRow(
+                    icon: Icons.palette_rounded,
+                    title: AppStrings.settingsAppearance.tr,
+                    value: AppStrings.settingsComingSoon.tr,
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSizes.gutter),
+              AppListGroup(
+                children: <Widget>[
+                  AppListRow(
+                    icon: Icons.description_rounded,
+                    title: AppStrings.reportSettingsRowTitle.tr,
+                    subtitle: AppStrings.reportSettingsRowSubtitle.tr,
+                    iconColor: colors.personaBlue,
+                    iconBackground: colors.personaBlueTint,
+                    onTap: controller.openReport,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 22),
+              OutlinedActionButton(
+                label: AppStrings.settingsLogOut.tr,
+                icon: Icons.logout_rounded,
+                tone: ActionTone.danger,
+                onPressed: _openLogOutSheet,
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: AppSizes.gutter),
-        SettingsRow(
-          icon: Icons.palette_outlined,
-          title: AppStrings.settingsAppearance.tr,
-          value: AppStrings.settingsComingSoon.tr,
-        ),
-        const SizedBox(height: AppSizes.space2xl),
-        OutlinedActionButton(
-          label: AppStrings.settingsLogOut.tr,
-          icon: Icons.logout_rounded,
-          tone: ActionTone.danger,
-          onPressed: _openLogOutSheet,
         ),
       ],
     );

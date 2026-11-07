@@ -82,7 +82,8 @@ class AppBottomSheet extends StatelessWidget {
                   Text(title!, style: textTheme.headlineMedium),
                   const SizedBox(height: AppSizes.spaceXs),
                 ],
-                if (subtitle != null) Text(subtitle!, style: textTheme.bodyMedium),
+                if (subtitle != null)
+                  Text(subtitle!, style: textTheme.bodyMedium),
                 if (title != null || subtitle != null)
                   const SizedBox(height: AppSizes.sheetHandleGap),
                 child,

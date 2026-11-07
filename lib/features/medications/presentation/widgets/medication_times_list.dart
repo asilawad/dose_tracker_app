@@ -16,6 +16,7 @@ class MedicationTimesList extends GetView<MedicationFormController> {
   void _openEditor(int index) {
     AppBottomSheet.show<void>(
       title: AppStrings.medsEditTimeTitle.tr,
+      subtitle: AppStrings.medsEditTimeSubtitle.tr,
       child: DoseTimeEditorSheetContent(index: index),
     );
   }
@@ -51,6 +52,7 @@ class MedicationTimesList extends GetView<MedicationFormController> {
           () => OutlinedActionButton(
             label: AppStrings.medsAddTime.tr,
             icon: Icons.add_rounded,
+            tone: ActionTone.dashed,
             onPressed: controller.form.canIncreaseFrequency
                 ? controller.form.addTime
                 : null,
@@ -79,64 +81,69 @@ class _DoseTimeRow extends StatelessWidget {
     final AppColorTokens colors = context.appColors;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.appBackground,
-        borderRadius: BorderRadius.circular(AppSizes.radiusLg),
-      ),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.only(
-          start: AppSizes.spaceMd,
-          top: AppSizes.spaceXs,
-          bottom: AppSizes.spaceXs,
-        ),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: AppSizes.avatarSm,
-              height: AppSizes.avatarSm,
-              decoration: BoxDecoration(
-                color: colors.activeTint,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.access_time_rounded,
-                size: AppSizes.iconMd,
-                color: colors.active,
-              ),
+    final BorderRadius radius = BorderRadius.circular(AppSizes.radiusInput);
+    return Semantics(
+      button: true,
+      hint: AppStrings.a11yEditTime.tr,
+      child: Material(
+        color: colors.fieldFill,
+        borderRadius: radius,
+        child: InkWell(
+          borderRadius: radius,
+          onTap: onEdit,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: AppSizes.spaceMd,
+              top: AppSizes.spaceXs,
+              bottom: AppSizes.spaceXs,
             ),
-            const SizedBox(width: AppSizes.spaceMd),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    DoseFormatter.minuteOfDay(time.minuteOfDay),
-                    style: textTheme.titleMedium,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: AppSizes.avatarSm,
+                  height: AppSizes.avatarSm,
+                  decoration: BoxDecoration(
+                    color: colors.surface,
+                    borderRadius: BorderRadius.circular(AppSizes.radiusMd),
                   ),
-                  Text(
-                    AppStrings.medsQuantitySummary.trParams(<String, String>{
-                      'count': DoseFormatter.quantity(time.quantity),
-                    }),
-                    style: textTheme.bodyMedium,
+                  child: Icon(
+                    Icons.schedule_rounded,
+                    size: AppSizes.iconMd,
+                    color: colors.activeDeep,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: AppSizes.spaceMd),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        DoseFormatter.minuteOfDay(time.minuteOfDay),
+                        style: textTheme.titleMedium,
+                      ),
+                      Text(
+                        AppStrings.medsQuantitySummary.trParams(
+                          <String, String>{
+                            'count': DoseFormatter.quantity(time.quantity),
+                          },
+                        ),
+                        style: textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                if (canRemove)
+                  IconButton(
+                    tooltip: AppStrings.a11yRemoveTime.tr,
+                    onPressed: onRemove,
+                    color: colors.textTertiary,
+                    icon: const Icon(Icons.close_rounded),
+                  )
+                else
+                  const SizedBox(width: AppSizes.spaceMd),
+              ],
             ),
-            IconButton(
-              tooltip: AppStrings.a11yEditTime.tr,
-              onPressed: onEdit,
-              color: colors.active,
-              icon: const Icon(Icons.edit_outlined),
-            ),
-            if (canRemove)
-              IconButton(
-                tooltip: AppStrings.a11yRemoveTime.tr,
-                onPressed: onRemove,
-                color: colors.danger,
-                icon: const Icon(Icons.delete_outline_rounded),
-              ),
-          ],
+          ),
         ),
       ),
     );

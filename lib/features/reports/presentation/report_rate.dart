@@ -21,7 +21,9 @@ abstract final class ReportRate {
     return switch (toneOf(rate)) {
       BadgeTone.success => colors.success,
       BadgeTone.warning => colors.warning,
-      BadgeTone.danger || BadgeTone.active => colors.danger,
+      BadgeTone.danger ||
+      BadgeTone.active ||
+      BadgeTone.neutral => colors.danger,
     };
   }
 

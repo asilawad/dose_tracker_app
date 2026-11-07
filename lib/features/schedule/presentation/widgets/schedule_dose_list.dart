@@ -1,4 +1,5 @@
 import 'package:dose_tracker/core/constants/app_sizes.dart';
+import 'package:dose_tracker/features/schedule/data/models/dose_state.dart';
 import 'package:dose_tracker/features/schedule/data/models/scheduled_dose.dart';
 import 'package:dose_tracker/features/schedule/data/schedule_grouper.dart'
     as schedule_data;
@@ -27,23 +28,34 @@ class ScheduleDoseList extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<schedule_data.ScheduleTimeGroup> groups =
         schedule_data.ScheduleGrouper.group(doses);
-    return ListView.separated(
+    final int nextIndex = groups.indexWhere(
+      (schedule_data.ScheduleTimeGroup group) => group.profiles.any(
+        (schedule_data.ScheduleProfileGroup profile) => profile.doses.any(
+          (ScheduledDose dose) =>
+              dose.state == DoseState.pending && !dose.isDue,
+        ),
+      ),
+    );
+    return SliverPadding(
       padding: const EdgeInsets.fromLTRB(
         AppSizes.screenPaddingHorizontal,
         0,
         AppSizes.screenPaddingHorizontal,
-        AppSizes.space3xl,
+        AppSizes.space3xl + AppSizes.bottomOverlayClearance,
       ),
-      itemCount: groups.length,
-      separatorBuilder: (_, _) => const SizedBox(height: AppSizes.spaceLg),
-      itemBuilder: (BuildContext context, int index) => ScheduleTimeGroup(
-        key: ValueKey<int>(groups[index].minuteOfDay),
-        group: groups[index],
-        onCheck: onCheck,
-        onUndo: onUndo,
-        onSkip: onSkip,
-        isJustChecked: isJustChecked,
-        onConfirmAll: onConfirmAll,
+      sliver: SliverList.separated(
+        itemCount: groups.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 18),
+        itemBuilder: (BuildContext context, int index) => ScheduleTimeGroup(
+          isNext: index == nextIndex,
+          key: ValueKey<int>(groups[index].minuteOfDay),
+          group: groups[index],
+          onCheck: onCheck,
+          onUndo: onUndo,
+          onSkip: onSkip,
+          isJustChecked: isJustChecked,
+          onConfirmAll: onConfirmAll,
+        ),
       ),
     );
   }

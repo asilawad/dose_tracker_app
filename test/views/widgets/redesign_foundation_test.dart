@@ -141,9 +141,7 @@ void main() {
     }
   });
 
-  testWidgets('switch reports taps', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('switch reports taps', (WidgetTester tester) async {
     bool value = false;
 
     await tester.pumpWidget(

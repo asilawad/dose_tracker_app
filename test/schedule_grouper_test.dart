@@ -11,46 +11,43 @@ ScheduledDose _dose({
   required int minuteOfDay,
   String? profileName,
   DoseState state = DoseState.pending,
-}) =>
-    ScheduledDose(
-      medicationId: medicationId,
-      profileId: profileId,
-      profileName: profileName ?? 'Profile $profileId',
-      personaColor: PersonaColor.teal,
-      medicationName: 'Medication',
-      doseAmount: 1,
-      doseUnit: DoseUnit.mg,
-      mealInstruction: null,
-      date: DateTime(2026, 10, 18),
-      minuteOfDay: minuteOfDay,
-      quantity: 1,
-      state: state,
-      logId: null,
-      takenAt: null,
-      skipReason: null,
-    );
+}) => ScheduledDose(
+  medicationId: medicationId,
+  profileId: profileId,
+  profileName: profileName ?? 'Profile $profileId',
+  personaColor: PersonaColor.teal,
+  medicationName: 'Medication',
+  doseAmount: 1,
+  doseUnit: DoseUnit.mg,
+  mealInstruction: null,
+  date: DateTime(2026, 10, 18),
+  minuteOfDay: minuteOfDay,
+  quantity: 1,
+  state: state,
+  logId: null,
+  takenAt: null,
+  skipReason: null,
+);
 
 void main() {
   group('ScheduleGrouper', () {
     test('groups matching medication names by profile at one time', () {
-      final List<ScheduleTimeGroup> groups = ScheduleGrouper.group(
-        <ScheduledDose>[
-          _dose(medicationId: 10, profileId: 2, minuteOfDay: 480),
-          _dose(medicationId: 20, profileId: 1, minuteOfDay: 480),
-        ],
-      );
+      final List<ScheduleTimeGroup> groups =
+          ScheduleGrouper.group(<ScheduledDose>[
+            _dose(medicationId: 10, profileId: 2, minuteOfDay: 480),
+            _dose(medicationId: 20, profileId: 1, minuteOfDay: 480),
+          ]);
 
       expect(groups, hasLength(1));
       expect(groups.single.profiles, hasLength(2));
     });
 
     test('sorts time groups ascending', () {
-      final List<ScheduleTimeGroup> groups = ScheduleGrouper.group(
-        <ScheduledDose>[
-          _dose(medicationId: 1, profileId: 1, minuteOfDay: 720),
-          _dose(medicationId: 2, profileId: 1, minuteOfDay: 360),
-        ],
-      );
+      final List<ScheduleTimeGroup> groups =
+          ScheduleGrouper.group(<ScheduledDose>[
+            _dose(medicationId: 1, profileId: 1, minuteOfDay: 720),
+            _dose(medicationId: 2, profileId: 1, minuteOfDay: 360),
+          ]);
 
       expect(groups.map((ScheduleTimeGroup group) => group.minuteOfDay), <int>[
         360,
@@ -59,15 +56,16 @@ void main() {
     });
 
     test('sorts profiles inside a time by profile id', () {
-      final List<ScheduleTimeGroup> groups = ScheduleGrouper.group(
-        <ScheduledDose>[
-          _dose(medicationId: 1, profileId: 5, minuteOfDay: 480),
-          _dose(medicationId: 2, profileId: 2, minuteOfDay: 480),
-        ],
-      );
+      final List<ScheduleTimeGroup> groups =
+          ScheduleGrouper.group(<ScheduledDose>[
+            _dose(medicationId: 1, profileId: 5, minuteOfDay: 480),
+            _dose(medicationId: 2, profileId: 2, minuteOfDay: 480),
+          ]);
 
       expect(
-        groups.single.profiles.map((ScheduleProfileGroup group) => group.profileId),
+        groups.single.profiles.map(
+          (ScheduleProfileGroup group) => group.profileId,
+        ),
         <int>[2, 5],
       );
     });

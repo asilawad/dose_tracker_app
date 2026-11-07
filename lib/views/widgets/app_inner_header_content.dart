@@ -25,9 +25,7 @@ class AppInnerHeaderContent extends StatelessWidget {
       borderOpacity: scrolled ? 1 : 0,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: AppSizes.contentMaxWidth,
-          ),
+          constraints: const BoxConstraints(maxWidth: AppSizes.contentMaxWidth),
           child: Padding(
             padding: const EdgeInsets.only(
               left: AppSizes.innerHeaderPadding,
@@ -56,8 +54,7 @@ class AppInnerHeaderContent extends StatelessWidget {
                           ?.copyWith(fontSize: AppSizes.fontInnerHeader),
                     ),
                   ),
-                  trailing ??
-                      const SizedBox(width: AppSizes.iconButtonSize),
+                  trailing ?? const SizedBox(width: AppSizes.iconButtonSize),
                 ],
               ),
             ),

@@ -22,10 +22,10 @@ class MedicationFrequencyRow extends GetView<MedicationFormController> {
                 AppStrings.medsFrequencyTitle.tr,
                 style: textTheme.headlineSmall,
               ),
-              const SizedBox(height: AppSizes.spaceXs),
+              const SizedBox(height: 2),
               Text(
                 AppStrings.medsFrequencySubtitle.tr,
-                style: textTheme.bodyMedium,
+                style: textTheme.bodySmall,
               ),
             ],
           ),

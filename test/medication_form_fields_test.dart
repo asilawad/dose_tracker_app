@@ -38,17 +38,20 @@ void main() {
       expect(fields.stockThreshold, 12);
     });
 
-    test('dose and stock values parse valid values and reject invalid ones', () {
-      fields.doseController.text = '2.5';
-      fields.stockController.text = '12';
-      expect(fields.doseAmount, 2.5);
-      expect(fields.currentStock, 12);
+    test(
+      'dose and stock values parse valid values and reject invalid ones',
+      () {
+        fields.doseController.text = '2.5';
+        fields.stockController.text = '12';
+        expect(fields.doseAmount, 2.5);
+        expect(fields.currentStock, 12);
 
-      fields.doseController.text = 'invalid';
-      fields.stockController.text = '0';
-      expect(fields.doseAmount, isNull);
-      expect(fields.currentStock, isNull);
-    });
+        fields.doseController.text = 'invalid';
+        fields.stockController.text = '0';
+        expect(fields.doseAmount, isNull);
+        expect(fields.currentStock, isNull);
+      },
+    );
 
     test('tapping the selected meal instruction clears it', () {
       fields.selectMeal(MealInstruction.withMeal);
@@ -59,10 +62,7 @@ void main() {
 
     test('starts with exactly one dose at 08:00', () {
       expect(fields.times, hasLength(1));
-      expect(
-        fields.times.single.minuteOfDay,
-        Duration.minutesPerHour * 8,
-      );
+      expect(fields.times.single.minuteOfDay, Duration.minutesPerHour * 8);
     });
   });
 }

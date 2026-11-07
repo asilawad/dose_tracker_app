@@ -5,7 +5,8 @@ import 'package:dose_tracker/features/reports/controllers/report_controller.dart
 import 'package:dose_tracker/features/reports/data/models/report_range.dart';
 import 'package:dose_tracker/features/schedule/data/repositories/dose_planner.dart';
 import 'package:dose_tracker/views/widgets/app_card.dart';
-import 'package:dose_tracker/views/widgets/app_choice_chip.dart';
+import 'package:dose_tracker/views/widgets/app_segment_option.dart';
+import 'package:dose_tracker/views/widgets/app_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -54,33 +55,42 @@ class ReportIntervalCard extends GetView<ReportController> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              AppStrings.reportIntervalTitle.tr,
-              style: textTheme.headlineSmall,
-            ),
-            const SizedBox(height: AppSizes.spaceXs),
-            Text(
-              AppStrings.reportRangeValue.trParams(<String, String>{
-                'from': DateFormatter.dayMonthYear(range.from),
-                'to': DateFormatter.dayMonthYear(range.to),
-              }),
-              style: textTheme.bodyMedium,
-            ),
-            const SizedBox(height: AppSizes.spaceMd),
-            Wrap(
-              spacing: AppSizes.spaceSm,
-              runSpacing: AppSizes.spaceSm,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <Widget>[
+                Expanded(
+                  child: Text(
+                    AppStrings.reportIntervalTitle.tr,
+                    style: textTheme.titleSmall,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    AppStrings.reportRangeValue.trParams(<String, String>{
+                      'from': DateFormatter.dayMonthYear(range.from),
+                      'to': DateFormatter.dayMonthYear(range.to),
+                    }),
+                    textAlign: TextAlign.end,
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSizes.spaceSm),
+            AppSegmentedControl<ReportInterval>(
+              options: <AppSegmentOption<ReportInterval>>[
                 for (final ReportInterval option in ReportInterval.values)
-                  AppChoiceChip(
+                  AppSegmentOption<ReportInterval>(
+                    value: option,
                     label: _labelKey(option).tr,
-                    selected: option == selected,
-                    showCheck: true,
-                    onTap: () => option == ReportInterval.custom
-                        ? _pickCustomRange(context)
-                        : controller.selectInterval(option),
                   ),
               ],
+              selected: selected,
+              onChanged: (ReportInterval option) =>
+                  option == ReportInterval.custom
+                  ? _pickCustomRange(context)
+                  : controller.selectInterval(option),
             ),
           ],
         );

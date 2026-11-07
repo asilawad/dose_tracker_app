@@ -141,9 +141,7 @@ class ProfileDetailController extends GetxController {
       return;
     }
     _closing = true;
-    Get.until(
-      (route) => route.settings.name == AppRoutes.home,
-    );
+    Get.until((route) => route.settings.name == AppRoutes.home);
   }
 
   void _fail() {

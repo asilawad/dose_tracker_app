@@ -27,65 +27,62 @@ class NavHopIndicator extends StatefulWidget {
 
 class _NavHopIndicatorState extends State<NavHopIndicator>
     with SingleTickerProviderStateMixin {
-  static final Animatable<double> _lift = TweenSequence<double>(
-    <TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-        tween: Tween<double>(
-          begin: 0,
-          end: AppSizes.navHopPeak,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: AppSizes.navHopRisePhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: Tween<double>(
-          begin: AppSizes.navHopPeak,
-          end: AppSizes.navHopLanding,
-        ).chain(CurveTween(curve: Curves.easeIn)),
-        weight: AppSizes.navHopFallPhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: Tween<double>(begin: AppSizes.navHopLanding, end: 0),
-        weight: AppSizes.navHopSettlePhase,
-      ),
-    ],
-  );
-
-  static final Animatable<double> _scaleX = TweenSequence<double>(
-    <TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 1, end: AppSizes.navHopShrink),
-        weight: AppSizes.navHopRisePhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: Tween<double>(
-          begin: AppSizes.navHopShrink,
-          end: AppSizes.navHopStretch,
+  static final Animatable<double> _lift =
+      TweenSequence<double>(<TweenSequenceItem<double>>[
+        TweenSequenceItem<double>(
+          tween: Tween<double>(
+            begin: 0,
+            end: AppSizes.navHopPeak,
+          ).chain(CurveTween(curve: Curves.easeOut)),
+          weight: AppSizes.navHopRisePhase,
         ),
-        weight: AppSizes.navHopFallPhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: Tween<double>(begin: AppSizes.navHopStretch, end: 1),
-        weight: AppSizes.navHopSettlePhase,
-      ),
-    ],
-  );
+        TweenSequenceItem<double>(
+          tween: Tween<double>(
+            begin: AppSizes.navHopPeak,
+            end: AppSizes.navHopLanding,
+          ).chain(CurveTween(curve: Curves.easeIn)),
+          weight: AppSizes.navHopFallPhase,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: AppSizes.navHopLanding, end: 0),
+          weight: AppSizes.navHopSettlePhase,
+        ),
+      ]);
 
-  static final Animatable<double> _scaleY = TweenSequence<double>(
-    <TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 1, end: AppSizes.navHopShrink),
-        weight: AppSizes.navHopRisePhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: ConstantTween<double>(AppSizes.navHopShrink),
-        weight: AppSizes.navHopFallPhase,
-      ),
-      TweenSequenceItem<double>(
-        tween: Tween<double>(begin: AppSizes.navHopShrink, end: 1),
-        weight: AppSizes.navHopSettlePhase,
-      ),
-    ],
-  );
+  static final Animatable<double> _scaleX =
+      TweenSequence<double>(<TweenSequenceItem<double>>[
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1, end: AppSizes.navHopShrink),
+          weight: AppSizes.navHopRisePhase,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(
+            begin: AppSizes.navHopShrink,
+            end: AppSizes.navHopStretch,
+          ),
+          weight: AppSizes.navHopFallPhase,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: AppSizes.navHopStretch, end: 1),
+          weight: AppSizes.navHopSettlePhase,
+        ),
+      ]);
+
+  static final Animatable<double> _scaleY =
+      TweenSequence<double>(<TweenSequenceItem<double>>[
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1, end: AppSizes.navHopShrink),
+          weight: AppSizes.navHopRisePhase,
+        ),
+        TweenSequenceItem<double>(
+          tween: ConstantTween<double>(AppSizes.navHopShrink),
+          weight: AppSizes.navHopFallPhase,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(begin: AppSizes.navHopShrink, end: 1),
+          weight: AppSizes.navHopSettlePhase,
+        ),
+      ]);
 
   late final AnimationController _controller = AnimationController(
     vsync: this,
@@ -127,8 +124,7 @@ class _NavHopIndicatorState extends State<NavHopIndicator>
   @override
   Widget build(BuildContext context) {
     final AppColorTokens colors = context.appColors;
-    final double centering =
-        (widget.slotWidth - AppSizes.navIndicatorSize) / 2;
+    final double centering = (widget.slotWidth - AppSizes.navIndicatorSize) / 2;
 
     return AnimatedBuilder(
       animation: _controller,
